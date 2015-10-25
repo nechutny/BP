@@ -1,10 +1,15 @@
 \chapter{Úvod}
-	Skriptovací jazyk PHP je velmi oblibeným prostøedkem pro tvorbu dynamických webových systémù i pro rùzné skripty.
+	Skriptovací jazyk PHP je velmi oblibeným prostøedkem pro tvorbu dynamických webových systémù i pro rùzné skripty. Z pùvodnì jednoduchého jazyka pro tvorbu stránek s dynamickým obsahem vznikl jazyk se stovkami funkcí umo¾òující rychlou implementaci témìø jakékoliv úlohy.
 
-	...
+	V dùsledku pøesouvání mnoha slu¾eb do prostøedí webového prohlí¾eèe výraznì narùstá poèet a nároènost provádìých operací v PHP. Od generování PDF souborù, pøes podepisování a komprimování souborù a¾ po nároèné operace jako rozpoznávání osob v fotografiích a videích. Právì takové knihovny jsou èasto psané v PHP pro jednoduchost vývoje i pøesto, ¾e PHP umo¾òuje zavádìt roz¹íøení s funkcemi v nativním kódu, jejich¾ vykonávání je výraznì rychlej¹í.
+
+	Pøevod knihoven v PHP na ekvivalent v jazyce C++ pøipravený pro zkompilování jako roz¹íøení PHP je cílem této práce. Zadání vychází ze skuteènosti, ¾e èastým zpùsobem vývoje aplikace je pou¾ití jedné konkrétní verze knihovny v které není tøeba provádìt úpravy. V dùsledku pak výhody plynoucí z interpretace nejsou tøeba a naopak nevýhody znamenají propad výkonu.
+
 
 	\section{Funkcionalita}
-		...
+		Zamý¹lenou funkcionalitou je nástroj generující z adresáøe se zdrojovými kódy v jazyce PHP výstup v jazyce C++. Výsledný kód by mìl implementovat stejnou funkcionalitu a zachovat alespoò podobnou souborovou strukturu. Po zkompilování výstupu vznikne dynamická knihovna (.so, èi .dll), kterou je mo¾né nastavit v konfiguraci php prostøednictvím direktivy extension, èi naèíst bìhem interpretace vìstavìnou funkcí dl().
+
+		Takto transformované naètené funkce a tøídy bude mo¾né v interpretovaném PHP pou¾ívat zcela stejnì, jako v pøípadì zdrojových - stejný zpùsob volání, stejné názvy, tøídy pùjde roz¹iøovat apod.
 
 	\section{Motivace}
 		...
@@ -28,7 +33,7 @@
 
 			1) Jaký byl stav a plány do budoucna
 
-			2) Proè do¹lo k ukonèení projektu
+			2) Proè do¹lo k ukonèení projektu a jaké byly jeho dùvody
 
 			3) Vidí i dnes v tomto konceptu potenciál
 
@@ -38,25 +43,28 @@
 	\section{HPHPc}
 		Tento projekt od spoleènosti Facebook byl zapoèat v roce 2008\cite{HipHopMoveFast} a mìl za cíl sní¾it výkonostní nároky aplikací psaných v PHP. To se také vývojáøskému týmu podaøilo a dosáhli sní¾ení vytí¾ení procesoru na polovinu\cite{HipHopMoveFast}. V roce 2010 do¹lo k uvolnìní zdrojových kódù projektu pod licencí PHP Licence.
 
-		TODO: Rozepsat následující odstavec, aby obsahoval v¹echny nále¾istoti a mìl vypovídající hodnotu. Doplnit dal¹í testy, grafy, pøesná èísla...
+		TODO: Rozepsat následující odstavec, aby obsahoval v¹echny nále¾itoti a mìl vypovídající hodnotu. Doplnit dal¹í testy, grafy, pøesná èísla...
 
 		Testy provedené v dubnu 2011 ukazují na velký potenciál pøekladu PHP do nativního kódu\cite{hipHopBechmark}. Napøíklad práce s binárními stromy do hloubky 20 úrovní byla dle mìøení 4x rychlej¹í.
 
 		HPHPc provádìlo kompilaci celých PHP aplikací do jednoho velkého spustitelného binárního souboru. Nasazování nových verzí tak bylo zpomaleno o kompilaci a distribuci a¾ nìkolik GB velkých souborù na produkèní servery. Jedná se tedy o jiné cílové pou¾ití, ne¾ na jaké se zamìøuje tato práce. Nebylo mo¾né vyu¾ít výhod verzovacích systémù, kdy jsou distribuovány jen malé rozdíly v souborech a v neposlední øadì nebyla podpora pro nìkteré dynamické konstrukce jako napøíklad eval(). V dùsledku tìchto nevýhod bylo rozhodnuto, ¾e se projekt vydá cestou JIT (Just in time) virtuálního stroje\cite{HipHopSpeeding}, který vyu¾ívá bytecode generovaný ze zdrojových kódù PHP, jako mù¾eme znát tøeba z jazyka Java.
 
-		Po sedmi mìsících vývoje dosáhla implementace HHVM lep¹í výsledkù, ne¾ HPHc a 19. února 2013 byla commitem odebrána ze zdrojových kódù podpora pro kompilování HPHPc\cite{HipHopRemoveCompiler}.
+		Po sedmi mìsících vývoje dosáhla implementace HHVM lep¹í výsledkù, ne¾ HPHPc a 19. února 2013 byla commitem odebrána ze zdrojových kódù podpora pro kompilování HPHPc\cite{HipHopRemoveCompiler}.
 
 	\section{Roadsend PHP}
 		http://www.roadsend.com/
 
 \chapter{Integrace do PHP}
-	...
+	... rozebrat fungování roz¹íøení v php, definice funkcí, tøíd. Ponoøení do Zend Engine...
 
 \chapter{Knihovny (?)}
-	...
+	... Uvádìt?
 
 	\section{PHP-CPP}
 		http://www.php-cpp.com/
+
+	\section{Tracy}
+		Pro ladìní a error logy
 
 \chapter{Vybrané konstrukce PHP}
 	...
@@ -71,15 +79,20 @@
 		...
 
 	\section{Promìnné}
-		...
+		- Detekce typu analýzou kódu, pou¾ití Php::Value s automatickým pøetypováním pomocí C++ operátorù, nebo rozgenerování pro rùzné datové typy a opodmínkování.
 
-	\section{Funkce}
 		...
 
 	\section{Podmínky}
 		...
 
 	\section{Cykly}
+		Foreach
+
+	\section{Funkce}
+		...
+
+	\section{Tøídy}
 		...
 
 
@@ -87,26 +100,42 @@
 \chapter{Rozdíly PHP a C++}
 	...
 
+	\section{Promìnné}
+		Rozdílný obor platnosti promìnných uvnitø blokù v PHP a C++
+
+		Nutnost vytahnout deklaraci promìnné mimo bloky cyklù, pokud je s nimi pracováno i za blokem
+
+		TODO: Ovìøit kompatabilitu jmen
+
+	\section{Funkce}
+		TODO: Ovìøit kompatabilitu jmen
+
+	\section{Tøídy}
+		TODO: Ovìøit kompatabilitu jmen
+
 \chapter{Návrh transformace}
 	...
 
 \chapter{Implementace}
 	...
 
+	\section{Omezení}
+		...
+
 \chapter{Testování}
 	...
 
-\chapter{Výkonnost}
-	...
+	\section{Výkon}
+		...
 
 \chapter{Optimalizace}
-	...
+	... V závislosti na èasu experimentovat s optimalizacemi konstrukcí
 
 \chapter{Detekce bezpeènostních chyb}
-	...
+	... Mo¾ná, v závislosti na èasu
 
 	\section{Include injection}
-		...
+		... detekce konstrukcí jako include \$\_GET['page']
 
 	\section{XSS - Cross site scripting}
 		...
