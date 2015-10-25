@@ -1,0 +1,119 @@
+\chapter{Úvod}
+	Skriptovací jazyk PHP je velmi oblibeným prostøedkem pro tvorbu dynamických webových systémù i pro rùzné skripty.
+
+	...
+
+	\section{Funkcionalita}
+		...
+
+	\section{Motivace}
+		...
+
+	\section{Cíle}
+		...
+
+
+
+\chapter{Konkurenèní øe¹ení}
+	Provedl jsem analýzu souèasných konkurenèních øe¹ení a nepodaøilo se mi nalézt nástroj implementující takovouto funkcionalitu. Funcionalitou podobný je nástroj phc\footnote{http://www.phpcompiler.org/}, který slou¾í primárnì pro kompilaci PHP kódu do spustitelných binárních souborù, které nepotøebují interpret. Dal¹ím podobným a z technického hlediska zajímavým øe¹ením je HPHPc od spoleènosti Facebook, kterým se budu zabývat v následující podkapitole a poslou¾í i jako zajímavý zdroj øe¹ení.
+
+	\section{phc}
+		Phc je kompilátor podmno¾iny jazyka PHP do spustitelných binárních souborù. Odstraòuje závislost na interpretru PHP a tak umo¾òuje pohodlnou distribuci cli skriptù. Vývoj tohoto nástroje zapoèal v roce 2005 vývojáøi Edsko de Vries a John Gilbert. Postupnì se do vývoje zapojilo na 21 vývojáøù a poslední verze byla vydána v roce 2011\cite{PhcContributing}. Od té doby se pouze mno¾í chybové reporty a projekt není udr¾ován\cite{PhcIssues}.
+
+		Nástroj podporoval také funkcionalitu, která je cílem této bakaláøské práce a bylo tedy mo¾né transformovat PHP knihovny do roz¹íøení pro následné pou¾ití v PHP. Dle dokumentace na webu projektu nebyla v¹ak podpora pro objektové programování a chybìla implementace novìj¹ích jazykových konstrukcí\cite{PhcContributing}.
+
+		S nejstar¹í v souèasné podporovanou verzí PHP ji¾ není mo¾né aplikaci ani pøelo¾it i pøes mnohé pokusy o úpravy zdrojových kódù pro zaji¹tìní kompatibility.
+
+		TODO: Kontaktován Jakub Suchý (jeden z vývojáø), pokud bude ochotný odpovìdìt, tak se zeptat:
+
+			1) Jaký byl stav a plány do budoucna
+
+			2) Proè do¹lo k ukonèení projektu
+
+			3) Vidí i dnes v tomto konceptu potenciál
+
+			4) Co by mohlo být pøeká¾kou
+
+
+	\section{HPHPc}
+		Tento projekt od spoleènosti Facebook byl zapoèat v roce 2008\cite{HipHopMoveFast} a mìl za cíl sní¾it výkonostní nároky aplikací psaných v PHP. To se také vývojáøskému týmu podaøilo a dosáhli sní¾ení vytí¾ení procesoru na polovinu\cite{HipHopMoveFast}. V roce 2010 do¹lo k uvolnìní zdrojových kódù projektu pod licencí PHP Licence.
+
+		TODO: Rozepsat následující odstavec, aby obsahoval v¹echny nále¾istoti a mìl vypovídající hodnotu. Doplnit dal¹í testy, grafy, pøesná èísla...
+
+		Testy provedené v dubnu 2011 ukazují na velký potenciál pøekladu PHP do nativního kódu\cite{hipHopBechmark}. Napøíklad práce s binárními stromy do hloubky 20 úrovní byla dle mìøení 4x rychlej¹í.
+
+		HPHPc provádìlo kompilaci celých PHP aplikací do jednoho velkého spustitelného binárního souboru. Nasazování nových verzí tak bylo zpomaleno o kompilaci a distribuci a¾ nìkolik GB velkých souborù na produkèní servery. Jedná se tedy o jiné cílové pou¾ití, ne¾ na jaké se zamìøuje tato práce. Nebylo mo¾né vyu¾ít výhod verzovacích systémù, kdy jsou distribuovány jen malé rozdíly v souborech a v neposlední øadì nebyla podpora pro nìkteré dynamické konstrukce jako napøíklad eval(). V dùsledku tìchto nevýhod bylo rozhodnuto, ¾e se projekt vydá cestou JIT (Just in time) virtuálního stroje\cite{HipHopSpeeding}, který vyu¾ívá bytecode generovaný ze zdrojových kódù PHP, jako mù¾eme znát tøeba z jazyka Java.
+
+		Po sedmi mìsících vývoje dosáhla implementace HHVM lep¹í výsledkù, ne¾ HPHc a 19. února 2013 byla commitem odebrána ze zdrojových kódù podpora pro kompilování HPHPc\cite{HipHopRemoveCompiler}.
+
+	\section{Roadsend PHP}
+		http://www.roadsend.com/
+
+\chapter{Integrace do PHP}
+	...
+
+\chapter{Knihovny (?)}
+	...
+
+	\section{PHP-CPP}
+		http://www.php-cpp.com/
+
+\chapter{Vybrané konstrukce PHP}
+	...
+
+	\section{Datové typy}
+		...
+
+		\subsection{Pole}
+			...
+
+	\section{Výrazy}
+		...
+
+	\section{Promìnné}
+		...
+
+	\section{Funkce}
+		...
+
+	\section{Podmínky}
+		...
+
+	\section{Cykly}
+		...
+
+
+
+\chapter{Rozdíly PHP a C++}
+	...
+
+\chapter{Návrh transformace}
+	...
+
+\chapter{Implementace}
+	...
+
+\chapter{Testování}
+	...
+
+\chapter{Výkonnost}
+	...
+
+\chapter{Optimalizace}
+	...
+
+\chapter{Detekce bezpeènostních chyb}
+	...
+
+	\section{Include injection}
+		...
+
+	\section{XSS - Cross site scripting}
+		...
+
+
+
+
+
+
+
