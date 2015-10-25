@@ -6,4 +6,5 @@
 *.toc
 *.aux
 *.lof
+*.pdf
 fig/*.pdf
