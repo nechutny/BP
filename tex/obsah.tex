@@ -1,15 +1,15 @@
 \chapter{Úvod}
-	Skriptovací jazyk PHP je velmi oblibeným prostøedkem pro tvorbu dynamických webových systémù i pro rùzné skripty. Z pùvodnì jednoduchého jazyka pro tvorbu stránek s dynamickým obsahem vznikl jazyk se stovkami funkcí umo¾òující rychlou implementaci témìø jakékoliv úlohy.
+	Skriptovací jazyk PHP je velmi oblíbeným prostøedkem pro tvorbu dynamických webových systémù i pro rùzné skripty. Z~pùvodnì jednoduchého jazyka pro tvorbu stránek s~dynamickým obsahem vznikl jazyk se stovkami funkcí umo¾òující rychlou implementaci témìø jakékoliv úlohy.
 
-	V dùsledku pøesouvání mnoha slu¾eb do prostøedí webového prohlí¾eèe výraznì narùstá poèet a nároènost provádìých operací v PHP. Od generování PDF souborù, pøes podepisování a komprimování souborù a¾ po nároèné operace jako rozpoznávání osob v fotografiích a videích. Právì takové knihovny jsou èasto psané v PHP pro jednoduchost vývoje i pøesto, ¾e PHP umo¾òuje zavádìt roz¹íøení s funkcemi v nativním kódu, jejich¾ vykonávání je výraznì rychlej¹í.
+	V~dùsledku pøesouvání mnoha slu¾eb do prostøedí webového prohlí¾eèe výraznì narùstá poèet a nároènost provádìných operací v~PHP. Od generování PDF souborù, pøes podepisování a komprimování souborù a¾ po nároèné operace jako rozpoznávání osob v~fotografiích a videích. Právì takové knihovny jsou èasto psané v~PHP pro jednoduchost vývoje i pøesto, ¾e PHP umo¾òuje zavádìt roz¹íøení s~funkcemi v~nativním kódu, jejich¾ vykonávání je výraznì rychlej¹í.
 
-	Pøevod knihoven v PHP na ekvivalent v jazyce C++ pøipravený pro zkompilování jako roz¹íøení PHP je cílem této práce. Zadání vychází ze skuteènosti, ¾e èastým zpùsobem vývoje aplikace je pou¾ití jedné konkrétní verze knihovny v které není tøeba provádìt úpravy. V dùsledku pak výhody plynoucí z interpretace nejsou tøeba a naopak nevýhody znamenají propad výkonu.
+	Pøevod knihoven v~PHP na ekvivalent v~jazyce C++ pøipravený pro zkompilování jako roz¹íøení PHP je cílem této práce. Zadání vychází ze skuteènosti, ¾e èastým zpùsobem vývoje aplikace je pou¾ití jedné konkrétní verze knihovny v~které není tøeba provádìt úpravy. V~dùsledku pak výhody plynoucí z~interpretace nejsou tøeba a naopak nevýhody znamenají propad výkonu.
 
 
 	\section{Funkcionalita}
-		Zamý¹lenou funkcionalitou je nástroj generující z adresáøe se zdrojovými kódy v jazyce PHP výstup v jazyce C++. Výsledný kód by mìl implementovat stejnou funkcionalitu a zachovat alespoò podobnou souborovou strukturu. Po zkompilování výstupu vznikne dynamická knihovna (.so, èi .dll), kterou je mo¾né nastavit v konfiguraci php prostøednictvím direktivy extension, èi naèíst bìhem interpretace vìstavìnou funkcí dl().
+		Zamý¹lenou funkcionalitou je nástroj generující z~adresáøe se zdrojovými kódy v~jazyce PHP výstup v~jazyce C++. Výsledný kód by mìl implementovat stejnou funkcionalitu a zachovat alespoò podobnou souborovou strukturu. Po zkompilování výstupu vznikne dynamická knihovna (.so, èi .dll), kterou je mo¾né nastavit v~konfiguraci php prostøednictvím direktivy extension, èi naèíst bìhem interpretace vìstavìnou funkcí dl().
 
-		Takto transformované naètené funkce a tøídy bude mo¾né v interpretovaném PHP pou¾ívat zcela stejnì, jako v pøípadì zdrojových - stejný zpùsob volání, stejné názvy, tøídy pùjde roz¹iøovat apod.
+		Takto transformované naètené funkce a tøídy bude mo¾né v~interpretovaném PHP pou¾ívat zcela stejnì, jako v~pøípadì zdrojových - stejný zpùsob volání, stejné názvy, tøídy pùjde roz¹iøovat apod.
 
 	\section{Motivace}
 		...
@@ -20,51 +20,39 @@
 
 
 \chapter{Konkurenèní øe¹ení}
-	Provedl jsem analýzu souèasných konkurenèních øe¹ení a nepodaøilo se mi nalézt nástroj implementující takovouto funkcionalitu. Funcionalitou podobný je nástroj phc\footnote{http://www.phpcompiler.org/}, který slou¾í primárnì pro kompilaci PHP kódu do spustitelných binárních souborù, které nepotøebují interpret. Dal¹ím podobným a z technického hlediska zajímavým øe¹ením je HPHPc od spoleènosti Facebook, kterým se budu zabývat v následující podkapitole a poslou¾í i jako zajímavý zdroj øe¹ení.
+	Provedl jsem analýzu souèasných konkurenèních øe¹ení a nepodaøilo se mi nalézt nástroj implementující takovouto funkcionalitu. Funkcionalitou podobný je nástroj phc\footnote{\url{http://www.phpcompiler.org/}}, který slou¾í primárnì pro kompilaci PHP kódu do spustitelných binárních souborù, které nepotøebují interpret. Dal¹ím podobným a z~technického hlediska zajímavým øe¹ením je HPHPc od spoleènosti Facebook, kterým se budu zabývat v~následující podkapitole a poslou¾í i jako zajímavý zdroj øe¹ení.
 
 	\section{phc}
-		Phc je kompilátor podmno¾iny jazyka PHP do spustitelných binárních souborù. Odstraòuje závislost na interpretru PHP a tak umo¾òuje pohodlnou distribuci cli skriptù. Vývoj tohoto nástroje zapoèal v roce 2005 vývojáøi Edsko de Vries a John Gilbert. Postupnì se do vývoje zapojilo na 21 vývojáøù a poslední verze byla vydána v roce 2011\cite{PhcContributing}. Od té doby se pouze mno¾í chybové reporty a projekt není udr¾ován\cite{PhcIssues}.
+		Phc je kompilátor podmno¾iny jazyka PHP do spustitelných binárních souborù. Odstraòuje závislost na interpretru PHP a tak umo¾òuje pohodlnou distribuci cli skriptù. Vývoj tohoto nástroje zapoèal v~roce 2005 vývojáøi Edsko de Vries a John Gilbert. Postupnì se do vývoje zapojilo na 21 vývojáøù a poslední verze byla vydána v~roce 2011\cite{PhcContributing}. Od té doby se pouze mno¾í chybové reporty a projekt není udr¾ován\cite{PhcIssues}.
 
-		Nástroj podporoval také funkcionalitu, která je cílem této bakaláøské práce a bylo tedy mo¾né transformovat PHP knihovny do roz¹íøení pro následné pou¾ití v PHP. Dle dokumentace na webu projektu nebyla v¹ak podpora pro objektové programování a chybìla implementace novìj¹ích jazykových konstrukcí\cite{PhcContributing}.
+		Nástroj podporoval také funkcionalitu, která je cílem této bakaláøské práce a bylo tedy mo¾né transformovat PHP knihovny do roz¹íøení pro následné pou¾ití v~PHP. Dle dokumentace na webu projektu nebyla v¹ak podpora pro objektové programování a chybìla implementace novìj¹ích jazykových konstrukcí\cite{PhcContributing}.
 
-		S nejstar¹í v souèasné podporovanou verzí PHP ji¾ není mo¾né aplikaci ani pøelo¾it i pøes mnohé pokusy o úpravy zdrojových kódù pro zaji¹tìní kompatibility.
+		S~nejstar¹í v~souèasné podporovanou verzí PHP ji¾ není mo¾né aplikaci ani pøelo¾it i pøes mnohé pokusy o~úpravy zdrojových kódù pro zaji¹tìní kompatibility.
 
-		TODO: Kontaktován Jakub Suchý (jeden z vývojáø), pokud bude ochotný odpovìdìt, tak se zeptat:
+		TODO: Kontaktován Jakub Suchý (jeden z~vývojáø), pokud bude ochotný odpovìdìt, tak se zeptat:
 
 			1) Jaký byl stav a plány do budoucna
 
-			2) Proè do¹lo k ukonèení projektu a jaké byly jeho dùvody
+			2) Proè do¹lo k~ukonèení projektu a jaké byly jeho dùvody
 
-			3) Vidí i dnes v tomto konceptu potenciál
+			3) Vidí i dnes v~tomto konceptu potenciál
 
 			4) Co by mohlo být pøeká¾kou
 
 
 	\section{HPHPc}
-		Tento projekt od spoleènosti Facebook byl zapoèat v roce 2008\cite{HipHopMoveFast} a mìl za cíl sní¾it výkonostní nároky aplikací psaných v PHP. To se také vývojáøskému týmu podaøilo a dosáhli sní¾ení vytí¾ení procesoru na polovinu\cite{HipHopMoveFast}. V roce 2010 do¹lo k uvolnìní zdrojových kódù projektu pod licencí PHP Licence.
+		Tento projekt od spoleènosti Facebook byl zapoèat v~roce 2008\cite{HipHopMoveFast} a mìl za cíl sní¾it výkonnostní nároky aplikací psaných v~PHP. To se také vývojáøskému týmu podaøilo a dosáhli sní¾ení vytí¾ení procesoru na polovinu\cite{HipHopMoveFast}. V~roce 2010 do¹lo k~uvolnìní zdrojových kódù projektu pod licencí PHP Licence.
 
-		TODO: Rozepsat následující odstavec, aby obsahoval v¹echny nále¾itoti a mìl vypovídající hodnotu. Doplnit dal¹í testy, grafy, pøesná èísla...
+		TODO: Rozepsat následující odstavec, aby obsahoval v¹echny nále¾itosti a mìl vypovídající hodnotu. Doplnit dal¹í testy, grafy, pøesná èísla...
 
-		Testy provedené v dubnu 2011 ukazují na velký potenciál pøekladu PHP do nativního kódu\cite{hipHopBechmark}. Napøíklad práce s binárními stromy do hloubky 20 úrovní byla dle mìøení 4x rychlej¹í.
+		Testy provedené v~dubnu 2011 ukazují na velký potenciál pøekladu PHP do nativního kódu\cite{hipHopBechmark}. Napøíklad práce s~binárními stromy do hloubky 20 úrovní byla dle mìøení 4x rychlej¹í.
 
-		HPHPc provádìlo kompilaci celých PHP aplikací do jednoho velkého spustitelného binárního souboru. Nasazování nových verzí tak bylo zpomaleno o kompilaci a distribuci a¾ nìkolik GB velkých souborù na produkèní servery. Jedná se tedy o jiné cílové pou¾ití, ne¾ na jaké se zamìøuje tato práce. Nebylo mo¾né vyu¾ít výhod verzovacích systémù, kdy jsou distribuovány jen malé rozdíly v souborech a v neposlední øadì nebyla podpora pro nìkteré dynamické konstrukce jako napøíklad eval(). V dùsledku tìchto nevýhod bylo rozhodnuto, ¾e se projekt vydá cestou JIT (Just in time) virtuálního stroje\cite{HipHopSpeeding}, který vyu¾ívá bytecode generovaný ze zdrojových kódù PHP, jako mù¾eme znát tøeba z jazyka Java.
+		HPHPc provádìlo kompilaci celých PHP aplikací do jednoho velkého spustitelného binárního souboru. Nasazování nových verzí tak bylo zpomaleno o~kompilaci a distribuci a¾ nìkolik GB velkých souborù na produkèní servery. Jedná se tedy o~jiné cílové pou¾ití, ne¾ na jaké se zamìøuje tato práce. Nebylo mo¾né vyu¾ít výhod verzovacích systémù, kdy jsou distribuovány jen malé rozdíly v~souborech a v~neposlední øadì nebyla podpora pro nìkteré dynamické konstrukce jako napøíklad eval(). V~dùsledku tìchto nevýhod bylo rozhodnuto, ¾e se projekt vydá cestou JIT (Just in time) virtuálního stroje\cite{HipHopSpeeding}, který vyu¾ívá bytecode generovaný ze zdrojových kódù PHP, jako mù¾eme znát tøeba z~jazyka Java.
 
 		Po sedmi mìsících vývoje dosáhla implementace HHVM lep¹í výsledkù, ne¾ HPHPc a 19. února 2013 byla commitem odebrána ze zdrojových kódù podpora pro kompilování HPHPc\cite{HipHopRemoveCompiler}.
 
 	\section{Roadsend PHP}
-		http://www.roadsend.com/
-
-\chapter{Integrace do PHP}
-	... rozebrat fungování roz¹íøení v php, definice funkcí, tøíd. Ponoøení do Zend Engine...
-
-\chapter{Knihovny (?)}
-	... Uvádìt?
-
-	\section{PHP-CPP}
-		http://www.php-cpp.com/
-
-	\section{Tracy}
-		Pro ladìní a error logy
+		\url{http://www.roadsend.com/}
 
 \chapter{Vybrané konstrukce PHP}
 	...
@@ -76,10 +64,11 @@
 			...
 
 	\section{Výrazy}
-		...
+
+
 
 	\section{Promìnné}
-		- Detekce typu analýzou kódu, pou¾ití Php::Value s automatickým pøetypováním pomocí C++ operátorù, nebo rozgenerování pro rùzné datové typy a opodmínkování.
+		- Detekce typu analýzou kódu, pou¾ití Php::Value s~automatickým pøetypováním pomocí C++ operátorù, nebo rozgenerování pro rùzné datové typy a opodmínkování.
 
 		...
 
@@ -100,10 +89,109 @@
 \chapter{Rozdíly PHP a C++}
 	...
 
-	\section{Promìnné}
-		Rozdílný obor platnosti promìnných uvnitø blokù v PHP a C++
+	\section{Výrazy}
+		Tabulka \ref{table:phpPrecendenceTable} na stranì \pageref{table:phpPrecendenceTable} obsahuje operátory jazyka PHP s~jejich asociativitou seøazené dle priority - priorita se sni¾uje z~hora dolù. Druhou podstatnou tabulkou je \ref{table:cppPrecendenceTable} na stranì \pageref{table:cppPrecendenceTable}, která obsahuje priority a asociativitu operátorù jazyka C++. Priorita je opìt seøazena od nejvy¹¹í po nejni¾¹í. Pøi podrobnìj¹ím prozkoumání tabulky narazíme na nìkolik rozdílù, se kterými se je tøeba vypoøádat.
 
-		Nutnost vytahnout deklaraci promìnné mimo bloky cyklù, pokud je s nimi pracováno i za blokem
+		Prvním je absence operátoru konkatenace \function{.} z~zdrojového jazyka PHP ve výsledném C++. Dále chybí operátor mocniny \function{**}.
+
+		Dal¹ím chybìjícím operátorem je \function{@}, který slou¾í pro potlaèení pøípadného chybového výstupu. Jeho pou¾ití je v~kódu PHP nedoporuèované\cite{PhpErrorSupress1} \cite{PhpErrorSupress2} \cite{PhpErrorSupress3} \cite{PhpErrorSupress4} i pøesto je mo¾né provést implementaci tohoto chování, èím¾ se zabývám v~kapitole \ref{potlaceniChyby} na stranì \pageref{potlaceniChyby}.
+
+		\subsection{Porovnávání}
+			Rozdíl v~porovnávání promìnných v~jazycích, kterými se zabývá tato práce je pomìrnì zásadní. Zdrojový jazyk obsahuje dva typy porovnání, kdy je mo¾né porovnávat odli¹né datové typy. Konstrukce \function{\textquotedbl5\textquotedbl == 5} pak bude v~PHP pravdivá, kde¾to v~C++ nikoliv. Pro porovnání i s~pøihlédnutím k~typu je v~PHP operátor \function{===} \cite{PhpCompareOperator}.
+
+			Problematickým chováním mù¾e být pøetypovávání pøi porovnání. Nejen, ¾e v~pøípadì, ¾e jeden z~operandù porovnání je èíslo mù¾e dojít k~pøetypování druhého operandu typu øetìzec na èíslo, ale i v~pøípadì porovnávání dvou øetìzcù, které mohou mít význam èísla. Napøíklad v~PHP je pravdivé toto porovnání \function{'1e3' == '1000'}. \cite{PhpCompareStrict}
+
+			Porovnávání instancí tøíd prostøednictvím operátoru \function{==} je pravdivé, pokud jsou instancemi stejných tøíd a v¹echny jejich vlastnosti mají stjnou hodnotu. Pøi porovnání \function{===} je porovnání pravdivé jen v~pøípadì tot¾ných instancí \cite{PhpCompareObject}.
+
+
+			\cite{PhpCompareTable}
+
+
+
+
+
+
+			\begin{center}
+  				\begin{tabular}{ | l | l | l |}
+					\hline
+					Asociativita	& Operátor																						& Dal¹í informace			\\ \hline
+					\hline
+					neasociativní	& clone, new																					& clone a new				\\ \hline
+					levá			& [																								& Pole						\\ \hline
+					pravá			& **																							& Výpoèet					\\ \hline
+					pravá			& ++, --, (int), (float), (string),																& (in/de)krementace, typy,	\\
+									& (array), (object), (bool), @																	& uti¹ení chyby				\\ \hline
+					neasociativní	& instanceof																					& Typy						\\ \hline
+					pravá			& !																								& Logické výrazy			\\ \hline
+					levá			& *, /, \%																						& Výpoèet					\\ \hline
+					levá			& +, -, .																						& Výpoèty a øetìzec			\\ \hline
+					levá			& \textless\textless, \textgreater\textgreater													& Bitové operace			\\ \hline
+					neasociativní	& \textless, \textless=, \textgreater, \textgreater=											& Porovnání					\\ \hline
+					neasociativní	& ==, !=, ===, !==, \textless\textgreater, \textless=\textgreater								& Porovnání					\\ \hline
+					levá			& \&																							& Bitové operace a reference\\ \hline
+					levá			& \textasciicircum																				& Bitové operace			\\ \hline
+					levá			& $|$																							& Bitové operace			\\ \hline
+					levá			& \&\&																							& Logické výrazy			\\ \hline
+					levá			& $||$																							& Logické výrazy			\\ \hline
+					pravá			& ??																							& Porovnání					\\ \hline
+					levá			& ?:																							& Porovnání					\\ \hline
+					pravá			& =, +=, -=, *=, **=, /=, .=,																	& Pøiøazení					\\
+									& \%=, $|$=, \textasciicircum=, \textless\textless=, \textgreater\textgreater=, =\textgreater	&							\\  \hline
+					levá			& and																							& Logické výrazy			\\ \hline
+					levá			& xor																							& Logické výrazy			\\ \hline
+					levá			& or																							& Logické výrazy			\\ \hline
+					levá			& ,																								& Mnoho významù				\\ \hline
+  				\end{tabular}
+  				\captionof{table}{Tabulka priority výrazù PHP\cite{PhpPrecendence}}
+				\label{table:phpPrecendenceTable}
+			\end{center}
+
+			\begin{center}
+  				\begin{tabular}{ | l | l | l |}
+					\hline
+					Asociativita	& Operátor											& Dal¹í informace											\\ \hline
+					\hline
+					levá			& ::												& Scope resolution											\\ \hline
+					pravá			& ++, --											& Prefix inkrementace a dekrementace						\\
+									& +, -												& Unární plus a mínus										\\
+									& !, \~												& Logická negace a binární negace							\\
+									& (type)											& Pøetypování (C styl)										\\
+									& *													& Dereference												\\
+									& \&												& Reference													\\
+									& sizeof											& Size-of													\\
+									& new												& Vytvoøení instance										\\
+									& delete											& Zru¹ení instance											\\ \hline
+					levá			& ., -\textgreater									& Ukazatel na èlena											\\ \hline
+					levá			& *, /, \%											& Násobení, dìlení, zbytek po celoèíselném dìlení			\\ \hline
+					levá			& +, -												& Sèitání a odèítání										\\ \hline
+					levá			& \textless\textless, \textgreater\textgreater		& Bitový posuv vlevo a vpravo								\\ \hline
+					levá			& \textless, \textless=								& Porovnání - men¹í, men¹í nebo rovno						\\
+									& \textgreater, \textgreater=						& Porovnání - vìt¹í, vìt¹í¹í nebo rovno						\\ \hline
+					levá			& ==, !=											& Porovnání - rovno, nerovno								\\ \hline
+					levá			& \&												& Bitový AND												\\ \hline
+					levá			& \textasciicircum									& Bitový XOR (exkluzivní OR)								\\ \hline
+					levá			& $|$												& Bitový OR													\\ \hline
+					levá			& \&\&												& Logický AND												\\ \hline
+					levá			& $||$												& Logický OR												\\ \hline
+					pravá			& ?:												& Ternární operátor											\\
+									& throw												& Operátor výjimky											\\
+									& =													& Pøímé pøiøazení											\\
+									& +=, -=											& pøiøazení souètem/odeètem									\\
+									& *=, /=, \%=										& Pøiøazení násobku, dìlení, zbytku po celoèíselném dìlení	\\
+									& \textless\textless=, \textgreater\textgreater=	& Pøiøazení výsledku bitového posuvu vlevo/vpravo			\\
+									& \&=, \textasciicircum=, $|$=						& Pøiøazení bitového AND, XOR, OR							\\ \hline
+					Levá			& ,													& Èárka - mnoho významù										\\ \hline
+
+
+				\end{tabular}
+				\captionof{table}{Tabulka priority výrazù C++\cite{CppPrecendence}}
+				\label{table:cppPrecendenceTable}
+			\end{center}
+
+	\section{Promìnné}
+		Rozdílný obor platnosti promìnných uvnitø blokù v~PHP a C++
+
+		Nutnost vytahnout deklaraci promìnné mimo bloky cyklù, pokud je s~nimi pracováno i za blokem
 
 		TODO: Ovìøit kompatabilitu jmen
 
@@ -113,8 +201,56 @@
 	\section{Tøídy}
 		TODO: Ovìøit kompatabilitu jmen
 
+\chapter{Integrace do PHP}
+	... rozebrat fungování roz¹íøení v~php, definice funkcí, tøíd. Ponoøení do Zend Engine...
+
+\chapter{Knihovny (?)}
+	... Uvádìt?
+
+	\section{PHP-CPP}
+		\url{http://www.php-cpp.com/}
+
+	\section{Tracy}
+		Pro ladìní a error logy
+
 \chapter{Návrh transformace}
-	...
+
+	\section{Operátory}
+		...
+
+		\subsection{Konkatenace}
+			\function{std::string} obsahuje metodu \function{append}\cite{cppStringAppend}. Je tedy mo¾né transoformovat kód \ref{code:phpConcatenation} na \ref{code:cppConcatenation}.
+
+			\begin{lstlisting}[caption=PHP ukázka konkatenace, label=code:phpConcatenation]
+$a = "a";
+$b = "b";
+$a .= $b;
+			\end{lstlisting}
+
+
+
+			\begin{lstlisting}[caption=Transformace konkatenace, label=code:cppConcatenation]
+std::string a = "a";
+std::string b = "b";
+a.apend(b);
+			\end{lstlisting}
+
+		\subsection{Mocnina}
+			Pro výpoèet mocniny èísla je mo¾né nahradit operátor \function{**} za volání funkce \function{pow} ze standardní knihovny \function{math.h}\cite{CppMathPow}.
+
+
+		\subsection{Potlaèení chyby}
+			\label{potlaceniChyby}
+			Bude tøeba èást s~potlaèenou chybou vyjmout do vlastní èásti kódu, pøiøadit výsledek do pomocné promìnné a obalit voláním funkcí z~jádra PHP viz kód \ref{code:supressError} na stranì \pageref{code:supressError}.
+
+			\begin{lstlisting}[caption=Potlaèení chybové hlá¹ky\cite{PhpErrorSupress2}, label=code:supressError]
+void zend_do_begin_silence(znode *strudel_token TSRMLS_DC);
+// volaný kód
+void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
+			\end{lstlisting}
+
+			TODO: Jak se odkazovat na zdrojové kódy z~rùzných projektù?
+
 
 \chapter{Implementace}
 	...
@@ -129,10 +265,10 @@
 		...
 
 \chapter{Optimalizace}
-	... V závislosti na èasu experimentovat s optimalizacemi konstrukcí
+	... V~závislosti na èasu experimentovat s~optimalizacemi konstrukcí
 
 \chapter{Detekce bezpeènostních chyb}
-	... Mo¾ná, v závislosti na èasu
+	... Mo¾ná, v~závislosti na èasu
 
 	\section{Include injection}
 		... detekce konstrukcí jako include \$\_GET['page']
