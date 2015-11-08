@@ -87,7 +87,7 @@
 
 
 \chapter{Rozdíly PHP a C++}
-	...
+	Rozdílù mezi obìmi jazyky je celá øada i pøes jejich velkou podobnost a je tøeba se s nimi vypoøádat.
 
 	\section{Výrazy}
 		Tabulka \ref{table:phpPrecendenceTable} na stranì \pageref{table:phpPrecendenceTable} obsahuje operátory jazyka PHP s~jejich asociativitou seøazené dle priority - priorita se sni¾uje z~hora dolù. Druhou podstatnou tabulkou je \ref{table:cppPrecendenceTable} na stranì \pageref{table:cppPrecendenceTable}, která obsahuje priority a asociativitu operátorù jazyka C++. Priorita je opìt seøazena od nejvy¹¹í po nejni¾¹í. Pøi podrobnìj¹ím prozkoumání tabulky narazíme na nìkolik rozdílù, se kterými se je tøeba vypoøádat.
@@ -99,7 +99,7 @@
 		\subsection{Porovnávání}
 			Rozdíl v~porovnávání promìnných v~jazycích, kterými se zabývá tato práce je pomìrnì zásadní. Zdrojový jazyk obsahuje dva typy porovnání, kdy je mo¾né porovnávat odli¹né datové typy. Konstrukce \function{\textquotedbl5\textquotedbl == 5} pak bude v~PHP pravdivá, kde¾to v~C++ nikoliv. Pro porovnání i s~pøihlédnutím k~typu je v~PHP operátor \function{===} \cite{PhpCompareOperator}.
 
-			Problematickým chováním mù¾e být pøetypovávání pøi porovnání. Nejen, ¾e v~pøípadì, ¾e jeden z~operandù porovnání je èíslo mù¾e dojít k~pøetypování druhého operandu typu øetìzec na èíslo, ale i v~pøípadì porovnávání dvou øetìzcù, které mohou mít význam èísla. Napøíklad v~PHP je pravdivé toto porovnání \function{'1e3' == '1000'}. \cite{PhpCompareStrict}
+			Problematickým chováním mù¾e být pøetypovávání pøi porovnání. Nejen, ¾e v~pøípadì, ¾e jeden z~operandù porovnání je èíslo mù¾e dojít k~pøetypování druhého operandu typu øetìzec na èíslo, ale i v~pøípadì porovnávání dvou øetìzcù, které mohou mít význam èísla. Napøíklad v~PHP je pravdivé toto porovnání \function{'1e3' == '1000'} \cite{PhpCompareStrict} \cite{PhpCompareHash}.
 
 			Porovnávání instancí tøíd prostøednictvím operátoru \function{==} je pravdivé, pokud jsou instancemi stejných tøíd a v¹echny jejich vlastnosti mají stjnou hodnotu. Pøi porovnání \function{===} je porovnání pravdivé jen v~pøípadì tot¾ných instancí \cite{PhpCompareObject}.
 
@@ -125,7 +125,7 @@
 					pravá			& !																								& Logické výrazy			\\ \hline
 					levá			& *, /, \%																						& Výpoèet					\\ \hline
 					levá			& +, -, .																						& Výpoèty a øetìzec			\\ \hline
-					levá			& \textless\textless, \textgreater\textgreater													& Bitové operace			\\ \hline
+					levá			& \textless \textless, \textgreater \textgreater													& Bitové operace			\\ \hline
 					neasociativní	& \textless, \textless=, \textgreater, \textgreater=											& Porovnání					\\ \hline
 					neasociativní	& ==, !=, ===, !==, \textless\textgreater, \textless=\textgreater								& Porovnání					\\ \hline
 					levá			& \&																							& Bitové operace a reference\\ \hline
@@ -202,7 +202,57 @@
 		TODO: Ovìøit kompatabilitu jmen
 
 \chapter{Integrace do PHP}
-	... rozebrat fungování roz¹íøení v~php, definice funkcí, tøíd. Ponoøení do Zend Engine...
+	... rozebrat fungování roz¹íøení v~php, definice funkcí, tøíd. Ponoøení do Zend Engine... \\ \\
+
+	Interpret PHP umo¾òuje zavádìt dynamické knihovny tzv. moduly, které roz¹iøují dostupné funkce a tøídy v interpretovaném prostøedí. Naètení je mo¾né prostøednictvím konfiguraèní direktivy \function{extension=nazev.so} v konfiguraèním souboru \function{php.ini}, èi v dobì bìhu funkcí \function{dl("nazev.so")}. Roz¹íøení obsahují tzv. entry point, tedy místo kam v momentì po¾adavku na naètení modulu skoèí tok interpretru a oèekává se vrácení datové struktury, která obsahuje informace o dostupných funkcích a tøídách. Zend Engine, jádro PHP, je napsáno primárnì v jazyce C, tak¾e je tøeba dodr¾et kompatibilní zpùsob volání a návrat výsledku. V pøípadì této práce bude z dùvodu jazyka C++ nutno pou¾ít konstrukci \function{extern "C"}.
+
+	Struktura \function{zend\_module\_entry} obsahuje následující hodnoty\cite{PhpExtensionStructure}:
+
+	\begin{itemize}
+		\item
+			Verze Zend API, pro kterou je modul zkompilován.
+		\item
+			Seznam závislostí modulu na jiných modulech.
+		\item
+			Název modulu.
+		\item
+			Ukazatel na pole struktur se seznamem funkcí (\function{zend\_function\_entry}).
+		\item
+			Ukazatel na funkci volanou pøi zavedení modulu.
+		\item
+			Ukazatel na funkci volanou pøi ru¹ení modulu.
+		\item
+			Ukazatel na funkci volanou pøi ka¾dém pøíchozím po¾adavku na stránku (pøi pou¾ití PHP jako SAPI modul webového serveru Apache).
+		\item
+			Ukazatel na funkci volanou pøi konci po¾adavku na stránku.
+		\item
+			Funkce vracející informace pøi volání \function{phpinfo()}.
+		\item
+			Verze modulu.
+		\item
+			Globální promìnné modulu.
+	\end{itemize}
+
+	Struktura \function{zend\_function\_entry} pak obsahuje\cite{PhpExtensionFunctionStructure}:
+
+	\begin{itemize}
+		\item
+			Jméno, pod jakým bude funkce dostupná v PHP.
+		\item
+			Ukazatel na funkci.
+		\item
+			Argumenty funkce - zda mají být pøedány referencí.
+	\end{itemize}
+
+	\begin{figure}[h]
+		\centering
+		\includesvg[svgpath = img/]{PhpExtensionLifeCycleDiagram}
+		\caption{®ivotní cyklus roz¹íøení}
+		\label{PhpExtensionLife}
+	\end{figure}
+
+
+
 
 \chapter{Knihovny (?)}
 	... Uvádìt?
@@ -215,11 +265,14 @@
 
 \chapter{Návrh transformace}
 
+	\section{Porovnání}
+		compare\_function(result, a, b TSRMLS\_CC);
+
 	\section{Operátory}
 		...
 
 		\subsection{Konkatenace}
-			\function{std::string} obsahuje metodu \function{append}\cite{cppStringAppend}. Je tedy mo¾né transoformovat kód \ref{code:phpConcatenation} na \ref{code:cppConcatenation}.
+			\function{std::string} obsahuje metodu \function{append}\cite{cppStringAppend}. Je tedy mo¾né transformovat kód \ref{code:phpConcatenation} na \ref{code:cppConcatenation}.
 
 			\begin{lstlisting}[caption=PHP ukázka konkatenace, label=code:phpConcatenation]
 $a = "a";
