@@ -1,7 +1,7 @@
 \chapter{Úvod}
 	Skriptovací jazyk PHP je velmi oblíbeným prostøedkem pro tvorbu dynamických webových systémù i pro rùzné skripty. Z~pùvodnì jednoduchého jazyka pro tvorbu stránek s~dynamickým obsahem vznikl jazyk se stovkami funkcí umo¾òující rychlou implementaci témìø jakékoliv úlohy.
 
-	V~dùsledku pøesouvání mnoha slu¾eb do prostøedí webového prohlí¾eèe výraznì narùstá poèet a nároènost provádìných operací v~PHP. Od generování PDF souborù, pøes podepisování a komprimování souborù a¾ po nároèné operace jako rozpoznávání osob v~fotografiích a videích. Právì takové knihovny jsou èasto psané v~PHP pro jednoduchost vývoje i pøesto, ¾e PHP umo¾òuje zavádìt roz¹íøení s~funkcemi v~nativním kódu, jejich¾ vykonávání je výraznì rychlej¹í.
+	V~dùsledku pøesouvání mnoha slu¾eb do prostøedí webového prohlí¾eèe výraznì narùstá poèet a nároènost provádìných operací v~PHP. Od generování PDF souborù, pøes podepisování a komprimování souborù a¾ po nároèné operace jako je napøíklad rozpoznávání osob v~fotografiích a videích. Právì takové knihovny jsou èasto psané v~PHP pro jednoduchost vývoje. PHP v¹ak umo¾òuje zavádìt roz¹íøení s~funkcemi v~nativním kódu, jejich¾ vykonávání je výraznì rychlej¹í.
 
 	Pøevod knihoven v~PHP na ekvivalent v~jazyce C++ pøipravený pro zkompilování jako roz¹íøení PHP je cílem této práce. Zadání vychází ze skuteènosti, ¾e èastým zpùsobem vývoje aplikace je pou¾ití jedné konkrétní verze knihovny v~které není tøeba provádìt úpravy. V~dùsledku pak výhody plynoucí z~interpretace nejsou tøeba a naopak nevýhody znamenají propad výkonu.
 
@@ -29,7 +29,7 @@
 
 		S~nejstar¹í v~souèasné podporovanou verzí PHP ji¾ není mo¾né aplikaci ani pøelo¾it i pøes mnohé pokusy o~úpravy zdrojových kódù pro zaji¹tìní kompatibility.
 
-		TODO: Kontaktován Jakub Suchý (jeden z~vývojáø), pokud bude ochotný odpovìdìt, tak se zeptat:
+		TODO: Kontaktován Jakub Suchý (jeden z~vývojáø). Pokud bude ochotný odpovìdìt, tak se zeptat:
 
 			1) Jaký byl stav a plány do budoucna
 
@@ -51,38 +51,226 @@
 
 		Po sedmi mìsících vývoje dosáhla implementace HHVM lep¹í výsledkù, ne¾ HPHPc a 19. února 2013 byla commitem odebrána ze zdrojových kódù podpora pro kompilování HPHPc\cite{HipHopRemoveCompiler}.
 
+		...
+
 	\section{Roadsend PHP}
+		...
+
 		\url{http://www.roadsend.com/}
 
 \chapter{Vybrané konstrukce PHP}
-	...
+	Vkládání prostøednictvím konstrukcí \function{include}, \function{require} a jejich variant pro unikátní vlo¾ení bude z dùvodu komplexity implementováno jen v omezené míøe. Prvním logickým omezením vycházejícím z návrhu tohoto nástroje je schopnost provést vlo¾ení pouze souborù, které jsou dostupné v momentì kompilace a jejich¾ cesta je známá. Nebude tedy mo¾ná transformace funkce \function{includeNe} uvedené v kódu \ref{code:phpIncludeFunction}, ale funkce \function{includeAno} v pøípadì existence souborù \function{prvni.php} a \function{druhy.php} ano.
 
-	\section{Datové typy}
+	Druhým omezením vkládání souborù je pouze èásteèná implementace varianty \function{include\_once} a \function{require\_once}, kdy nebude mo¾né zcela zajistit neopakované vlo¾ení v dobì bìhu aplikace. V dobì transformace PHP do C++ bude toto chování kontrolováno a dojde pouze k prvnímu vlo¾ení. V dobì vykonávání zkompilované funkce v prostøedí interpretru PHP v¹ak nebude mo¾né zamezit vlo¾ení, jeliko¾ systém roz¹íøení PHP neumo¾nuje ovlivnovat tyto èásti.
+
+\begin{lstlisting}[caption=Vlo¾ení souboru, label=code:phpIncludeFunction, language=PHP]
+function includeNe($soubor)
+{
+	include $soubor;
+}
+
+function includeAno($co)
+{
+	$soubor = $co ? "prvni.php" : "druhy.php";
+
+	include $soubor;
+}
+\end{lstlisting}
+
+	Dal¹í implementovanou èástí je podpora konstrukcí \function{echo}, \function{list}, \function{exit} a dal¹í uvedené v tabulce \ref{table:phpTokenConstruction}.
+
+		\begin{center}
+			\begin{tabular}{ | l | l | l |} \hline
+
+				Typ			&	Token				& Zápis \\
+				\hline
+				\hline
+				Komentáø	&	T\_COMMENT			&	\function{\slash\slash}, \function{\#}, \function{\slash* ... *\slash}	\\
+							&	T\_DOC\_COMMENT		&	\function{\slash** ... *\slash} \\
+				\hline
+				Výstup		&	T\_PRINT			&	\function{print()} \\
+							&	T\_ECHO				&	\function{echo} \\
+							&	T\_INLINE\_HTML		&	\function{?\textgreater ... html ... \textless?php} \\
+				\hline
+				Vkládání	&	T\_INCLUDE			&	\function{include} \\
+							&	T\_INCLUDE\_ONCE	&	\function{include\_once} \\
+							&	T\_REQUIRE			&	\function{require} \\
+							&	T\_REQUIRE\_ONCE	&	\function{require\_once} \\
+				\hline
+							&	T\_LIST				&	\function{list()} \\
+				\hline
+				Ukonèení	&	T\_EXIT				&	\function{exit()}, \function{die()} \\
+				\hline
+				Názvy		&	T\_STRING			&	funkcí, tøíd, parent, self... \\
+				\hline
+				Promìnné	&	T\_VARIABLE			&	\function{\$a} \\
+				\hline
+			\end{tabular}
+
+			\captionof{table}{Tabulka tokenù konstrukcí}
+			\label{table:phpTokenConstruction}
+		\end{center}
+
+		Pøi transformaci je podporován zápis konstant ve zdrojových souborech. Podporovaný je zápis èísel v celoèíselném i desetinném formátu. Na základì tìchto typù je pøihlédnuto k volbì datových typù ve výstupním kódu. Dále je pak podporován zápis øetìzcù i s mo¾ností pou¾ití promìnných. Podporované tokeny pak podrobnìji ukazuje tabulka \ref{table:phpTokenConstant}
+
+		\begin{center}
+			\begin{tabular}{ | l | l | l |} \hline
+
+				Typ					&	Token							& Zápis \\
+				\hline
+				\hline
+				Desetinné èíslo		&	T\_DNUMBER						& \function{1.2345} \\
+				\hline
+				Celé èíslo			&	T\_LNUMBER						& \function{93}, \function{0xC0FFEE} \\
+				\hline
+				Øetìzec				&	T\_CONSTANT\_ENCAPSED\_STRING	& \function{"retezec"} \\
+				\hline
+				Promenná v øetìzci	&	T\_ENCAPSED\_AND\_WHITESPACE	& \function{"\$a"} \\
+				\hline
+				Pole v øetìzci		&	T\_NUM\_STRING					& \function{"\$a[0]"} \\
+				\hline
+			\end{tabular}
+			\captionof{table}{Tabulka tokenù konstant}
+			\label{table:phpTokenConstant}
+		\end{center}
+
+		%	\begin{itemize}
+		%		\item T\_ARRAY					\function{array()}
+		%		\item T\_DOUBLE\_ARROW			\function{=\textgreater}
+		%	\end{itemize}
+
+		Stì¾ejní èástí aplikace je vyhodnocování výrazù. Pro implementaci byla zvolena valná vìt¹ina tokenù pro matematické operace, porovnávání, bitové posuvy i pøetypování viz tabulka \ref{table:phpTokenExpresion}.
+
+		TODO: rozepsat výrazy
+
+		\begin{center}
+			\begin{tabular}{ | l | l | l |} \hline
+
+				Typ					&	Token							& Zápis \\
+				\hline
+				\hline
+				Porovnání			& T\_IS\_EQUAL						& \function{==} \\
+									& T\_IS\_NOT\_EQUAL					& \function{!=}, \function{\textless\textgreater} \\
+									& T\_IS\_IDENTICAL					& \function{===} \\
+									& T\_IS\_NOT\_IDENTICAL				& \function{!==} \\
+									& T\_IS\_GREATER\_OR\_EQUAL			& \function{\textgreater=} \\
+									& T\_IS\_SMALLER\_OR\_EQUAL			& \function{\textless=} \\
+									& T\_SPACESHIP						& \function{\textless=\textgreater} \\
+				\hline
+				Pøiøazení			& T\_AND\_EQUAL						& \function{\&=} \\
+									& T\_CONCAT\_EQUAL					& \function{.=} \\
+									& T\_DIV\_EQUAL						& \function{\slash=} \\
+									& T\_MINUS\_EQUAL					& \function{-=} \\
+									& T\_MOD\_EQUAL						& \function{\%=} \\
+									& T\_MUL\_EQUAL						& \function{*=} \\
+									& T\_OR\_EQUAL						& \function{$|$=} \\
+									& T\_PLUS\_EQUAL					& \function{+=} \\
+									& T\_POW\_EQUAL						& \function{**=} \\
+									& T\_SL\_EQUAL						& \function{\textgreater\textgreater=} \\
+									& T\_SR\_EQUAL						& \function{\textless\textless=} \\
+									& T\_XOR\_EQUAL						& \function{\textasciicircum=} \\
+				\hline
+				Logické èleny		& T\_BOOLEAN\_AND					& \function{\&\&} \\
+									& T\_BOOLEAN\_OR					& \function{$||$} \\
+									& T\_LOGICAL\_AND					& \function{and} \\
+									& T\_LOGICAL\_OR					& \function{or} \\
+									& T\_LOGICAL\_XOR					& \function{xor} \\
+				\hline
+				Bitové posuvy		& T\_SL								& \function{\textgreater\textgreater} \\
+									& T\_SR								& \function{\textless\textless} \\
+				\hline
+				Matematické operace & T\_POW							& \function{**} \\
+									& T\_DEC							& \function{$--$} \\
+									& T\_INC							& \function{$++$} \\
+				\hline
+				Pøetypování			& T\_ARRAY\_CAST					& \function{(array)} \\
+									& T\_BOOL\_CAST						& \function{(bool)} \\
+									& T\_INT\_CAST						& \function{(int)} \\
+									& T\_DOUBLE\_CAST					& \function{(real)}, \function{(float)}, \function{(double)} \\
+									& T\_OBJECT\_CAST					& \function{(object)} \\
+									& T\_STRING\_CAST					& \function{(string)} \\
+				\hline
+				% \item T\_EMPTY			\function{empty()}
+				% \item T\_ISSET			\function{isset()}
+			\end{tabular}
+			\captionof{table}{Tabulka tokenù výrazù}
+			\label{table:phpTokenExpresion}
+		\end{center}
+
 		...
 
-		\subsection{Pole}
-			...
+		TODO: rozepsat øídící konstrukce (podmínky, cykly - zamìøit na foreach)
 
-	\section{Výrazy}
+		\begin{center}
+			\begin{tabular}{ | l | l | l |} \hline
 
-
-
-	\section{Promìnné}
-		- Detekce typu analýzou kódu, pou¾ití Php::Value s~automatickým pøetypováním pomocí C++ operátorù, nebo rozgenerování pro rùzné datové typy a opodmínkování.
-
-		...
-
-	\section{Podmínky}
-		...
-
-	\section{Cykly}
-		Foreach
+				Typ					&	Token							& Zápis \\
+				\hline
+				\hline
+				Podmínka			& T\_IF								& \function{if} \\
+									& T\_ELSE							& \function{else} \\
+									& T\_ELSEIF							& \function{elseif} \\
+									& T\_ENDIF							& \function{endif} \\
+				\hline
+				Cykly				& T\_DO								& \function{do} \\
+									& T\_WHILE							& \function{while} \\
+									& T\_ENDWHILE						& \function{endwhile} \\
+									& T\_FOR							& \function{for} \\
+									& T\_ENDFOR							& \function{endfor} \\
+									& T\_FOREACH						& \function{foreach} \\
+									& T\_AS								& \function{as} \\
+									& T\_ENDFOREACH						& \function{endforeach} \\
+									& T\_BREAK							& \function{break} \\
+									& T\_CONTINUE						& \function{continue} \\
+				\hline
+				\end{tabular}
+			\captionof{table}{Tabulka tokenù øídících konstrukcí}
+			\label{table:phpTokenControl}
+		\end{center}
 
 	\section{Funkce}
-		...
+		Podpora definice funkcí s i bez návratové hodnoty. Podpora argumentù, nepovinné argumenty s výchozí hodnotou.
+
+		\begin{itemize}
+			\item T\_FUNCTION		\function{function}
+
+			%\item T\_ELLIPSIS		\function{...}
+
+			\item T\_RETURN			\function{return}
+		\end{itemize}
 
 	\section{Tøídy}
-		...
+		TODO: Zvá¾it zda implementovat interface.
+
+		TODO: Bude podpora vytváøení instancí PHP tøíd v C++, èi jen pùjde o definici tøíd bez mo¾nosti je v transofmrovaném kódu pou¾ít? Nároènost vs. pou¾itelnost.
+
+		\begin{itemize}
+			\item T\_CLASS				\function{class}
+			\item T\_EXTENDS			\function{extends}
+			\item T\_IMPLEMENTS			\function{implements}
+
+			\item T\_CONST				\function{const}
+
+			\item T\_INTERFACE			\function{interface}
+
+			\item T\_NAMESPACE			\function{namespace}
+			\item T\_NS\_SEPARATOR		\function{$\backslash$}
+
+			\item T\_USE				\function{use}
+
+			%\item T\_NEW				\function{new}
+
+			\item T\_PRIVATE			\function{private}
+			\item T\_PUBLIC				\function{public}
+			\item T\_PROTECTED			\function{protected}
+
+			\item T\_STATIC				\function{static}
+
+			\item T\_DOUBLE\_COLON		\function{::}
+			\item T\_OBJECT\_OPERATOR	\function{-\textgreater}
+
+			%\item T\_CLASS\_C		\function{\_\_CLASS\_\_}
+		\end{itemize}
 
 
 
@@ -105,10 +293,6 @@
 
 
 			\cite{PhpCompareTable}
-
-
-
-
 
 
 			\begin{center}
@@ -191,7 +375,7 @@
 	\section{Promìnné}
 		Rozdílný obor platnosti promìnných uvnitø blokù v~PHP a C++
 
-		Nutnost vytahnout deklaraci promìnné mimo bloky cyklù, pokud je s~nimi pracováno i za blokem
+		Nutnost vytahnout deklaraci promìnné mimo bloky cyklù, pokud je s~nimi pracováno i za blokem.
 
 		TODO: Ovìøit kompatabilitu jmen
 
@@ -254,15 +438,6 @@
 
 
 
-\chapter{Knihovny (?)}
-	... Uvádìt?
-
-	\section{PHP-CPP}
-		\url{http://www.php-cpp.com/}
-
-	\section{Tracy}
-		Pro ladìní a error logy
-
 \chapter{Návrh transformace}
 
 	\section{Porovnání}
@@ -274,7 +449,7 @@
 		\subsection{Konkatenace}
 			\function{std::string} obsahuje metodu \function{append}\cite{cppStringAppend}. Je tedy mo¾né transformovat kód \ref{code:phpConcatenation} na \ref{code:cppConcatenation}.
 
-			\begin{lstlisting}[caption=PHP ukázka konkatenace, label=code:phpConcatenation]
+			\begin{lstlisting}[caption=PHP ukázka konkatenace, label=code:phpConcatenation, language=PHP]
 $a = "a";
 $b = "b";
 $a .= $b;
@@ -282,7 +457,7 @@ $a .= $b;
 
 
 
-			\begin{lstlisting}[caption=Transformace konkatenace, label=code:cppConcatenation]
+			\begin{lstlisting}[caption=Transformace konkatenace, label=code:cppConcatenation, language=Cpp]
 std::string a = "a";
 std::string b = "b";
 a.apend(b);
@@ -296,7 +471,7 @@ a.apend(b);
 			\label{potlaceniChyby}
 			Bude tøeba èást s~potlaèenou chybou vyjmout do vlastní èásti kódu, pøiøadit výsledek do pomocné promìnné a obalit voláním funkcí z~jádra PHP viz kód \ref{code:supressError} na stranì \pageref{code:supressError}.
 
-			\begin{lstlisting}[caption=Potlaèení chybové hlá¹ky\cite{PhpErrorSupress2}, label=code:supressError]
+			\begin{lstlisting}[caption=Potlaèení chybové hlá¹ky\cite{PhpErrorSupress2}, label=code:supressError, language=Cpp]
 void zend_do_begin_silence(znode *strudel_token TSRMLS_DC);
 // volaný kód
 void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
@@ -308,6 +483,22 @@ void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 \chapter{Implementace}
 	...
 
+
+	\section{Knihovny (?)}
+		... Uvádìt?
+
+		\subsection{PHP-CPP}
+			\url{http://www.php-cpp.com/}
+
+		\subsection{Tracy}
+			Pro ladìní a error logy
+
+
+	\section{Analýza zdrojových kódù PHP}
+		Pro analýzu je tøeba provést parsování zdrojových kódù do abstraktní struktury. Pro tento krok je mo¾né pou¾ít funkce, které PHP nabízí. Konkrétnì se jedná o funkci \function{token\_get()} vracející tokeny uvedené v dokumentaci na adrese \url{http://php.net/manual/en/tokens.php}.
+
+		\url{https://scrutinizer-ci.com/docs/tools/php/php-analyzer/}
+
 	\section{Omezení}
 		...
 
@@ -317,17 +508,17 @@ void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 	\section{Výkon}
 		...
 
-\chapter{Optimalizace}
-	... V~závislosti na èasu experimentovat s~optimalizacemi konstrukcí
-
-\chapter{Detekce bezpeènostních chyb}
-	... Mo¾ná, v~závislosti na èasu
-
-	\section{Include injection}
-		... detekce konstrukcí jako include \$\_GET['page']
-
-	\section{XSS - Cross site scripting}
-		...
+%\chapter{Optimalizace}
+%	... V~závislosti na èasu experimentovat s~optimalizacemi konstrukcí
+%
+%\chapter{Detekce bezpeènostních chyb}
+%	... Mo¾ná, v~závislosti na èasu
+%
+%	\section{Include injection}
+%		... detekce konstrukcí jako include \$\_GET['page']
+%
+%	\section{XSS - Cross site scripting}
+%		...
 
 
 
