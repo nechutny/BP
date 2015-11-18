@@ -1,5 +1,7 @@
 #!/bin/env php
 <?php
+require_once(__DIR__ . '/scanner/Scanner.php');
+require_once(__DIR__ . '/parser/Parser.php');
 
 if($argc != 2)
 {
@@ -9,45 +11,19 @@ if($argc != 2)
 	./app folder");
 }
 
-
-$file = file_get_contents($argv[1]);
-$tokens = token_get_all($file);
-
-
-/*
- * Include all supported token classes
- */
-require_once(__DIR__ . '/token/AToken.php');
-foreach(glob(__DIR__ . "/token/T_*.php") as $tokenFile)
+try
 {
-	require_once($tokenFile);
+	$scanner = new Scanner($argv[1]);
+
+	$parser = new Parser($scanner);
+
+	$parser->parse_file();
 }
-
-$tok = NULL;
-
-foreach($tokens as $token)
+catch(EndOfFileException $e)
 {
-	if(is_array($token))
-	{
-		$tname = token_name($token[0]);
-		$cname = '\Tokens\token_'.$tname;
-
-		if(class_exists($cname))
-		{
-			echo "implemented - ";
-
-			$prev = $tok[ count($tok) -1];
-			$tok[] = new $cname($prev);
-		}
-
-		echo $tname." - ".$token[1]."\n";
-
-	}
-	else
-	{
-		echo $token."\n";
-	}
-
+	echo "Done\n";
 }
-
-print_r($tok);
+/*catch(ParserError $e)
+{
+	echo $e;
+}*/

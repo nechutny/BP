@@ -11,7 +11,7 @@ abstract class AToken implements IToken
 
 	protected $value;
 
-	public function __construct(IToken $prev = NULL)
+	public function __construct(IToken $prev = NULL, $value = NULL)
 	{
 
 	}
@@ -34,6 +34,11 @@ abstract class AToken implements IToken
 	public function getChildes()
 	{
 		return $this->child;
+	}
+
+	public function getValue()
+	{
+		return $this->value;
 	}
 
 }

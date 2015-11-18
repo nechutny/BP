@@ -3,7 +3,7 @@ namespace Tokens;
 
 class token_T_DOC_COMMENT extends AToken
 {
-	public function __construct(IToken $prev = NULL)
+	public function __construct(IToken $prev = NULL, $value = NULL)
 	{
 		if(!is_null($prev))
 		{
@@ -11,6 +11,8 @@ class token_T_DOC_COMMENT extends AToken
 
 			$this->parent->addChild($this);
 		}
+
+		$this->value = $value;
 	}
 
 	public function addChild(IToken $child)

@@ -9,6 +9,8 @@ interface IToken
 
 	public function getChildes();
 
-	public function __construct(IToken $prev = NULL);
+	public function getValue();
+
+	public function __construct(IToken $prev = NULL, $value = NULL);
 
 }
