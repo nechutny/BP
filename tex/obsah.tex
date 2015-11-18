@@ -7,7 +7,7 @@
 
 
 	\section{Funkcionalita}
-		Zamý¹lenou funkcionalitou je nástroj generující z~adresáøe se zdrojovými kódy v~jazyce PHP výstup v~jazyce C++. Výsledný kód by mìl implementovat stejnou funkcionalitu a zachovat alespoò podobnou souborovou strukturu. Po zkompilování výstupu vznikne dynamická knihovna (.so, èi .dll), kterou je mo¾né nastavit v~konfiguraci php prostøednictvím direktivy extension, èi naèíst bìhem interpretace vìstavìnou funkcí dl().
+		Zamý¹lenou funkcionalitou je nástroj generující z~adresáøe se zdrojovými kódy v~jazyce PHP výstup v~jazyce C++. Výsledný kód by mìl implementovat stejnou funkcionalitu a zachovat alespoò podobnou souborovou strukturu. Po zkompilování výstupu vznikne dynamická knihovna (.so, èi .dll), kterou je mo¾né nastavit v~konfiguraci php prostøednictvím direktivy extension, èi naèíst bìhem interpretace vìstavìnou funkcí \function{dl()}.
 
 		Takto transformované naètené funkce a tøídy bude mo¾né v~interpretovaném PHP pou¾ívat zcela stejnì, jako v~pøípadì zdrojových - stejný zpùsob volání, stejné názvy, tøídy pùjde roz¹iøovat apod.
 
@@ -47,7 +47,7 @@
 
 		Testy provedené v~dubnu 2011 ukazují na velký potenciál pøekladu PHP do nativního kódu\cite{hipHopBechmark}. Napøíklad práce s~binárními stromy do hloubky 20 úrovní byla dle mìøení 4x rychlej¹í.
 
-		HPHPc provádìlo kompilaci celých PHP aplikací do jednoho velkého spustitelného binárního souboru. Nasazování nových verzí tak bylo zpomaleno o~kompilaci a distribuci a¾ nìkolik GB velkých souborù na produkèní servery. Jedná se tedy o~jiné cílové pou¾ití, ne¾ na jaké se zamìøuje tato práce. Nebylo mo¾né vyu¾ít výhod verzovacích systémù, kdy jsou distribuovány jen malé rozdíly v~souborech a v~neposlední øadì nebyla podpora pro nìkteré dynamické konstrukce jako napøíklad eval(). V~dùsledku tìchto nevýhod bylo rozhodnuto, ¾e se projekt vydá cestou JIT (Just in time) virtuálního stroje\cite{HipHopSpeeding}, který vyu¾ívá bytecode generovaný ze zdrojových kódù PHP, jako mù¾eme znát tøeba z~jazyka Java.
+		HPHPc provádìlo kompilaci celých PHP aplikací do jednoho velkého spustitelného binárního souboru. Nasazování nových verzí tak bylo zpomaleno o~kompilaci a distribuci a¾ nìkolik GB velkých souborù na produkèní servery. Jedná se tedy o~jiné cílové pou¾ití, ne¾ na jaké se zamìøuje tato práce. Nebylo mo¾né vyu¾ít výhod verzovacích systémù, kdy jsou distribuovány jen malé rozdíly v~souborech a v~neposlední øadì nebyla podpora pro nìkteré dynamické konstrukce jako napøíklad \function{eval()}. V~dùsledku tìchto nevýhod bylo rozhodnuto, ¾e se projekt vydá cestou JIT (Just in time) virtuálního stroje\cite{HipHopSpeeding}, který vyu¾ívá bytecode generovaný ze zdrojových kódù PHP, jako mù¾eme znát tøeba z~jazyka Java.
 
 		Po sedmi mìsících vývoje dosáhla implementace HHVM lep¹í výsledkù, ne¾ HPHPc a 19. února 2013 byla commitem odebrána ze zdrojových kódù podpora pro kompilování HPHPc\cite{HipHopRemoveCompiler}.
 
@@ -59,9 +59,9 @@
 		\url{http://www.roadsend.com/}
 
 \chapter{Vybrané konstrukce PHP}
-	Vkládání prostøednictvím konstrukcí \function{include}, \function{require} a jejich variant pro unikátní vlo¾ení bude z dùvodu komplexity implementováno jen v omezené míøe. Prvním logickým omezením vycházejícím z návrhu tohoto nástroje je schopnost provést vlo¾ení pouze souborù, které jsou dostupné v momentì kompilace a jejich¾ cesta je známá. Nebude tedy mo¾ná transformace funkce \function{includeNe} uvedené v kódu \ref{code:phpIncludeFunction}, ale funkce \function{includeAno} v pøípadì existence souborù \function{prvni.php} a \function{druhy.php} ano.
+	Vkládání prostøednictvím konstrukcí \function{include}, \function{require} a jejich variant pro unikátní vlo¾ení bude z~dùvodu komplexnosti implementováno jen v~omezené míøe. Prvním logickým omezením vycházejícím z~návrhu tohoto nástroje je schopnost provést vlo¾ení pouze souborù, které jsou dostupné v~momentì kompilace a jejich¾ cesta je známá. Nebude tedy mo¾ná transformace funkce \function{includeNe} uvedené v~kódu \ref{code:phpIncludeFunction}, ale funkce \function{includeAno} v~pøípadì existence souborù \function{prvni.php} a \function{druhy.php} ano.
 
-	Druhým omezením vkládání souborù je pouze èásteèná implementace varianty \function{include\_once} a \function{require\_once}, kdy nebude mo¾né zcela zajistit neopakované vlo¾ení v dobì bìhu aplikace. V dobì transformace PHP do C++ bude toto chování kontrolováno a dojde pouze k prvnímu vlo¾ení. V dobì vykonávání zkompilované funkce v prostøedí interpretru PHP v¹ak nebude mo¾né zamezit vlo¾ení, jeliko¾ systém roz¹íøení PHP neumo¾nuje ovlivnovat tyto èásti.
+	Druhým omezením vkládání souborù je pouze èásteèná implementace varianty \function{include\_once} a \function{require\_once}, kdy nebude mo¾né zcela zajistit neopakované vlo¾ení v~dobì bìhu aplikace. V~dobì transformace PHP do C++ bude toto chování kontrolováno a dojde pouze k~prvnímu vlo¾ení. V~dobì vykonávání zkompilované funkce v~prostøedí interpretru PHP v¹ak nebude mo¾né zamezit vlo¾ení, jeliko¾ systém roz¹íøení PHP neumo¾nuje ovlivnovat tyto èásti.
 
 \begin{lstlisting}[caption=Vlo¾ení souboru, label=code:phpIncludeFunction, language=PHP]
 function includeNe($soubor)
@@ -77,7 +77,7 @@ function includeAno($co)
 }
 \end{lstlisting}
 
-	Dal¹í implementovanou èástí je podpora konstrukcí \function{echo}, \function{list}, \function{exit} a dal¹í uvedené v tabulce \ref{table:phpTokenConstruction}.
+	Dal¹í implementovanou èástí je podpora konstrukcí \function{echo}, \function{list}, \function{exit} a dal¹í uvedené v~tabulce \ref{table:phpTokenConstruction}.
 
 		\begin{center}
 			\begin{tabular}{ | l | l | l |} \hline
@@ -111,7 +111,7 @@ function includeAno($co)
 			\label{table:phpTokenConstruction}
 		\end{center}
 
-		Pøi transformaci je podporován zápis konstant ve zdrojových souborech. Podporovaný je zápis èísel v celoèíselném i desetinném formátu. Na základì tìchto typù je pøihlédnuto k volbì datových typù ve výstupním kódu. Dále je pak podporován zápis øetìzcù i s mo¾ností pou¾ití promìnných. Podporované tokeny pak podrobnìji ukazuje tabulka \ref{table:phpTokenConstant}
+		Pøi transformaci je podporován zápis konstant ve zdrojových souborech. Podporovaný je zápis èísel v~celoèíselném i desetinném formátu. Na základì tìchto typù je pøihlédnuto k~volbì datových typù ve výstupním kódu. Dále je pak podporován zápis øetìzcù i s~mo¾ností pou¾ití promìnných. Podporované tokeny pak podrobnìji ukazuje tabulka \ref{table:phpTokenConstant}
 
 		\begin{center}
 			\begin{tabular}{ | l | l | l |} \hline
@@ -125,9 +125,9 @@ function includeAno($co)
 				\hline
 				Øetìzec				&	T\_CONSTANT\_ENCAPSED\_STRING	& \function{"retezec"} \\
 				\hline
-				Promenná v øetìzci	&	T\_ENCAPSED\_AND\_WHITESPACE	& \function{"\$a"} \\
+				Promenná v~øetìzci	&	T\_ENCAPSED\_AND\_WHITESPACE	& \function{"\$a"} \\
 				\hline
-				Pole v øetìzci		&	T\_NUM\_STRING					& \function{"\$a[0]"} \\
+				Pole v~øetìzci		&	T\_NUM\_STRING					& \function{"\$a[0]"} \\
 				\hline
 			\end{tabular}
 			\captionof{table}{Tabulka tokenù konstant}
@@ -229,7 +229,7 @@ function includeAno($co)
 		\end{center}
 
 	\section{Funkce}
-		Podpora definice funkcí s i bez návratové hodnoty. Podpora argumentù, nepovinné argumenty s výchozí hodnotou.
+		Podpora definice funkcí s~i bez návratové hodnoty. Podpora argumentù, nepovinné argumenty s~výchozí hodnotou.
 
 		\begin{itemize}
 			\item T\_FUNCTION		\function{function}
@@ -240,42 +240,48 @@ function includeAno($co)
 		\end{itemize}
 
 	\section{Tøídy}
-		TODO: Zvá¾it zda implementovat interface.
+		%TODO: Zvá¾it zda implementovat interface.
 
-		TODO: Bude podpora vytváøení instancí PHP tøíd v C++, èi jen pùjde o definici tøíd bez mo¾nosti je v transofmrovaném kódu pou¾ít? Nároènost vs. pou¾itelnost.
+		%TODO: Bude podpora vytváøení instancí PHP tøíd v C++, èi jen pùjde o definici tøíd bez mo¾nosti je v transformovaném kódu pou¾ít? Nároènost vs. pou¾itelnost.
 
-		\begin{itemize}
-			\item T\_CLASS				\function{class}
-			\item T\_EXTENDS			\function{extends}
-			\item T\_IMPLEMENTS			\function{implements}
+		Umo¾nit definovat tøídy bez podpory dìdìní a implementace interface. V~kódu nepùjde vytváøet instance PHP tøíd. Podporovány namespace, modifikátory viditelnosti a statické metody.Konkrétní tokeny jsou uvedeny v~tabulce \ref{table:phpTokenClass}.
 
-			\item T\_CONST				\function{const}
+		\begin{center}
+			\begin{tabular}{ | l | l | l |} \hline
 
-			\item T\_INTERFACE			\function{interface}
-
-			\item T\_NAMESPACE			\function{namespace}
-			\item T\_NS\_SEPARATOR		\function{$\backslash$}
-
-			\item T\_USE				\function{use}
-
-			%\item T\_NEW				\function{new}
-
-			\item T\_PRIVATE			\function{private}
-			\item T\_PUBLIC				\function{public}
-			\item T\_PROTECTED			\function{protected}
-
-			\item T\_STATIC				\function{static}
-
-			\item T\_DOUBLE\_COLON		\function{::}
-			\item T\_OBJECT\_OPERATOR	\function{-\textgreater}
-
-			%\item T\_CLASS\_C		\function{\_\_CLASS\_\_}
-		\end{itemize}
+				Typ					&	Token							& Zápis \\
+				\hline
+				\hline
+				Definice			& T\_CLASS							& \function{class} \\
+				%\item T\_EXTENDS			\function{extends}
+				%\item T\_IMPLEMENTS		\function{implements}
+				\hline
+				Konstanta			& T\_CONST							& \function{const} \\
+				%\item T\_INTERFACE			\function{interface}
+				\hline
+				Namespace			& T\_NAMESPACE						& \function{namespace} \\
+									& T\_NS\_SEPARATOR					& \function{$\backslash$} \\
+									& T\_USE							& \function{use} \\
+				%\item T\_NEW				\function{new}
+				\hline
+				Modifikátory		& T\_PRIVATE						& \function{private} \\
+									& T\_PUBLIC							& \function{public} \\
+									& T\_PROTECTED						& \function{protected} \\
+									& T\_STATIC							& \function{static} \\
+				\hline
+				Pøístup				& T\_DOUBLE\_COLON					& \function{::} \\
+									& T\_OBJECT\_OPERATOR				& \function{-\textgreater} \\
+				\hline
+				%\item T\_CLASS\_C			\function{\_\_CLASS\_\_}
+			\end{tabular}
+			\captionof{table}{Tabulka tokenù tøíd}
+			\label{table:phpTokenClass}
+		\end{center}
 
 
 
 \chapter{Rozdíly PHP a C++}
-	Rozdílù mezi obìmi jazyky je celá øada i pøes jejich velkou podobnost a je tøeba se s nimi vypoøádat.
+	Rozdílù mezi obìmi jazyky je celá øada i pøes jejich velkou podobnost a je tøeba se s~nimi vypoøádat.
 
 	\section{Výrazy}
 		Tabulka \ref{table:phpPrecendenceTable} na stranì \pageref{table:phpPrecendenceTable} obsahuje operátory jazyka PHP s~jejich asociativitou seøazené dle priority - priorita se sni¾uje z~hora dolù. Druhou podstatnou tabulkou je \ref{table:cppPrecendenceTable} na stranì \pageref{table:cppPrecendenceTable}, která obsahuje priority a asociativitu operátorù jazyka C++. Priorita je opìt seøazena od nejvy¹¹í po nejni¾¹í. Pøi podrobnìj¹ím prozkoumání tabulky narazíme na nìkolik rozdílù, se kterými se je tøeba vypoøádat.
@@ -289,7 +295,7 @@ function includeAno($co)
 
 			Problematickým chováním mù¾e být pøetypovávání pøi porovnání. Nejen, ¾e v~pøípadì, ¾e jeden z~operandù porovnání je èíslo mù¾e dojít k~pøetypování druhého operandu typu øetìzec na èíslo, ale i v~pøípadì porovnávání dvou øetìzcù, které mohou mít význam èísla. Napøíklad v~PHP je pravdivé toto porovnání \function{'1e3' == '1000'} \cite{PhpCompareStrict} \cite{PhpCompareHash}.
 
-			Porovnávání instancí tøíd prostøednictvím operátoru \function{==} je pravdivé, pokud jsou instancemi stejných tøíd a v¹echny jejich vlastnosti mají stjnou hodnotu. Pøi porovnání \function{===} je porovnání pravdivé jen v~pøípadì tot¾ných instancí \cite{PhpCompareObject}.
+			Porovnávání instancí tøíd prostøednictvím operátoru \function{==} je pravdivé, pokud jsou instancemi stejných tøíd a v¹echny jejich vlastnosti mají stejnou hodnotu. Pøi porovnání \function{===} je porovnání pravdivé jen v~pøípadì toto¾ných instancí \cite{PhpCompareObject}.
 
 
 			\cite{PhpCompareTable}
@@ -388,7 +394,7 @@ function includeAno($co)
 \chapter{Integrace do PHP}
 	... rozebrat fungování roz¹íøení v~php, definice funkcí, tøíd. Ponoøení do Zend Engine... \\ \\
 
-	Interpret PHP umo¾òuje zavádìt dynamické knihovny tzv. moduly, které roz¹iøují dostupné funkce a tøídy v interpretovaném prostøedí. Naètení je mo¾né prostøednictvím konfiguraèní direktivy \function{extension=nazev.so} v konfiguraèním souboru \function{php.ini}, èi v dobì bìhu funkcí \function{dl("nazev.so")}. Roz¹íøení obsahují tzv. entry point, tedy místo kam v momentì po¾adavku na naètení modulu skoèí tok interpretru a oèekává se vrácení datové struktury, která obsahuje informace o dostupných funkcích a tøídách. Zend Engine, jádro PHP, je napsáno primárnì v jazyce C, tak¾e je tøeba dodr¾et kompatibilní zpùsob volání a návrat výsledku. V pøípadì této práce bude z dùvodu jazyka C++ nutno pou¾ít konstrukci \function{extern "C"}.
+	Interpret PHP umo¾òuje zavádìt dynamické knihovny tzv. moduly, které roz¹iøují dostupné funkce a tøídy v~interpretovaném prostøedí. Naètení je mo¾né prostøednictvím konfiguraèní direktivy \function{extension=nazev.so} v~konfiguraèním souboru \function{php.ini}, èi v~dobì bìhu funkcí \function{dl("nazev.so")}. Roz¹íøení obsahují tzv. entry point, tedy místo kam v~momentì po¾adavku na naètení modulu skoèí tok interpretru a oèekává se vrácení datové struktury, která obsahuje informace o~dostupných funkcích a tøídách. Zend Engine, jádro PHP, je napsáno primárnì v~jazyce C, tak¾e je tøeba dodr¾et kompatibilní zpùsob volání a návrat výsledku. V~pøípadì této práce bude z~dùvodu jazyka C++ nutno pou¾ít konstrukci \function{extern "C"}.
 
 	Struktura \function{zend\_module\_entry} obsahuje následující hodnoty\cite{PhpExtensionStructure}:
 
@@ -421,7 +427,7 @@ function includeAno($co)
 
 	\begin{itemize}
 		\item
-			Jméno, pod jakým bude funkce dostupná v PHP.
+			Jméno, pod jakým bude funkce dostupná v~PHP.
 		\item
 			Ukazatel na funkci.
 		\item
@@ -495,7 +501,7 @@ void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 
 
 	\section{Analýza zdrojových kódù PHP}
-		Pro analýzu je tøeba provést parsování zdrojových kódù do abstraktní struktury. Pro tento krok je mo¾né pou¾ít funkce, které PHP nabízí. Konkrétnì se jedná o funkci \function{token\_get()} vracející tokeny uvedené v dokumentaci na adrese \url{http://php.net/manual/en/tokens.php}.
+		Pro analýzu je tøeba provést parsování zdrojových kódù do abstraktní struktury. Pro tento krok je mo¾né pou¾ít funkce, které PHP nabízí. Konkrétnì se jedná o~funkci \function{token\_get()} vracející tokeny uvedené v~dokumentaci na adrese \url{http://php.net/manual/en/tokens.php}.
 
 		\url{https://scrutinizer-ci.com/docs/tools/php/php-analyzer/}
 
