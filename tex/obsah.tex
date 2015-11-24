@@ -1,15 +1,15 @@
 \chapter{Úvod}
 	Skriptovací jazyk PHP je velmi oblíbeným prostøedkem pro tvorbu dynamických webových systémù i pro rùzné skripty. Z~pùvodnì jednoduchého jazyka pro tvorbu stránek s~dynamickým obsahem vznikl jazyk se stovkami funkcí umo¾òující rychlou implementaci témìø jakékoliv úlohy.
 
-	V~dùsledku pøesouvání mnoha slu¾eb do prostøedí webového prohlí¾eèe výraznì narùstá poèet a nároènost provádìných operací v~PHP. Od generování PDF souborù, pøes podepisování a komprimování souborù a¾ po nároèné operace jako je napøíklad rozpoznávání osob v~fotografiích a videích. Právì takové knihovny jsou èasto psané v~PHP pro jednoduchost vývoje. PHP v¹ak umo¾òuje zavádìt roz¹íøení s~funkcemi v~nativním kódu, jejich¾ vykonávání je výraznì rychlej¹í.
+	V~dùsledku pøesouvání mnoha slu¾eb do prostøedí webového prohlí¾eèe výraznì narùstá poèet a nároènost provádìných operací v~PHP. Od generování PDF souborù\footnote{\url{http://www.mpdf1.com/mpdf/index.php}}, pøes podepisování\footnote{\url{http://phpseclib.sourceforge.net/}} a komprimování souborù a¾ po nároèné operace jako je napøíklad detekování osob v~fotografiích\footnote{\url{https://github.com/mauricesvay/php-facedetection}} a podobnì. Právì takové knihovny jsou èasto psané v~PHP pro jednoduchost vývoje. PHP v¹ak umo¾òuje zavádìt roz¹íøení s~funkcemi v~nativním kódu, jejich¾ vykonávání je výraznì rychlej¹í.
 
-	Pøevod knihoven v~PHP na ekvivalent v~jazyce C++ pøipravený pro zkompilování jako roz¹íøení PHP je cílem této práce. Zadání vychází ze skuteènosti, ¾e èastým zpùsobem vývoje aplikace je pou¾ití jedné konkrétní verze knihovny v~které není tøeba provádìt úpravy. V~dùsledku pak výhody plynoucí z~interpretace nejsou tøeba a naopak nevýhody znamenají propad výkonu.
+	Pøevod knihoven v~PHP na ekvivalent v~jazyce C++ pøipravený pro zkompilování jako roz¹íøení PHP je cílem této práce. Zadání vychází ze skuteènosti, ¾e èastým zpùsobem vývoje aplikace je pou¾ití jedné konkrétní verze knihovny, v~které není tøeba provádìt úpravy. V~dùsledku pak výhody plynoucí z~interpretace nejsou tøeba, a naopak nevýhody znamenají propad výkonu.
 
 
 	\section{Funkcionalita}
-		Zamý¹lenou funkcionalitou je nástroj generující z~adresáøe se zdrojovými kódy v~jazyce PHP výstup v~jazyce C++. Výsledný kód by mìl implementovat stejnou funkcionalitu a zachovat alespoò podobnou souborovou strukturu. Po zkompilování výstupu vznikne dynamická knihovna (.so, èi .dll), kterou je mo¾né nastavit v~konfiguraci php prostøednictvím direktivy extension, èi naèíst bìhem interpretace vìstavìnou funkcí \function{dl()}.
+		Zamý¹lenou funkcionalitou je nástroj generující z~adresáøe se zdrojovými kódy v~jazyce PHP výstup v~jazyce C++. Výsledný kód by mìl implementovat stejnou funkcionalitu a zachovat alespoò podobnou souborovou strukturu. Po zkompilování výstupu vznikne dynamická knihovna (.so, èi .dll), kterou je mo¾né nastavit v~konfiguraci php prostøednictvím direktivy \fucntion{extension}, èi naèíst bìhem interpretace vìstavìnou funkcí \function{dl()}.
 
-		Takto transformované naètené funkce a tøídy bude mo¾né v~interpretovaném PHP pou¾ívat zcela stejnì, jako v~pøípadì zdrojových - stejný zpùsob volání, stejné názvy, tøídy pùjde roz¹iøovat apod.
+		Takto transformované naètené funkce a tøídy bude mo¾né v~interpretovaném PHP pou¾ívat zcela stejnì jako v~pøípadì zdrojových - stejný zpùsob volání, stejné názvy, tøídy pùjde roz¹iøovat apod.
 
 	\section{Motivace}
 		...
@@ -20,14 +20,14 @@
 
 
 \chapter{Konkurenèní øe¹ení}
-	Provedl jsem analýzu souèasných konkurenèních øe¹ení a nepodaøilo se mi nalézt nástroj implementující takovouto funkcionalitu. Funkcionalitou podobný je nástroj phc\footnote{\url{http://www.phpcompiler.org/}}, který slou¾í primárnì pro kompilaci PHP kódu do spustitelných binárních souborù, které nepotøebují interpret. Dal¹ím podobným a z~technického hlediska zajímavým øe¹ením je HPHPc od spoleènosti Facebook, kterým se budu zabývat v~následující podkapitole a poslou¾í i jako zajímavý zdroj øe¹ení.
+	Provedl jsem analýzu souèasných konkurenèních øe¹ení a nepodaøilo se mi nalézt nástroj implementující takovouto funkcionalitu. Funkcionalitou podobný je nástroj phc\footnote{\url{http://www.phpcompiler.org/}}, který slou¾í primárnì pro kompilaci PHP kódu do spustitelných binárních souborù, které nepotøebují interpret. Dal¹ím podobným a z~technického hlediska zajímavým øe¹ením je HPHPc od spoleènosti Facebook, kterým se budu zabývat v~následující podkapitole a poslou¾í i jako zajímavá inspirace øe¹ení.
 
 	\section{phc}
 		Phc je kompilátor podmno¾iny jazyka PHP do spustitelných binárních souborù. Odstraòuje závislost na interpretru PHP a tak umo¾òuje pohodlnou distribuci cli skriptù. Vývoj tohoto nástroje zapoèal v~roce 2005 vývojáøi Edsko de Vries a John Gilbert. Postupnì se do vývoje zapojilo na 21 vývojáøù a poslední verze byla vydána v~roce 2011\cite{PhcContributing}. Od té doby se pouze mno¾í chybové reporty a projekt není udr¾ován\cite{PhcIssues}.
 
 		Nástroj podporoval také funkcionalitu, která je cílem této bakaláøské práce a bylo tedy mo¾né transformovat PHP knihovny do roz¹íøení pro následné pou¾ití v~PHP. Dle dokumentace na webu projektu nebyla v¹ak podpora pro objektové programování a chybìla implementace novìj¹ích jazykových konstrukcí\cite{PhcContributing}.
 
-		S~nejstar¹í v~souèasné podporovanou verzí PHP ji¾ není mo¾né aplikaci ani pøelo¾it i pøes mnohé pokusy o~úpravy zdrojových kódù pro zaji¹tìní kompatibility.
+		S~nejstar¹í v~souèasné dobì podporovanou verzí PHP ji¾ není mo¾né aplikaci ani pøelo¾it i pøes mnohé pokusy o~úpravy zdrojových kódù pro zaji¹tìní kompatibility.
 
 		TODO: Kontaktován Jakub Suchý (jeden z~vývojáø). Pokud bude ochotný odpovìdìt, tak se zeptat:
 
@@ -59,9 +59,9 @@
 		\url{http://www.roadsend.com/}
 
 \chapter{Vybrané konstrukce PHP}
-	Vkládání prostøednictvím konstrukcí \function{include}, \function{require} a jejich variant pro unikátní vlo¾ení bude z~dùvodu komplexnosti implementováno jen v~omezené míøe. Prvním logickým omezením vycházejícím z~návrhu tohoto nástroje je schopnost provést vlo¾ení pouze souborù, které jsou dostupné v~momentì kompilace a jejich¾ cesta je známá. Nebude tedy mo¾ná transformace funkce \function{includeNe} uvedené v~kódu \ref{code:phpIncludeFunction}, ale funkce \function{includeAno} v~pøípadì existence souborù \function{prvni.php} a \function{druhy.php} ano.
+	Vkládání prostøednictvím konstrukcí \function{include}, \function{require} a jejich variant pro unikátní vlo¾ení bude z~dùvodu komplexnosti implementováno jen v~omezené míøe. Prvním logickým omezením vycházejícím z~návrhu tohoto nástroje je schopnost provést vlo¾ení pouze souborù, které jsou dostupné v~momentì kompilace a jejich¾ cesta je známá. Nebude tedy mo¾ná transformace funkce \function{includeNe} uvedené v~kódu \ref{code:phpIncludeFunction}, ale funkce \function{includeAno} v~pøípadì existence souborù \function{prvni.php} a \function{druhy.php} ano. Bude tedy podporováno vyhodnocování konstant bìhem pøekladu.
 
-	Druhým omezením vkládání souborù je pouze èásteèná implementace varianty \function{include\_once} a \function{require\_once}, kdy nebude mo¾né zcela zajistit neopakované vlo¾ení v~dobì bìhu aplikace. V~dobì transformace PHP do C++ bude toto chování kontrolováno a dojde pouze k~prvnímu vlo¾ení. V~dobì vykonávání zkompilované funkce v~prostøedí interpretru PHP v¹ak nebude mo¾né zamezit vlo¾ení, jeliko¾ systém roz¹íøení PHP neumo¾nuje ovlivnovat tyto èásti.
+	Druhým omezením vkládání souborù je pouze èásteèná implementace varianty \function{include\_once} a \function{require\_once}, kdy nebude mo¾né zcela zajistit neopakované vlo¾ení v~dobì bìhu aplikace. V~dobì transformace PHP do C++ bude toto chování kontrolováno a dojde pouze k~prvnímu vlo¾ení. V~dobì vykonávání zkompilované funkce v~prostøedí interpretru PHP v¹ak nebude mo¾né zamezit vlo¾ení, jeliko¾ systém roz¹íøení PHP neumo¾nuje ovlivòovat tyto èásti.
 
 \begin{lstlisting}[caption=Vlo¾ení souboru, label=code:phpIncludeFunction, language=PHP]
 function includeNe($soubor)
@@ -111,7 +111,11 @@ function includeAno($co)
 			\label{table:phpTokenConstruction}
 		\end{center}
 
+		TODO: Rozpsat jak magická jména promìnných (ne)budou podporována (napøíklad v PHP lze zapsat \fucntion{\$\$a}, kdy se pou¾ije honota promìnné \function{\$a} jako název promìnné - nebude zøejmì podporováno, jeliko¾ není èasté a jedná se o potencinální zanesení chyb)
+
 		Pøi transformaci je podporován zápis konstant ve zdrojových souborech. Podporovaný je zápis èísel v~celoèíselném i desetinném formátu. Na základì tìchto typù je pøihlédnuto k~volbì datových typù ve výstupním kódu. Dále je pak podporován zápis øetìzcù i s~mo¾ností pou¾ití promìnných. Podporované tokeny pak podrobnìji ukazuje tabulka \ref{table:phpTokenConstant}
+
+		TODO: Rozepsat jak funguje v PHP vkládání promìnných do øetìzcù v \function{"} uvozovkách, co¾ jsou tokeny T\_ENCAPSED\_AND\_WHITESPACE a T\_NUM\_STRING.
 
 		\begin{center}
 			\begin{tabular}{ | l | l | l |} \hline
@@ -141,7 +145,7 @@ function includeAno($co)
 
 		Stì¾ejní èástí aplikace je vyhodnocování výrazù. Pro implementaci byla zvolena valná vìt¹ina tokenù pro matematické operace, porovnávání, bitové posuvy i pøetypování viz tabulka \ref{table:phpTokenExpresion}.
 
-		TODO: rozepsat výrazy
+		TODO: rozepsat výrazy, které operátory chybí a proè
 
 		\begin{center}
 			\begin{tabular}{ | l | l | l |} \hline
@@ -284,11 +288,13 @@ function includeAno($co)
 	Rozdílù mezi obìmi jazyky je celá øada i pøes jejich velkou podobnost a je tøeba se s~nimi vypoøádat.
 
 	\section{Výrazy}
-		Tabulka \ref{table:phpPrecendenceTable} na stranì \pageref{table:phpPrecendenceTable} obsahuje operátory jazyka PHP s~jejich asociativitou seøazené dle priority - priorita se sni¾uje z~hora dolù. Druhou podstatnou tabulkou je \ref{table:cppPrecendenceTable} na stranì \pageref{table:cppPrecendenceTable}, která obsahuje priority a asociativitu operátorù jazyka C++. Priorita je opìt seøazena od nejvy¹¹í po nejni¾¹í. Pøi podrobnìj¹ím prozkoumání tabulky narazíme na nìkolik rozdílù, se kterými se je tøeba vypoøádat.
+		Tabulka \ref{table:phpPrecendenceTable} na stranì \pageref{table:phpPrecendenceTable} obsahuje operátory jazyka PHP s~jejich asociativitou seøazené dle priority - priorita se sni¾uje shora dolù. Druhou podstatnou tabulkou je \ref{table:cppPrecendenceTable} na stranì \pageref{table:cppPrecendenceTable}, která obsahuje priority a asociativitu operátorù jazyka C++. Priorita je opìt seøazena od nejvy¹¹í po nejni¾¹í. Pøi podrobnìj¹ím prozkoumání tabulky narazíme na nìkolik rozdílù, se kterými se je tøeba vypoøádat.
 
-		Prvním je absence operátoru konkatenace \function{.} z~zdrojového jazyka PHP ve výsledném C++. Dále chybí operátor mocniny \function{**}.
+		Prvním je absence operátoru konkatenace \function{.} ze~zdrojového jazyka PHP ve výsledném C++. Dále chybí operátor mocniny \function{**}.
 
 		Dal¹ím chybìjícím operátorem je \function{@}, který slou¾í pro potlaèení pøípadného chybového výstupu. Jeho pou¾ití je v~kódu PHP nedoporuèované\cite{PhpErrorSupress1} \cite{PhpErrorSupress2} \cite{PhpErrorSupress3} \cite{PhpErrorSupress4} i pøesto je mo¾né provést implementaci tohoto chování, èím¾ se zabývám v~kapitole \ref{potlaceniChyby} na stranì \pageref{potlaceniChyby}.
+
+		TODO: Priorita operátorù - explicitní závorkování
 
 		\subsection{Porovnávání}
 			Rozdíl v~porovnávání promìnných v~jazycích, kterými se zabývá tato práce je pomìrnì zásadní. Zdrojový jazyk obsahuje dva typy porovnání, kdy je mo¾né porovnávat odli¹né datové typy. Konstrukce \function{\textquotedbl5\textquotedbl == 5} pak bude v~PHP pravdivá, kde¾to v~C++ nikoliv. Pro porovnání i s~pøihlédnutím k~typu je v~PHP operátor \function{===} \cite{PhpCompareOperator}.
@@ -315,7 +321,7 @@ function includeAno($co)
 					pravá			& !																								& Logické výrazy			\\ \hline
 					levá			& *, /, \%																						& Výpoèet					\\ \hline
 					levá			& +, -, .																						& Výpoèty a øetìzec			\\ \hline
-					levá			& \textless \textless, \textgreater \textgreater													& Bitové operace			\\ \hline
+					levá			& \textless \textless, \textgreater \textgreater												& Bitové operace			\\ \hline
 					neasociativní	& \textless, \textless=, \textgreater, \textgreater=											& Porovnání					\\ \hline
 					neasociativní	& ==, !=, ===, !==, \textless\textgreater, \textless=\textgreater								& Porovnání					\\ \hline
 					levá			& \&																							& Bitové operace a reference\\ \hline
@@ -335,6 +341,8 @@ function includeAno($co)
   				\captionof{table}{Tabulka priority výrazù PHP\cite{PhpPrecendence}}
 				\label{table:phpPrecendenceTable}
 			\end{center}
+
+			TODO: Doplnit do tabulek volání funkce, identifikátory
 
 			\begin{center}
   				\begin{tabular}{ | l | l | l |}
@@ -394,7 +402,7 @@ function includeAno($co)
 \chapter{Integrace do PHP}
 	... rozebrat fungování roz¹íøení v~php, definice funkcí, tøíd. Ponoøení do Zend Engine... \\ \\
 
-	Interpret PHP umo¾òuje zavádìt dynamické knihovny tzv. moduly, které roz¹iøují dostupné funkce a tøídy v~interpretovaném prostøedí. Naètení je mo¾né prostøednictvím konfiguraèní direktivy \function{extension=nazev.so} v~konfiguraèním souboru \function{php.ini}, èi v~dobì bìhu funkcí \function{dl("nazev.so")}. Roz¹íøení obsahují tzv. entry point, tedy místo kam v~momentì po¾adavku na naètení modulu skoèí tok interpretru a oèekává se vrácení datové struktury, která obsahuje informace o~dostupných funkcích a tøídách. Zend Engine, jádro PHP, je napsáno primárnì v~jazyce C, tak¾e je tøeba dodr¾et kompatibilní zpùsob volání a návrat výsledku. V~pøípadì této práce bude z~dùvodu jazyka C++ nutno pou¾ít konstrukci \function{extern "C"}.
+	Interpret PHP umo¾òuje zavádìt dynamické knihovny tzv. moduly, které roz¹iøují dostupné funkce a tøídy v~interpretovaném prostøedí. Naètení je mo¾né prostøednictvím konfiguraèní direktivy \function{extension=nazev.so} v~konfiguraèním souboru \function{php.ini}, èi v~dobì bìhu funkcí \function{dl("nazev.so")}. Roz¹íøení obsahují tzv. entry point, tedy místo kam v~momentì po¾adavku na naètení modulu skoèí tok interpretru a oèekává se vrácení datové struktury, která obsahuje informace o~dostupných funkcích a tøídách. Zend Engine, jádro PHP, je napsáno primárnì v~jazyce C, tak¾e je tøeba dodr¾et kompatibilní zpùsob volání a navrácení výsledku. V~pøípadì této práce bude z~dùvodu jazyka C++ nutno pou¾ít konstrukci \function{extern "C"}.
 
 	Struktura \function{zend\_module\_entry} obsahuje následující hodnoty\cite{PhpExtensionStructure}:
 
