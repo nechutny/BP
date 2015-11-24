@@ -7,7 +7,7 @@
 
 
 	\section{Funkcionalita}
-		Zamý¹lenou funkcionalitou je nástroj generující z~adresáøe se zdrojovými kódy v~jazyce PHP výstup v~jazyce C++. Výsledný kód by mìl implementovat stejnou funkcionalitu a zachovat alespoò podobnou souborovou strukturu. Po zkompilování výstupu vznikne dynamická knihovna (.so, èi .dll), kterou je mo¾né nastavit v~konfiguraci php prostøednictvím direktivy \fucntion{extension}, èi naèíst bìhem interpretace vìstavìnou funkcí \function{dl()}.
+		Zamý¹lenou funkcionalitou je nástroj generující z~adresáøe se zdrojovými kódy v~jazyce PHP výstup v~jazyce C++. Výsledný kód by mìl implementovat stejnou funkcionalitu a zachovat alespoò podobnou souborovou strukturu. Po zkompilování výstupu vznikne dynamická knihovna (.so, èi .dll), kterou je mo¾né nastavit v~konfiguraci php prostøednictvím direktivy \function{extension}, èi naèíst bìhem interpretace vìstavìnou funkcí \function{dl()}.
 
 		Takto transformované naètené funkce a tøídy bude mo¾né v~interpretovaném PHP pou¾ívat zcela stejnì jako v~pøípadì zdrojových - stejný zpùsob volání, stejné názvy, tøídy pùjde roz¹iøovat apod.
 
@@ -111,7 +111,7 @@ function includeAno($co)
 			\label{table:phpTokenConstruction}
 		\end{center}
 
-		TODO: Rozpsat jak magická jména promìnných (ne)budou podporována (napøíklad v PHP lze zapsat \fucntion{\$\$a}, kdy se pou¾ije honota promìnné \function{\$a} jako název promìnné - nebude zøejmì podporováno, jeliko¾ není èasté a jedná se o potencinální zanesení chyb)
+		TODO: Rozpsat jak magická jména promìnných (ne)budou podporována (napøíklad v PHP lze zapsat \function{\$\$a}, kdy se pou¾ije honota promìnné \function{\$a} jako název promìnné - nebude zøejmì podporováno, jeliko¾ není èasté a jedná se o potencinální zanesení chyb)
 
 		Pøi transformaci je podporován zápis konstant ve zdrojových souborech. Podporovaný je zápis èísel v~celoèíselném i desetinném formátu. Na základì tìchto typù je pøihlédnuto k~volbì datových typù ve výstupním kódu. Dále je pak podporován zápis øetìzcù i s~mo¾ností pou¾ití promìnných. Podporované tokeny pak podrobnìji ukazuje tabulka \ref{table:phpTokenConstant}
 
