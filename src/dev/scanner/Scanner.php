@@ -48,6 +48,18 @@ class Scanner {
 					case ']':
 						$tname = 'T_ARRAY_CLOSE';
 						break;
+					case '+':
+						$tname = 'T_PLUS';
+						break;
+					case '-':
+						$tname = 'T_MINUS';
+						break;
+					case '*':
+						$tname = 'T_MUL';
+						break;
+					case '/':
+						$tname = 'T_DIV';
+						break;
 					default:
 						$tname = 'T_UNSUPPORTED';
 				}

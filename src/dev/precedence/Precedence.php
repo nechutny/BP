@@ -1,4 +1,6 @@
 <?php
+require_once(__DIR__ . '/../lib/Stack.php');
+
 
 class Precedence
 {
@@ -11,6 +13,7 @@ class Precedence
 
 	protected $stopTokens = [T_COMMA, T_SEMICOLON];
 
+	/*
 	protected $table = [
 		// +    -    *    /    .    <    >   <=   >=   ===  !==  &&   ||   and  or    !    (    )   func  ,    $   var
 		[ '>', '>', '<', '<', '<', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '<', '<', '>', '<', '>', '>', '<'],  // +
@@ -35,45 +38,156 @@ class Precedence
 		[ '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '=', '<', '=', '#', '<'],  // ,
 		[ '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '#', '<', '#', '#', '<'],  // $
 		[ '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '#', '#', '>', '#', '>', '>', '#']   // var
+	];*/
+
+	protected $tableMap = [ '+', '*', '(', ')', 'i', '$' ];
+
+	protected $table = [
+		// +    *    (    )    i    $
+		[ '>', '<', '<', '>', '<', '>' ], // +
+		[ '>', '>', '<', '>', '<', '>' ], // *
+		[ '<', '<', '<', '=', '<', '#' ], // (
+		[ '>', '>', '#', '>', '#', '>' ], // )
+		[ '>', '>', '#', '>', '#', '>' ], // i
+		[ '<', '<', '<', '#', '<', '#' ], // $
+	];
+
+	protected $rules = [
+		[
+			'source'	=> ['E','+','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','*','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['(','E',')'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['i'],
+			'target'	=> 'E',
+		]
 	];
 
 	public function __construct($scanner)
 	{
+		$this->tableMap = array_flip($this->tableMap);
+
 		$this->scanner = $scanner;
 	}
 
 	public function run($context = 0)
 	{
-		$parenthesis = 0;
+		$token = $this->normalizeCodes($this->scanner->next()['value']);
+		$stack = new Stack();
+		$stack->push('$');
 		do
 		{
-			$token = $this->scanner->next();
+			$a = $stack->topTerminal();
 
-			if ($token['code'] === T_LPARENTHESIS)
+			switch($this->getFromTable($a, $token))
 			{
-				$parenthesis++;
-			}
-			elseif ($token['code'] === T_RPARENTHESIS)
-			{
-				$parenthesis--;
-				if ($parenthesis < 0)
-				{
-					// ')' in bad context
-					if ($context === $this::CONTEXT_RETURN)
+				case '=':
+					$stack->push($token);
+					$token = $this->normalizeCodes($this->scanner->next()['value']);
+					break;
+
+				case '<':
+					$stack->pushTerminal('<');
+
+					$stack->push($token);
+					$token = $this->normalizeCodes($this->scanner->next()['value']);
+					break;
+
+				case '>':
+					// Hledáme pravidlo!
+
+					$found = false;
+
+					foreach($this->rules as $rule)
 					{
-						throw new ParserError($token);
+						$error = false;
+
+						for($i = 0; $i < count($rule['source']); $i++ )
+						{
+							$tmp = $stack->top($i);
+
+							if($tmp != $rule['source'][ count($rule['source'])-1-$i ])
+							{
+								$error = true;
+								$i = count($rule['source']);
+							}
+						}
+
+						$error = ($error || $stack->top( count($rule['source'])) != '<');
+
+						if(!$error)
+						{
+							foreach($rule['source'] as $unused)
+							{
+								$stack->pop();
+							}
+
+							$stack->pop();
+
+							$stack->push($rule['target']);
+
+							$found = true;
+
+							break;
+						}
 					}
 
-					$this->scanner->back();
+					if(!$found)
+					{
+						echo "Error - rule not found!";
+					}
+					else
+					{
+						echo "OK - rule: ".$rule['target']." -> ".implode(' ', $rule['source'])."\n";
+					}
 					break;
-				}
+
+				case '#':
+					var_dump($token);
+					echo "Chyba! - $token $a";
+					die();
+					//$token = $this->normalizeCodes($this->scanner->next()['value']);
+					break;
+
+				default:
+					echo "Chybaaaaa!";
+					//$token = $this->normalizeCodes($this->scanner->next()['value']);
 			}
 
-			// TODO: Do something with expression
+			//$stack->debug();
 
-		} while (!in_array($token['code'], $this->stopTokens));
+		} while($token != '$' || $stack->topTerminal() != '$'  );
 
-		// TODO
-		return "";
+	}
+
+	protected function normalizeCodes($code)
+	{
+		if(is_numeric($code))
+		{
+			return 'i';
+		}
+
+		if($code == ';')
+		{
+			return '$';
+		}
+
+		return $code;
+	}
+
+	protected function getFromTable($stack, $token)
+	{
+
+		$tmp = $this->table[ $this->tableMap[$stack] ][ $this->tableMap[$token] ];
+
+		return $tmp;
 	}
 }
