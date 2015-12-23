@@ -89,7 +89,18 @@ class Stack {
 	public function debug()
 	{
 		echo "\n\n Stack debug:\n";
-		var_dump($this->stack);
+
+		foreach($this->stack as $item)
+		{
+			if(is_array($item))
+			{
+				echo $item['value']."\n";
+			}
+			else
+			{
+				echo $item."\n";
+			}
+		}
 	}
 }
 

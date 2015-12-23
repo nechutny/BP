@@ -12,10 +12,12 @@ define('T_RCURLY_PARENTHESIS', -6);
 
 define('T_COMMA', -7);
 define('T_ASSIGN', -8);
+define('T_CONCAT', -9);
 
-define('T_ARRAY_CLOSE', -9);
+define('T_ARRAY_CLOSE', -10);
 
-define('T_PLUS', -10);
-define('T_MINUS', -11);
-define('T_MUL', -12);
-define('T_DIV', -13);
+define('T_PLUS', -11);
+define('T_MINUS', -12);
+define('T_MUL', -13);
+define('T_DIV', -14);
+define('T_NEG', -15);

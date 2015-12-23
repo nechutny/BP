@@ -11,6 +11,8 @@ class Scanner {
 	protected $tokens = [];
 	protected $index = 0;
 
+	protected $comments = [T_COMMENT, T_DOC_COMMENT];
+
 	public function __construct($file)
 	{
 		$file = file_get_contents($file);
@@ -42,6 +44,9 @@ class Scanner {
 					case ',':
 						$tname = 'T_COMMA';
 						break;
+					case '.':
+						$tname = 'T_CONCAT';
+						break;
 					case '=':
 						$tname = 'T_ASSIGN';
 						break;
@@ -59,6 +64,9 @@ class Scanner {
 						break;
 					case '/':
 						$tname = 'T_DIV';
+						break;
+					case '!':
+						$tname = 'T_NEG';
 						break;
 					default:
 						$tname = 'T_UNSUPPORTED';
@@ -91,17 +99,18 @@ class Scanner {
 		$this->index = 0;
 	}
 
-	public function next()
+	public function next($ignoreComment = FALSE)
 	{
 		if(!isset($this->tokens[ $this->index ]))
 		{
 			throw new EndOfFileException('Token index out of range');
 		}
 
-		if($this->tokens[ $this->index ]['code'] == T_WHITESPACE)
+		if($this->tokens[ $this->index ]['code'] == T_WHITESPACE || ($ignoreComment && in_array($this->tokens[ $this->index ]['code'], $this->comments)))
 		{
+
 			$this->index++;
-			return $this->next();
+			return $this->next($ignoreComment);
 		}
 		else
 		{

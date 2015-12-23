@@ -34,7 +34,19 @@ catch(EndOfFileException $e)
 {
 	echo "Done\n";
 }
-/*catch(ParserError $e)
+catch(PrecendenceException $e)
 {
+	echo "Precendence errror\n";
+
 	echo $e;
-}*/
+
+	exit(5);
+}
+catch(ParserError $e)
+{
+	echo "Parser errror\n";
+
+	echo $e;
+
+	exit(5);
+}

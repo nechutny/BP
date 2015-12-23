@@ -141,7 +141,7 @@ class Precedence
 
 	public function run($context = 0)
 	{
-		$token = $this->scanner->next();
+		$token = $this->scanner->next(TRUE);
 		$stack = new Stack();
 		$stack->push('$');
 		do
@@ -152,14 +152,14 @@ class Precedence
 			{
 				case '=':
 					$stack->push($token);
-					$token = $this->scanner->next();
+					$token = $this->scanner->next(TRUE);
 					break;
 
 				case '<':
 					$stack->pushTerminal('<');
 
 					$stack->push($token);
-					$token = $this->scanner->next();
+					$token = $this->scanner->next(TRUE);
 					break;
 
 				case '>':
@@ -177,7 +177,7 @@ class Precedence
 
 							if(is_array($tmp))
 							{
-								$tmp = $this->normalizeCodes($tmp['value']);
+								$tmp = $this->normalizeCodes($tmp);
 							}
 
 							if($tmp != $rule['source'][ count($rule['source'])-1-$i ])
@@ -208,7 +208,7 @@ class Precedence
 
 					if(!$found)
 					{
-						echo "Error - rule not found!\n";
+						throw new PrecendenceException("Error - rule not found! ".print_r($token, true)." ".print_r($a,true));
 					}
 					else
 					{
@@ -217,35 +217,65 @@ class Precedence
 					break;
 
 				case '#':
-					var_dump($token);
-					echo "Chyba! - $a";
-					die();
-					break;
+					throw new PrecendenceException(print_r($a,true).print_r($token,true));
 
 				default:
-					echo "Chyba v precendenční tabulce";
+					die("Chyba v precendenční tabulce");
 
 			}
 
 			//$stack->debug();
 
-		} while($this->normalizeCodes($token['value']) != '$' || $stack->topTerminal() != '$'  );
+		} while($this->normalizeCodes($token) != '$' || $stack->topTerminal() != '$'  );
 
 	}
 
 	protected function normalizeCodes($code)
 	{
-		if(is_numeric($code))
-		{
-			return 'i';
+
+
+		if($code['code'] == T_STRING)
+		{ // TODO
+			if(strtoupper($code['value']) == 'TRUE')
+			{
+				return 'i';
+			}
+
+			if(strtoupper($code['value']) == 'FALSE')
+			{
+				return 'i';
+			}
+
+			if(strtoupper($code['value']) == 'NULL')
+			{
+				return 'i';
+			}
 		}
 
-		if($code == ';')
+		$map = [
+			T_LOGICAL_AND => 'and',
+			T_LOGICAL_OR => 'or',
+			T_LOGICAL_XOR => 'xor',
+
+			T_BOOLEAN_AND => '&&',
+			T_BOOLEAN_OR => '||',
+
+			// TODO
+			T_LNUMBER => 'i',
+			T_DNUMBER => 'i',
+			T_VARIABLE => 'i',
+			T_CONSTANT_ENCAPSED_STRING => 'i',
+			T_SEMICOLON => '$',
+		];
+
+		if(isset($map[ $code['code'] ]))
 		{
-			return '$';
+			return $map[ $code['code'] ];
 		}
 
-		return $code;
+		//var_dump($code);
+
+		return $code['value'];
 	}
 
 	protected function getFromTable($stack, $token)
@@ -253,16 +283,27 @@ class Precedence
 
 		if(is_array($token))
 		{
-			$token = $this->normalizeCodes($token['value']);
+			$token = $this->normalizeCodes($token);
 		}
 
 		if(is_array($stack))
 		{
-			$stack = $this->normalizeCodes($stack['value']);
+			$stack = $this->normalizeCodes($stack);
 		}
+
+		if(!isset($this->tableMap[$stack]) || !isset($this->table[ $this->tableMap[$stack] ]) || !isset($this->tableMap[$token]) || !isset($this->table[ $this->tableMap[$stack] ][ $this->tableMap[$token] ]))
+		{
+			throw new PrecendenceException('Not in precendence table '.print_r($stack,TRUE)." ".print_r($token,TRUE));
+		}
+
 
 		$tmp = $this->table[ $this->tableMap[$stack] ][ $this->tableMap[$token] ];
 
 		return $tmp;
 	}
+}
+
+class PrecendenceException extends Exception
+{
+
 }
