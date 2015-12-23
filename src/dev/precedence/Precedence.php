@@ -13,7 +13,8 @@ class Precedence
 
 	protected $stopTokens = [T_COMMA, T_SEMICOLON];
 
-	/*
+
+	protected $tableMap = [ '+', '-', '*', '/', '.', '<', '>', '<=', '>=', '===', '!==', '&&', '||', 'and', 'or', '!', '(', ')', 'func', ',', '$', 'i' ];
 	protected $table = [
 		// +    -    *    /    .    <    >   <=   >=   ===  !==  &&   ||   and  or    !    (    )   func  ,    $   var
 		[ '>', '>', '<', '<', '<', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '<', '<', '>', '<', '>', '>', '<'],  // +
@@ -38,10 +39,10 @@ class Precedence
 		[ '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '=', '<', '=', '#', '<'],  // ,
 		[ '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '<', '#', '<', '#', '#', '<'],  // $
 		[ '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '>', '#', '#', '>', '#', '>', '>', '#']   // var
-	];*/
+	];
 
+	/*
 	protected $tableMap = [ '+', '*', '(', ')', 'i', '$' ];
-
 	protected $table = [
 		// +    *    (    )    i    $
 		[ '>', '<', '<', '>', '<', '>' ], // +
@@ -50,7 +51,7 @@ class Precedence
 		[ '>', '>', '#', '>', '#', '>' ], // )
 		[ '>', '>', '#', '>', '#', '>' ], // i
 		[ '<', '<', '<', '#', '<', '#' ], // $
-	];
+	];*/
 
 	protected $rules = [
 		[
@@ -58,7 +59,67 @@ class Precedence
 			'target'	=> 'E',
 		],
 		[
+			'source'	=> ['E','-','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['-','E'],
+			'target'	=> 'E',
+		],
+		[
 			'source'	=> ['E','*','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','/','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','.','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','<','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','>','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','<=','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','>=','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','===','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','!==','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','&&','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','||','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','and','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['E','or','E'],
+			'target'	=> 'E',
+		],
+		[
+			'source'	=> ['!','E'],
 			'target'	=> 'E',
 		],
 		[
@@ -80,7 +141,7 @@ class Precedence
 
 	public function run($context = 0)
 	{
-		$token = $this->normalizeCodes($this->scanner->next()['value']);
+		$token = $this->scanner->next();
 		$stack = new Stack();
 		$stack->push('$');
 		do
@@ -91,14 +152,14 @@ class Precedence
 			{
 				case '=':
 					$stack->push($token);
-					$token = $this->normalizeCodes($this->scanner->next()['value']);
+					$token = $this->scanner->next();
 					break;
 
 				case '<':
 					$stack->pushTerminal('<');
 
 					$stack->push($token);
-					$token = $this->normalizeCodes($this->scanner->next()['value']);
+					$token = $this->scanner->next();
 					break;
 
 				case '>':
@@ -106,13 +167,18 @@ class Precedence
 
 					$found = false;
 
-					foreach($this->rules as $rule)
+					foreach($this->rules as $key => $rule)
 					{
 						$error = false;
 
 						for($i = 0; $i < count($rule['source']); $i++ )
 						{
 							$tmp = $stack->top($i);
+
+							if(is_array($tmp))
+							{
+								$tmp = $this->normalizeCodes($tmp['value']);
+							}
 
 							if($tmp != $rule['source'][ count($rule['source'])-1-$i ])
 							{
@@ -142,29 +208,28 @@ class Precedence
 
 					if(!$found)
 					{
-						echo "Error - rule not found!";
+						echo "Error - rule not found!\n";
 					}
 					else
 					{
-						echo "OK - rule: ".$rule['target']." -> ".implode(' ', $rule['source'])."\n";
+						echo "OK - rule: ".$key." ".$rule['target']." -> ".implode(' ', $rule['source'])."\n";
 					}
 					break;
 
 				case '#':
 					var_dump($token);
-					echo "Chyba! - $token $a";
+					echo "Chyba! - $a";
 					die();
-					//$token = $this->normalizeCodes($this->scanner->next()['value']);
 					break;
 
 				default:
-					echo "Chybaaaaa!";
-					//$token = $this->normalizeCodes($this->scanner->next()['value']);
+					echo "Chyba v precendenční tabulce";
+
 			}
 
 			//$stack->debug();
 
-		} while($token != '$' || $stack->topTerminal() != '$'  );
+		} while($this->normalizeCodes($token['value']) != '$' || $stack->topTerminal() != '$'  );
 
 	}
 
@@ -185,6 +250,16 @@ class Precedence
 
 	protected function getFromTable($stack, $token)
 	{
+
+		if(is_array($token))
+		{
+			$token = $this->normalizeCodes($token['value']);
+		}
+
+		if(is_array($stack))
+		{
+			$stack = $this->normalizeCodes($stack['value']);
+		}
 
 		$tmp = $this->table[ $this->tableMap[$stack] ][ $this->tableMap[$token] ];
 
