@@ -257,7 +257,7 @@ class Precedence
 						throw new PrecedenceException(print_r($a, TRUE) . print_r($token, TRUE));
 
 					default:
-						die("Chyba v precendenční tabulce");
+						die("Chyba v precedenční tabulce");
 
 				}
 			}
@@ -441,7 +441,7 @@ class Precedence
 
 		if(!isset($this->tableMap[$stack]) || !isset($this->table[ $this->tableMap[$stack] ]) || !isset($this->tableMap[$token]) || !isset($this->table[ $this->tableMap[$stack] ][ $this->tableMap[$token] ]))
 		{
-			throw new PrecedenceNotInTableException('Not in precendence table '.print_r($stack,TRUE)." ".print_r($token,TRUE));
+			throw new PrecedenceNotInTableException('Not in precedence table '.print_r($stack,TRUE)." ".print_r($token,TRUE));
 		}
 
 

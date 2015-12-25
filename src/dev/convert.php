@@ -7,7 +7,7 @@ require_once(__DIR__ . '/precedence/Precedence.php');
 if($argc < 2)
 {
 	die("Wrong argument count. Usage is:
-	./app source.php [--precendence]
+	./app source.php [--precedence]
 	or
 	./app folder");
 }
@@ -42,7 +42,7 @@ catch(EndOfFileException $e)
 }
 catch(PrecedenceException $e)
 {
-	echo "Precendence errror\n";
+	echo "Precedence errror\n";
 
 	echo $e;
 
