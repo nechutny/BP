@@ -215,7 +215,7 @@ class Precedence
 
 					if(!$found)
 					{
-						throw new PrecendenceException("Error - rule not found! ".print_r($token, true)." ".print_r($a,true));
+						throw new PrecedenceException("Error - rule not found! ".print_r($token, true)." ".print_r($a,true));
 					}
 					else
 					{
@@ -224,7 +224,7 @@ class Precedence
 					break;
 
 				case '#':
-					throw new PrecendenceException(print_r($a,true).print_r($token,true));
+					throw new PrecedenceException(print_r($a,true).print_r($token,true));
 
 				default:
 					die("Chyba v precendenční tabulce");
@@ -244,14 +244,14 @@ class Precedence
 	 * Generate C++ code of parsed expression
 	 *
 	 * @return string|void
-	 * @throws PrecendenceException
-	 * @throws PrecendenceUsageException
+	 * @throws PrecedenceException
+	 * @throws PrecedenceUsageException
 	 */
 	public function getCode()
 	{
 		if(is_null($this->result))
 		{
-			throw new PrecendenceUsageException("Run first method 'run' ");
+			throw new PrecedenceUsageException("Run first method 'run' ");
 		}
 
 		return $this->recursiveCode($this->result);
@@ -262,7 +262,7 @@ class Precedence
 	 *
 	 * @param array $data Structure of expression to generate
 	 * @return string|void
-	 * @throws PrecendenceException
+	 * @throws PrecedenceException
 	 */
 	protected function recursiveCode(array $data)
 	{
@@ -306,7 +306,7 @@ class Precedence
 		}
 		else
 		{
-			throw new PrecendenceException('Got unexpected structure.');
+			throw new PrecedenceException('Got unexpected structure.');
 		}
 
 		return $result;
@@ -373,7 +373,7 @@ class Precedence
 
 		if(!isset($this->tableMap[$stack]) || !isset($this->table[ $this->tableMap[$stack] ]) || !isset($this->tableMap[$token]) || !isset($this->table[ $this->tableMap[$stack] ][ $this->tableMap[$token] ]))
 		{
-			throw new PrecendenceException('Not in precendence table '.print_r($stack,TRUE)." ".print_r($token,TRUE));
+			throw new PrecedenceException('Not in precendence table '.print_r($stack,TRUE)." ".print_r($token,TRUE));
 		}
 
 
@@ -383,11 +383,11 @@ class Precedence
 	}
 }
 
-class PrecendenceUsageException extends Exception {
+class PrecedenceUsageException extends Exception {
 
 }
 
-class PrecendenceException extends Exception
+class PrecedenceException extends Exception
 {
 
 }

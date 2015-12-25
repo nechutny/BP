@@ -16,14 +16,14 @@ try
 {
 	$scanner = new Scanner($argv[1]);
 
-	if($argc > 2 AND $argv[2] == '--precendence')
+	if($argc > 2 AND $argv[2] == '--precedence')
 	{
 		$scanner->next(); // Skip open tag
 
-		$precendence = new Precedence($scanner);
-		$precendence->run();
+		$precedence = new Precedence($scanner);
+		$precedence->run();
 
-		echo "Generated expression: ". $precendence->getCode()."\n";
+		echo "Generated expression: ". $precedence->getCode()."\n";
 	}
 	else
 	{
@@ -36,7 +36,7 @@ catch(EndOfFileException $e)
 {
 	echo "Done\n";
 }
-catch(PrecendenceException $e)
+catch(PrecedenceException $e)
 {
 	echo "Precendence errror\n";
 
