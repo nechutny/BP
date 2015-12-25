@@ -34,7 +34,11 @@ try
 }
 catch(EndOfFileException $e)
 {
-	echo "Done\n";
+	echo "Code:\n\n\n";
+
+	echo $parser->generator->getCode();
+
+	echo "\n\n\nDone\n";
 }
 catch(PrecedenceException $e)
 {

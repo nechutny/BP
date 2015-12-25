@@ -1,13 +1,19 @@
 <?php
 
 require_once( __DIR__ . '/../precedence/Precedence.php');
+require_once( __DIR__ . '/../generator/Generator.php');
 
 class Parser
 {
 	/**
-	 * @var Scanner
+	 * @var Scanner $scanner
 	 */
 	protected $scanner;
+
+	/**
+	 * @var Generator $generator
+	 */
+	public $generator;
 
 	public function __construct($scanner)
 	{
@@ -29,7 +35,6 @@ class Parser
 				throw new ParserError($token, $w);
 			}
 		}
-
 	}
 
 	/**
@@ -38,6 +43,8 @@ class Parser
 	public function parse_file()
 	{
 		$this->check(T_OPEN_TAG);
+
+		$this->generator = new FileGenerator();
 
 		while(1)
 		{
@@ -67,9 +74,14 @@ class Parser
 		}
 	}
 
-	public function parse_comment()
+	public function parse_comment($codeGenerator = NULL)
 	{
 		$token = $this->scanner->next();
+
+		if(!is_null($codeGenerator))
+		{
+			$codeGenerator->addComment($token['value']);
+		}
 	}
 
 	/**
@@ -77,6 +89,8 @@ class Parser
 	 */
 	public function parse_function()
 	{
+		$functionGenerator = new FunctionGenerator();
+
 		$this->check(T_FUNCTION);
 
 		$token = $this->scanner->next();
@@ -85,44 +99,59 @@ class Parser
 			throw new ParserError($token);
 		}
 
-		echo "Read function name: ".$token['value']."\n";
+		//echo "Read function name: ".$token['value']."\n";
+
+		$functionGenerator->setFunctionName($token['value']);
 
 		$this->check(T_LPARENTHESIS);
 
 		$args = $this->parse_args();
 
-		echo "Arguments: \n";
+		//echo "Arguments: \n";
 
-		print_r($args);
+		//print_r($args);
+
+		$functionGenerator->setArguments($args);
 
 		$this->check(T_RPARENTHESIS);
 
 		$this->check(T_LCURLY_PARENTHESIS);
 
-		$this->parse_body();
+		$codeGenerator = new CodeGenerator();
+
+		$this->parse_body($codeGenerator);
 
 		$this->check(T_RCURLY_PARENTHESIS);
+
+		$functionGenerator->setCodeGenerator($codeGenerator);
+
+		$this->generator->addFunction($functionGenerator);
 	}
 
 	public function parse_variable()
 	{
 		$expr = new Precedence($this->scanner);
-		$expr->run(Precedence::CONTEXT_ASSIGN);
+		$expr->run();
 	}
 
-	public function parse_return()
+	public function parse_return($codeGenerator)
 	{
 		$expr = new Precedence($this->scanner);
-		$expr->run(Precedence::CONTEXT_RETURN);
+		$expr->run();
+
+		$codeGenerator->addReturn($expr->getCode());
 	}
 
-	public function parse_echo()
+	public function parse_echo($codeGenerator)
 	{
 		$expr = new Precedence($this->scanner);
-		$expr->run(Precedence::CONTEXT_ECHO);
+		$expr->run();
+
+		$codeGenerator->addEcho($expr->getCode());
+
 	}
 
-	public function parse_body()
+	public function parse_body($codeGenerator)
 	{
 		while(1)
 		{
@@ -136,15 +165,15 @@ class Parser
 
 				case T_COMMENT:
 					$this->scanner->back();
-					$this->parse_comment();
+					$this->parse_comment($codeGenerator);
 					break;
 
 				case T_RETURN:
-					$this->parse_return();
+					$this->parse_return($codeGenerator);
 					break;
 
 				case T_ECHO:
-					$this->parse_echo();
+					$this->parse_echo($codeGenerator);
 					break;
 
 				case T_RCURLY_PARENTHESIS:
@@ -178,7 +207,7 @@ class Parser
 			'value'	=> [FALSE, NULL]
 		];
 
-		if($token['code'] === T_ARRAY)
+		if($token['code'] === T_ARRAY || $token['code'] === T_STRING)
 		{ // type
 			$arg['type'] = $token['value'];
 			$token = $this->scanner->next();
