@@ -163,45 +163,91 @@ class Parser
 
 	}
 
+
+	public function parser_command($codeGenerator)
+	{
+		$token = $this->scanner->next();
+
+		switch($token['code'])
+		{
+			case T_VARIABLE:
+				$this->scanner->back();
+				$this->parse_variable($codeGenerator);
+				break;
+
+			case T_COMMENT:
+				$this->scanner->back();
+				$this->parse_comment($codeGenerator);
+				break;
+
+			case T_STRING:
+				$this->scanner->back();
+				$this->parse_expression($codeGenerator);
+				break;
+
+			case T_RETURN:
+				$this->parse_return($codeGenerator);
+				break;
+
+			case T_ECHO:
+				$this->parse_echo($codeGenerator);
+				break;
+
+			case T_IF:
+				$this->parse_if($codeGenerator);
+				break;
+
+			default:
+				var_dump($token);
+		}
+	}
+
 	public function parse_body($codeGenerator)
 	{
 		while(1)
 		{
 			$token = $this->scanner->next();
 
-			switch($token['code'])
+			if($token['code'] == T_RCURLY_PARENTHESIS)
 			{
-				case T_VARIABLE:
-					$this->scanner->back();
-					$this->parse_variable($codeGenerator);
-					break;
-
-				case T_COMMENT:
-					$this->scanner->back();
-					$this->parse_comment($codeGenerator);
-					break;
-
-				case T_STRING:
-					$this->scanner->back();
-					$this->parse_expression($codeGenerator);
-					break;
-
-				case T_RETURN:
-					$this->parse_return($codeGenerator);
-					break;
-
-				case T_ECHO:
-					$this->parse_echo($codeGenerator);
-					break;
-
-				case T_RCURLY_PARENTHESIS:
-					$this->scanner->back();
-					return;
-
-				default:
-					var_dump($token);
+				$this->scanner->back();
+				return;
 			}
+
+			$this->scanner->back();
+
+			$this->parser_command($codeGenerator);
 		}
+	}
+
+	/**
+	 * if(<expr>) [{] <code> [}] [elseif(<expr>) { <code> }]+ [else { <code> }]
+	 *
+	 * @param $codeGenerator
+	 */
+	public function parse_if($codeGenerator)
+	{
+		$prec = new Precedence($this->scanner);
+
+		$prec->run();
+
+		$token = $this->scanner->next();
+
+		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
+
+		if($token['code'] == T_LCURLY_PARENTHESIS)
+		{
+			$this->parse_body($bodyCode);
+
+			$token = $this->check(T_RCURLY_PARENTHESIS);
+		}
+		else
+		{
+			$this->parser_command($bodyCode);
+		}
+
+		$codeGenerator->addIf($prec->getCode(), $bodyCode);
+
 	}
 
 	/**

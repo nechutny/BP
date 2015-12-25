@@ -164,8 +164,10 @@ class Precedence
 		$this->scanner = $scanner;
 	}
 
-	public function run($context = 0)
+	public function run()
 	{
+		try
+		{
 		$this->variables = [];
 
 		$token = $this->scanner->next(TRUE);
@@ -261,6 +263,11 @@ class Precedence
 		} while($this->normalizeCodes($token) != '$' || $stack->topTerminal() != '$'  );
 
 		//print_r($stack->top());
+		}
+		catch(PrecedenceNotInTableException $e)
+		{
+			$this->scanner->back();
+		}
 
 		$this->result = $stack->top();
 	}
@@ -428,7 +435,7 @@ class Precedence
 
 		if(!isset($this->tableMap[$stack]) || !isset($this->table[ $this->tableMap[$stack] ]) || !isset($this->tableMap[$token]) || !isset($this->table[ $this->tableMap[$stack] ][ $this->tableMap[$token] ]))
 		{
-			throw new PrecedenceException('Not in precendence table '.print_r($stack,TRUE)." ".print_r($token,TRUE));
+			throw new PrecedenceNotInTableException('Not in precendence table '.print_r($stack,TRUE)." ".print_r($token,TRUE));
 		}
 
 
@@ -443,6 +450,11 @@ class PrecedenceUsageException extends Exception {
 }
 
 class PrecedenceException extends Exception
+{
+
+}
+
+class PrecedenceNotInTableException extends Exception
 {
 
 }

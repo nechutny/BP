@@ -2,12 +2,26 @@
 
 class CodeGenerator
 {
+	protected $indent = 1;
+
 	protected $variables = [];
 
 	protected $commands = [];
 
-	public function getCode($indent = 1)
+	public function __construct($indent = 1)
 	{
+		$this->indent = $indent;
+	}
+
+	public function getIndent()
+	{
+		return $this->indent;
+	}
+
+	public function getCode()
+	{
+		$indent = $this->indent;
+
 		$result = "";
 
 		foreach($this->commands as $command)
@@ -15,19 +29,26 @@ class CodeGenerator
 			switch($command['command'])
 			{
 				case 'echo':
-					$result .= str_pad("\t", $indent).'Php::out << '.$command['args'][0].';'."\n";
+					$result .= str_pad('', $indent, "\t").'Php::out << '.$command['args'][0].';'."\n";
 					break;
 
 				case 'return':
-					$result .= str_pad("\t", $indent).'return '.$command['args'][0].';'."\n";
+					$result .= str_pad('', $indent, "\t").'return '.$command['args'][0].';'."\n";
 					break;
 
 				case 'comment':
-					$result .= str_pad("\t", $indent).''.$command['args'][0].''."\n";
+					$result .= str_pad('', $indent, "\t").''.$command['args'][0].''."\n";
 					break;
 
 				case 'expression':
-					$result .= str_pad("\t", $indent).''.$command['args'][0].';'."\n";
+					$result .= str_pad('', $indent, "\t").''.$command['args'][0].';'."\n";
+					break;
+
+				case 'if':
+					$result .=	str_pad('', $indent, "\t").'if( '.$command['args'][0].' )'	."\n".
+								str_pad('', $indent, "\t").'{'								."\n".
+								$command['args'][1]->getCode().
+								str_pad('', $indent, "\t").'}'								."\n";
 					break;
 
 				default:
@@ -84,6 +105,17 @@ class CodeGenerator
 				'args' => [
 						$expr
 				],
+		];
+	}
+
+	public function addIf($expr, $block)
+	{
+		$this->commands[] = [
+				'command'	=> 'if',
+				'args'		=> [
+					$expr,
+					$block
+				]
 		];
 	}
 
