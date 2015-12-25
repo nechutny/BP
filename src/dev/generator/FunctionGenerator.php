@@ -55,7 +55,7 @@ class FunctionGenerator
 			$var = new VariableGenerator($arg['name']);
 			$var->assignArgument($key);
 
-			$this->vars[] = $var;
+			$this->vars[ $arg['name'] ] = $var;
 		}
 	}
 
@@ -96,6 +96,16 @@ class FunctionGenerator
 		return "";
 	}
 
+	protected function variablesFromCode()
+	{
+		foreach($this->codeGenerator->getVariables() as $var)
+		{
+			if(!isset($this->vars[ $var ]))
+			{
+				$this->vars[ $var ] = new VariableGenerator($var);
+			}
+		}
+	}
 
 
 	public function setCodeGenerator(CodeGenerator $generator)
@@ -105,6 +115,8 @@ class FunctionGenerator
 
 	public function getCode()
 	{
+		$this->variablesFromCode();
+
 		$variables = '';
 		foreach($this->vars as $var)
 		{

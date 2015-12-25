@@ -2,6 +2,8 @@
 
 class CodeGenerator
 {
+	protected $variables = [];
+
 	protected $commands = [];
 
 	public function getCode($indent = 1)
@@ -24,6 +26,10 @@ class CodeGenerator
 					$result .= str_pad("\t", $indent).''.$command['args'][0].''."\n";
 					break;
 
+				case 'expression':
+					$result .= str_pad("\t", $indent).''.$command['args'][0].';'."\n";
+					break;
+
 				default:
 					echo 'Not yet implemented';
 					break;
@@ -31,6 +37,16 @@ class CodeGenerator
 		}
 
 		return $result;
+	}
+
+	public function addVariables(array $names)
+	{
+		$this->variables = array_merge($this->variables, array_flip($names));
+	}
+
+	public function getVariables()
+	{
+		return array_keys($this->variables);
 	}
 
 	public function addComment($comment)
@@ -58,6 +74,16 @@ class CodeGenerator
 			'args' => [
 				$expr
 			],
+		];
+	}
+
+	public function addExpression($expr)
+	{
+		$this->commands[] = [
+				'command' => 'expression',
+				'args' => [
+						$expr
+				],
 		];
 	}
 

@@ -34,10 +34,14 @@ class VariableGenerator
 
 	public function getCode()
 	{
-		$argument = '';
+
 		if(!is_null($this->argumentNum))
 		{
 			$argument = ' = args['.$this->argumentNum.']';
+		}
+		else
+		{
+			$argument = ' = NULL';
 		}
 
 		return "\t".$this->type.' phpVar_'.$this->name.$argument.';'."\n";

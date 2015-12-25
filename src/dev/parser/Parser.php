@@ -128,10 +128,22 @@ class Parser
 		$this->generator->addFunction($functionGenerator);
 	}
 
-	public function parse_variable()
+	public function parse_variable($codeGenerator)
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
+
+		$codeGenerator->addExpression($expr->getCode());
+		$codeGenerator->addVariables($expr->getUsedVariables());
+	}
+
+	public function parse_expression($codeGenerator)
+	{
+		$expr = new Precedence($this->scanner);
+		$expr->run();
+
+		$codeGenerator->addExpression($expr->getCode());
+		$codeGenerator->addVariables($expr->getUsedVariables());
 	}
 
 	public function parse_return($codeGenerator)
@@ -160,12 +172,18 @@ class Parser
 			switch($token['code'])
 			{
 				case T_VARIABLE:
-					$this->parse_variable();
+					$this->scanner->back();
+					$this->parse_variable($codeGenerator);
 					break;
 
 				case T_COMMENT:
 					$this->scanner->back();
 					$this->parse_comment($codeGenerator);
+					break;
+
+				case T_STRING:
+					$this->scanner->back();
+					$this->parse_expression($codeGenerator);
 					break;
 
 				case T_RETURN:
