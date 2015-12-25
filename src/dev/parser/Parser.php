@@ -227,26 +227,85 @@ class Parser
 	 */
 	public function parse_if($codeGenerator)
 	{
-		$prec = new Precedence($this->scanner);
+		// 'if' eated
 
+
+		$prec = new Precedence($this->scanner);
 		$prec->run();
 
+		// If
 		$token = $this->scanner->next();
-
 		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
 
 		if($token['code'] == T_LCURLY_PARENTHESIS)
 		{
 			$this->parse_body($bodyCode);
 
-			$token = $this->check(T_RCURLY_PARENTHESIS);
+			$this->check(T_RCURLY_PARENTHESIS);
 		}
 		else
 		{
+			$this->scanner->back();
 			$this->parser_command($bodyCode);
 		}
-
 		$codeGenerator->addIf($prec->getCode(), $bodyCode);
+
+		// Elseif
+		$token = $this->scanner->next();
+		while($token['code'] == T_ELSEIF)
+		{
+			$prec = new Precedence($this->scanner);
+			$prec->run();
+
+			$token = $this->scanner->next();
+
+			$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
+
+
+
+			if($token['code'] == T_LCURLY_PARENTHESIS)
+			{
+				$this->parse_body($bodyCode);
+
+
+				$this->check(T_RCURLY_PARENTHESIS);
+			}
+			else
+			{
+				$this->scanner->back();
+				$this->parser_command($bodyCode);
+			}
+
+			$codeGenerator->addElseif($prec->getCode(), $bodyCode);
+
+			$token = $this->scanner->next();
+		}
+
+		// else
+		if($token['code'] == T_ELSE)
+		{
+			$token = $this->scanner->next();
+			$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
+
+			if($token['code'] == T_LCURLY_PARENTHESIS)
+			{
+				$this->parse_body($bodyCode);
+
+				$this->check(T_RCURLY_PARENTHESIS);
+			}
+			else
+			{
+				$this->scanner->back();
+				$this->parser_command($bodyCode);
+			}
+			$codeGenerator->addElse($bodyCode);
+		}
+		else
+		{
+			$token = $this->scanner->back();
+		}
+
+
 
 	}
 

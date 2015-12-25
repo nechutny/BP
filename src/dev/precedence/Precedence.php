@@ -166,8 +166,7 @@ class Precedence
 
 	public function run()
 	{
-		try
-		{
+
 		$this->variables = [];
 
 		$token = $this->scanner->next(TRUE);
@@ -177,85 +176,95 @@ class Precedence
 		{
 			$a = $stack->topTerminal();
 
-			switch($this->getFromTable($a, $token))
+			try
 			{
-				case '=':
-					$stack->push($token);
-					$token = $this->scanner->next(TRUE);
-					break;
 
-				case '<':
-					$stack->pushTerminal('<');
+				switch ($this->getFromTable($a, $token))
+				{
+					case '=':
+						$stack->push($token);
+						$token = $this->scanner->next(TRUE);
+						break;
 
-					$stack->push($token);
-					$token = $this->scanner->next(TRUE);
-					break;
+					case '<':
+						$stack->pushTerminal('<');
 
-				case '>':
-					// Hledáme pravidlo!
+						$stack->push($token);
+						$token = $this->scanner->next(TRUE);
+						break;
 
-					$found = false;
+					case '>':
+						// Hledáme pravidlo!
 
-					foreach($this->rules as $key => $rule)
-					{
-						$error = false;
+						$found = FALSE;
 
-						for($i = 0; $i < count($rule['source']); $i++ )
+						foreach ($this->rules as $key => $rule)
 						{
-							$tmp = $stack->top($i);
+							$error = FALSE;
 
-							if(is_array($tmp) && !isset($tmp['nonTerminal']))
+							for ($i = 0; $i < count($rule['source']); $i++)
 							{
-								$tmp = $this->normalizeCodes($tmp);
+								$tmp = $stack->top($i);
+
+								if (is_array($tmp) && !isset($tmp['nonTerminal']))
+								{
+									$tmp = $this->normalizeCodes($tmp);
+								}
+
+								if (
+										(is_array($tmp) && $tmp['nonTerminal'] != $rule['source'][count($rule['source']) - 1 - $i])
+										||
+										(!is_array($tmp) && $tmp != $rule['source'][count($rule['source']) - 1 - $i])
+								)
+								{
+									$error = TRUE;
+									$i = count($rule['source']);
+								}
 							}
 
-							if(
-									(is_array($tmp) && $tmp['nonTerminal'] != $rule['source'][ count($rule['source'])-1-$i ])
-									||
-									(!is_array($tmp) && $tmp != $rule['source'][ count($rule['source'])-1-$i ]))
+							$error = ($error || $stack->top(count($rule['source'])) != '<');
+
+							if (!$error)
 							{
-								$error = true;
-								$i = count($rule['source']);
+								$result = [];
+								foreach ($rule['source'] as $unused)
+								{
+									$result[] = $stack->pop();
+								}
+
+								$stack->pop();
+
+								$stack->push(['nonTerminal' => $rule['target'], 'terminals' => $result]);
+
+								$found = TRUE;
+
+								break;
 							}
 						}
 
-						$error = ($error || $stack->top( count($rule['source'])) != '<');
-
-						if(!$error)
+						if (!$found)
 						{
-							$result = [];
-							foreach($rule['source'] as $unused)
-							{
-								$result[] = $stack->pop();
-							}
-
-							$stack->pop();
-
-							$stack->push(['nonTerminal' => $rule['target'], 'terminals' => $result]);
-
-							$found = true;
-
-							break;
+							$stack->debug();
+							throw new PrecedenceException("Error - rule not found! " . print_r($token, TRUE) . " " . print_r($a, TRUE));
 						}
-					}
+						else
+						{
+							echo "OK - rule: " . $key . " " . $rule['target'] . " -> " . implode(' ', $rule['source']) . "\n";
+						}
+						break;
 
-					if(!$found)
-					{
-						$stack->debug();
-						throw new PrecedenceException("Error - rule not found! ".print_r($token, true)." ".print_r($a,true));
-					}
-					else
-					{
-						echo "OK - rule: ".$key." ".$rule['target']." -> ".implode(' ', $rule['source'])."\n";
-					}
-					break;
+					case '#':
+						throw new PrecedenceException(print_r($a, TRUE) . print_r($token, TRUE));
 
-				case '#':
-					throw new PrecedenceException(print_r($a,true).print_r($token,true));
+					default:
+						die("Chyba v precendenční tabulce");
 
-				default:
-					die("Chyba v precendenční tabulce");
-
+				}
+			}
+			catch(PrecedenceNotInTableException $e)
+			{
+				$this->scanner->back();
+				$token = ['code' => T_SEMICOLON, 'value' => ';'];
 			}
 
 			//$stack->debug();
@@ -263,11 +272,8 @@ class Precedence
 		} while($this->normalizeCodes($token) != '$' || $stack->topTerminal() != '$'  );
 
 		//print_r($stack->top());
-		}
-		catch(PrecedenceNotInTableException $e)
-		{
-			$this->scanner->back();
-		}
+
+
 
 		$this->result = $stack->top();
 	}

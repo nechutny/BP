@@ -45,10 +45,24 @@ class CodeGenerator
 					break;
 
 				case 'if':
-					$result .=	str_pad('', $indent, "\t").'if( '.$command['args'][0].' )'	."\n".
-								str_pad('', $indent, "\t").'{'								."\n".
+					$result .=	str_pad('', $indent, "\t").'if'.$command['args'][0].''			."\n".
+								str_pad('', $indent, "\t").'{'									."\n".
 								$command['args'][1]->getCode().
-								str_pad('', $indent, "\t").'}'								."\n";
+								str_pad('', $indent, "\t").'}'									."\n";
+					break;
+
+				case 'elseif':
+					$result .=	str_pad('', $indent, "\t").'else if'.$command['args'][0].''		."\n".
+							str_pad('', $indent, "\t").'{'										."\n".
+							$command['args'][1]->getCode().
+							str_pad('', $indent, "\t").'}'										."\n";
+					break;
+
+				case 'else':
+					$result .=	str_pad('', $indent, "\t").'else'								."\n".
+							str_pad('', $indent, "\t").'{'										."\n".
+							$command['args'][0]->getCode().
+							str_pad('', $indent, "\t").'}'										."\n";
 					break;
 
 				default:
@@ -115,6 +129,27 @@ class CodeGenerator
 				'args'		=> [
 					$expr,
 					$block
+				]
+		];
+	}
+
+	public function addElseif($expr, $block)
+	{
+		$this->commands[] = [
+				'command'	=> 'elseif',
+				'args'		=> [
+						$expr,
+						$block
+				]
+		];
+	}
+
+	public function addElse($block)
+	{
+		$this->commands[] = [
+				'command'	=> 'else',
+				'args'		=> [
+						$block
 				]
 		];
 	}
