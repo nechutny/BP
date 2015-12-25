@@ -23,7 +23,7 @@
 	Provedl jsem analýzu souèasných konkurenèních øe¹ení a nepodaøilo se mi nalézt nástroj implementující takovouto funkcionalitu. Funkcionalitou podobný je nástroj phc\footnote{\url{http://www.phpcompiler.org/}}, který slou¾í primárnì pro kompilaci PHP kódu do spustitelných binárních souborù, které nepotøebují interpret. Dal¹ím podobným a z~technického hlediska zajímavým øe¹ením je HPHPc od spoleènosti Facebook, kterým se budu zabývat v~následující podkapitole a poslou¾í i jako zajímavá inspirace øe¹ení.
 
 	\section{phc}
-		Phc je kompilátor podmno¾iny jazyka PHP do spustitelných binárních souborù. Odstraòuje závislost na interpretru PHP a tak umo¾òuje pohodlnou distribuci cli skriptù. Vývoj tohoto nástroje zapoèal v~roce 2005 vývojáøi Edsko de Vries a John Gilbert. Postupnì se do vývoje zapojilo na 21 vývojáøù a poslední verze byla vydána v~roce 2011\cite{PhcContributing}. Od té doby se pouze mno¾í chybové reporty a projekt není udr¾ován\cite{PhcIssues}.
+		Phc je kompilátor podmno¾iny jazyka PHP do spustitelných binárních souborù. Odstraòuje závislost na interpretru PHP a tak umo¾òuje pohodlnou distribuci cli skriptù. Vývoj tohoto nástroje zapoèali v~roce 2005 vývojáøi Edsko de Vries a John Gilbert. Postupnì se do vývoje zapojilo na 21 vývojáøù a poslední verze byla vydána v~roce 2011\cite{PhcContributing}. Od té doby se pouze mno¾í chybové reporty a projekt není udr¾ován\cite{PhcIssues}.
 
 		Nástroj podporoval také funkcionalitu, která je cílem této bakaláøské práce a bylo tedy mo¾né transformovat PHP knihovny do roz¹íøení pro následné pou¾ití v~PHP. Dle dokumentace na webu projektu nebyla v¹ak podpora pro objektové programování a chybìla implementace novìj¹ích jazykových konstrukcí\cite{PhcContributing}.
 
@@ -479,6 +479,18 @@ a.apend(b);
 
 		\subsection{Mocnina}
 			Pro výpoèet mocniny èísla je mo¾né nahradit operátor \function{**} za volání funkce \function{pow} ze standardní knihovny \function{math.h}\cite{CppMathPow}.
+
+		\subsection{Logické operátory}
+			Jak je uvedeno v tabulce \ref{table:phpPrecendenceTable} priorit výrazù PHP na stranì \pageref{table:phpPrecendenceTable}, tak jazyk PHP obsahuje pro logické operace dvì mo¾nosti zápisu operací. Prvním zpùsobem zápisu s vy¹¹í prioritou je zápis prostøednictvím operátorù \function{\&\&}, \function{$||$} a \function{\textasciicircum}. Tento zápis má vy¹¹í prioritu, ne¾ pøiøazení. Pøi zápisu v kódu \ref{code:phpOperatorPrecedence} na první øádce tedy bude výsledná hodnota v promìnné \function{\$a} nepravdivá. Opakem je v¹ak zápis na øádku 2, kdy bude hodnota promìnné pravdivá, jeliko¾ se s vy¹¹í prioritou provede pøiøazení a a¾ s výsledkem pøiøazení se provede AND, jeho¾ výsledek se zahodí.
+
+			\begin{lstlisting}[caption=PHP ukázka rozdílných priorit operátorù, label=code:phpOperatorPrecedence, language=PHP]
+$a = TRUE &&  FALSE; //  $a = (TRUE AND FALSE)  -> $a == FALSE
+$a = TRUE AND FALSE; // ($a = TRUE) AND FALSE   -> $a == TRUE
+			\end{lstlisting}
+
+			Jazyk C++ v¹ak obsahuje pouze operátory s vy¹¹í prioritou, ne¾ pøiøazení. Kromì priority operátorù se chování neli¹í\cite{PhpLogicOperators}. Je tedy tøeba kromì nahrazení zapísu ve formì slova za funkènì odpovídající zápis z jazyka C++ také provést uzavøení levé a pravé strany do závorek.
+
+			Výsledná transformace tedy bude \function{\textless výraz \textgreater OR \textless výraz \textgreater $\rightarrow$ ( \textless výraz \textgreater ) $||$ ( \textless výraz \textgreater )}
 
 
 		\subsection{Potlaèení chyby}

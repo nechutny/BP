@@ -1,2 +1,2 @@
 <?php
-$a or $a or $c
+$a or $a or $c;

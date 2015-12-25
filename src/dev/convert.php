@@ -22,6 +22,8 @@ try
 
 		$precendence = new Precedence($scanner);
 		$precendence->run();
+
+		echo "Generated expression: ". $precendence->getCode()."\n";
 	}
 	else
 	{

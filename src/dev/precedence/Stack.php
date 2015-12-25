@@ -16,7 +16,7 @@ class Stack {
 		while(1)
 		{
 			$tmp = $this->top($i);
-			if($tmp != 'E')
+			if(!isset($tmp['nonTerminal']))
 			{
 				break;
 			}
@@ -72,7 +72,7 @@ class Stack {
 		while(1)
 		{
 			$tmp = $this->top($i);
-			if($tmp != 'E')
+			if(!isset($tmp['nonTerminal']))
 			{
 				return $tmp;
 			}
@@ -94,7 +94,15 @@ class Stack {
 		{
 			if(is_array($item))
 			{
-				echo $item['value']."\n";
+				if(isset($item['nonTerminal']))
+				{
+					echo $item['nonTerminal']."\n";
+				}
+				else
+				{
+					echo $item['value']."\n";
+				}
+
 			}
 			else
 			{

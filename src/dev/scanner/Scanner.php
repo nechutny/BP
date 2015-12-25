@@ -1,11 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../token/CustomTokens.php');
-//require_once(__DIR__ . '/../token/AToken.php');
-//foreach(glob(__DIR__ . '/../token/T_*.php') as $tokenFile)
-//{
-//	require_once($tokenFile);
-//}
+require_once(__DIR__ . '/CustomTokens.php');
 
 class Scanner {
 	protected $tokens = [];
