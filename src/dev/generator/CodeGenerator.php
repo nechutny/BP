@@ -29,7 +29,7 @@ class CodeGenerator
 			switch($command['command'])
 			{
 				case 'echo':
-					$result .= str_pad('', $indent, "\t").'Php::out << '.$command['args'][0].';'."\n";
+					$result .= str_pad('', $indent, "\t").'Php::out << ('.$command['args'][0].') << std::flush;'."\n";
 					break;
 
 				case 'return':

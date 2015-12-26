@@ -58,7 +58,7 @@ class VariableGenerator
 			}
 			else
 			{
-				$argument = ' = args.size() > '.$this->argumentNum.' ? args['.$this->argumentNum.'] : '.$this->argumentDefaultValue.' ';
+				$argument = '; if(args.size() > '.$this->argumentNum.') phpVar_'.$this->name.' = args['.$this->argumentNum.']; else phpVar_'.$this->name.' = '.$this->argumentDefaultValue.' ';
 			}
 
 		}
