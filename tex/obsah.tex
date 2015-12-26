@@ -492,6 +492,9 @@ $a = TRUE AND FALSE; // ($a = TRUE) AND FALSE   -> $a == TRUE
 
 			Výsledná transformace tedy bude \function{\textless výraz \textgreater OR \textless výraz \textgreater $\rightarrow$ ( \textless výraz \textgreater ) $||$ ( \textless výraz \textgreater )}
 
+		\subsection{Dìlení}
+			V pøípadì dìlení èísel v PHP se neprovádí celoèíselné, ale i pro výraze \function{5/4} je výsledkem desetinné èíslo. Pøi transformaci operátorù dìlení bude tedy tøeba provést zmìnu typu na float/double. V jazyce C++ je rozdíl mezi výrazy \function{5/4} a \function{5.0/4.0}, kdy v prvním pøípadì je výsledkem \function{1} a v druhém \function{1.2}. Pøi transformaci tedy bude tøeba oba operátory dìlení pøetypovat na desetinné èíslo.
+
 
 		\subsection{Potlaèení chyby}
 			\label{potlaceniChyby}

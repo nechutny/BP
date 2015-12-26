@@ -327,6 +327,18 @@ class Precedence
 
 				return '('.$this->recursiveCode($op['terminals'][2]).') '.$op['terminals'][1]['value'].' ('.$this->recursiveCode($op['terminals'][0]).')';
 			}
+			// Convert !== and === to != and ==
+			elseif(count($op['terminals']) == 3 && isset($op['terminals'][1]) && isset($op['terminals'][1]['value']) && in_array($op['terminals'][1]['value'], ['===','!==']))
+			{
+				$op['terminals'][1]['value'] = str_replace(['!==', '==='],['!=', '=='],strtoupper($op['terminals'][1]['value']));
+
+				return $this->recursiveCode($op['terminals'][2]).' '.$op['terminals'][1]['value'].' '.$this->recursiveCode($op['terminals'][0]);
+			}
+			// Divide - typecast to float
+			elseif(count($op['terminals']) == 3 && isset($op['terminals'][1]) && isset($op['terminals'][1]['value']) && $op['terminals'][1]['value'] == '/')
+			{
+				return '(float)('.$this->recursiveCode($op['terminals'][2]).') '.$op['terminals'][1]['value'].' (float)('.$this->recursiveCode($op['terminals'][0]).')';
+			}
 
 			foreach(array_reverse($op['terminals']) as $term)
 			{

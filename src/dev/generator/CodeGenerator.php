@@ -81,6 +81,17 @@ class CodeGenerator
 
 	public function getVariables()
 	{
+		foreach($this->commands as $command)
+		{
+			foreach($command['args'] as $arg)
+			{
+				if($arg instanceof CodeGenerator)
+				{
+					$this->addVariables($arg->getVariables());
+				}
+			}
+		}
+
 		return array_keys($this->variables);
 	}
 

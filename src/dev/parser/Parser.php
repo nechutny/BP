@@ -233,6 +233,7 @@ class Parser
 		$prec = new Precedence($this->scanner);
 		$prec->run();
 
+
 		// If
 		$token = $this->scanner->next();
 		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
@@ -249,6 +250,7 @@ class Parser
 			$this->parser_command($bodyCode);
 		}
 		$codeGenerator->addIf($prec->getCode(), $bodyCode);
+		$codeGenerator->addVariables($prec->getUsedVariables());
 
 		// Elseif
 		$token = $this->scanner->next();
@@ -276,6 +278,7 @@ class Parser
 				$this->parser_command($bodyCode);
 			}
 
+			$codeGenerator->addVariables($prec->getUsedVariables());
 			$codeGenerator->addElseif($prec->getCode(), $bodyCode);
 
 			$token = $this->scanner->next();
@@ -298,6 +301,8 @@ class Parser
 				$this->scanner->back();
 				$this->parser_command($bodyCode);
 			}
+
+			$codeGenerator->addVariables($prec->getUsedVariables());
 			$codeGenerator->addElse($bodyCode);
 		}
 		else

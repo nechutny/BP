@@ -13,6 +13,7 @@ class VariableGenerator
 	protected $type;
 
 	protected $argumentNum;
+	protected $argumentDefaultValue = NULL;
 
 	/**
 	 * VariableGenerator constructor.
@@ -27,6 +28,16 @@ class VariableGenerator
 		$this->type = is_null($type) ? self::TYPE_MIXED : $type;
 	}
 
+	public function setArgumentDefaultValue($value)
+	{
+		if($value == 'NULL')
+		{
+			$value = 'nullptr';
+		}
+
+		$this->argumentDefaultValue = $value;
+	}
+
 	public function assignArgument($num)
 	{
 		$this->argumentNum = $num;
@@ -37,11 +48,19 @@ class VariableGenerator
 
 		if(!is_null($this->argumentNum))
 		{
-			$argument = ' = args['.$this->argumentNum.']';
+			if(is_null($this->argumentDefaultValue))
+			{
+				$argument = ' = args['.$this->argumentNum.']';
+			}
+			else
+			{
+				$argument = ' = args.size() > '.$this->argumentNum.' ? args['.$this->argumentNum.'] : '.$this->argumentDefaultValue.' ';
+			}
+
 		}
 		else
 		{
-			$argument = ' = NULL';
+			$argument = ' = nullptr';
 		}
 
 		return "\t".$this->type.' phpVar_'.$this->name.$argument.';'."\n";

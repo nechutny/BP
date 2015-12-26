@@ -55,6 +55,11 @@ class FunctionGenerator
 			$var = new VariableGenerator($arg['name']);
 			$var->assignArgument($key);
 
+			if($arg['value'][0])
+			{
+				$var->setArgumentDefaultValue($arg['value'][1]);
+			}
+
 			$this->vars[ $arg['name'] ] = $var;
 		}
 	}
@@ -83,7 +88,7 @@ class FunctionGenerator
 			$result[] = 'Php::ByVal("'.
 					substr($arg['name'],1).'", '.
 					$this->convertToType($arg['type']).', '.
-					($arg['value'][0] == 1 && $arg['value'][0] == 'NULL' ? 'true' : 'false').', '.
+					(in_array($arg['type'], ['mixed','array']) ? '' : ($arg['value'][0] == 1 && $arg['value'][0] == 'NULL' ? 'true' : 'false').', ' ).
 					($arg['value'][0] == 1 ? 'false' : 'true').
 				')';
 		}
@@ -127,7 +132,7 @@ class FunctionGenerator
 				'{'																	."\n".
 				''.$variables														."\n".
 				''.$this->codeGenerator->getCode()									."\n".
-				'	return NULL;'													."\n".
+				'	return nullptr;'													."\n".
 				'}'																	."\n\n";
 
 
