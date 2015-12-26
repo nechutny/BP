@@ -29,7 +29,7 @@ class VariableGenerator
 	}
 
 	/**
-	 * If is variable frum function arguments and have default value, then set it here
+	 * If is variable from function arguments and have default value, then set it here
 	 *
 	 * @param mixed $value Default value
 	 */

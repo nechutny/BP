@@ -125,31 +125,22 @@ class Parser
 			throw new ParserError($token);
 		}
 
-		//echo "Read function name: ".$token['value']."\n";
 
 		$functionGenerator->setFunctionName($token['value']);
 
 		$this->check(T_LPARENTHESIS);
 
 		$args = $this->parse_args();
-
-		//echo "Arguments: \n";
-
-		//print_r($args);
-
 		$functionGenerator->setArguments($args);
 
 		$this->check(T_RPARENTHESIS);
-
 		$this->check(T_LCURLY_PARENTHESIS);
 
 		$codeGenerator = new CodeGenerator();
-
 		$this->parse_body($codeGenerator);
+		$functionGenerator->setCodeGenerator($codeGenerator);
 
 		$this->check(T_RCURLY_PARENTHESIS);
-
-		$functionGenerator->setCodeGenerator($codeGenerator);
 
 		$this->generator->addFunction($functionGenerator);
 	}
@@ -430,7 +421,7 @@ class Parser
 	}
 
 	/**
-	 * Parse do-whiile loop
+	 * Parse do-while loop
 	 *
 	 * do { ... } while(<expr>)
 	 *
@@ -555,11 +546,8 @@ class Parser
 		}
 		else
 		{
-			$token = $this->scanner->back();
+			$this->scanner->back();
 		}
-
-
-
 	}
 
 	/**
@@ -603,6 +591,7 @@ class Parser
 
 			if($token['value'] == '[')
 			{
+				// TODO: allow initialization with non-empty arrays
 				$this->check(T_ARRAY_CLOSE);
 			}
 
@@ -623,14 +612,20 @@ class Parser
 			return array_merge([$arg], $this->parse_args());
 		}
 
-		print_r($token);
+		//print_r($token);
 	}
 
+	/**
+	 * Parse use statement for classes
+	 */
 	public function parse_use()
 	{
 		// TODO
 	}
 
+	/**
+	 * Parse namespace definitions
+	 */
 	public function parse_namespace()
 	{
 		// TODO

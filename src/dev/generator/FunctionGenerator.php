@@ -46,7 +46,7 @@ class FunctionGenerator
 	/**
 	 * Get function name
 	 *
-	 * @return string fucntion name
+	 * @return string function name
 	 */
 	public function getName()
 	{
@@ -54,9 +54,9 @@ class FunctionGenerator
 	}
 
 	/**
-	 * Set fucntion arguments
+	 * Set function arguments
 	 *
-	 * @param array $args structure with informations about arguments
+	 * @param array $args structure with information about arguments
 	 */
 	public function setArguments(array $args)
 	{

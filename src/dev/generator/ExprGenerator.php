@@ -28,6 +28,7 @@ class ExprGenerator
 
 		$op = $data;
 
+		// TODO: Rewrite it!
 		if(isset($op['nonTerminal']))
 		{
 			// Pow

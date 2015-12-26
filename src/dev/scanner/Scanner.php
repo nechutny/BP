@@ -8,6 +8,11 @@ class Scanner {
 
 	protected $comments = [T_COMMENT, T_DOC_COMMENT];
 
+	/**
+	 * Scanner constructor.
+	 *
+	 * @param string $file Path to source file
+	 */
 	public function __construct($file)
 	{
 		$file = file_get_contents($file);
@@ -94,6 +99,14 @@ class Scanner {
 		$this->index = 0;
 	}
 
+	/**
+	 * Get token and move position to next token
+	 *
+	 * @param bool|FALSE $ignoreComment True if you want next token and ignore comments
+	 * @return array
+	 *
+	 * @throws EndOfFileException
+	 */
 	public function next($ignoreComment = FALSE)
 	{
 		if(!isset($this->tokens[ $this->index ]))
@@ -113,6 +126,9 @@ class Scanner {
 		}
 	}
 
+	/**
+	 * Move position one step back
+	 */
 	public function back()
 	{
 		$this->index--;

@@ -5,11 +5,23 @@ class Stack {
 	protected $stack = [];
 	protected $position = -1;
 
+	/**
+	 * Push new value on top of stack
+	 *
+	 * @param mixed $value Value to push
+	 */
 	public function push($value)
 	{
 		$this->stack[ ++$this->position ] = $value;
 	}
 
+	/**
+	 * Push new value on top except non-terminals
+	 *
+	 * @param mixed $value Value to push
+	 *
+	 * @throws StackEmptyException
+	 */
 	public function pushTerminal($value)
 	{
 		$i = 0;
@@ -30,15 +42,16 @@ class Stack {
 
 		$this->position++;
 
-
 		$this->stack[count($this->stack)-$i-1] = $value;
-
-		//die();
-
-
-
 	}
 
+	/**
+	 * Get value from top of stack and remove it
+	 *
+	 * @return mixed
+	 *
+	 * @throws StackEmptyException
+	 */
 	public function pop()
 	{
 		if(!isset($this->stack[ $this->position ]))
@@ -54,6 +67,14 @@ class Stack {
 		return $val;
 	}
 
+	/**
+	 * Get value from top of stack and keep it in stack
+	 *
+	 * @param int $offset Optional variable allowing to get items from stack under top (0 = top, 1 = first under top etc.)
+	 * @return mixed
+	 *
+	 * @throws StackEmptyException
+	 */
 	public function top($offset = 0)
 	{
 		if(isset($this->stack[ $this->position-$offset ]))
@@ -66,6 +87,13 @@ class Stack {
 		}
 	}
 
+	/**
+	 * Get terminal from top of stack (ignore non-terminals)
+	 *
+	 * @return mixed
+	 *
+	 * @throws StackEmptyException
+	 */
 	public function topTerminal()
 	{
 		$i = 0;
@@ -80,12 +108,9 @@ class Stack {
 		}
 	}
 
-	public function replaceTop($value)
-	{
-		$this->pop();
-		$this->push($value);
-	}
-
+	/**
+	 * Debug output
+	 */
 	public function debug()
 	{
 		echo "\n\n Stack debug:\n";
