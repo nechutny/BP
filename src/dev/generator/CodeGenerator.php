@@ -43,6 +43,12 @@ class CodeGenerator
 				case 'expression':
 					$result .= str_pad('', $indent, "\t").''.$command['args'][0].';'."\n";
 					break;
+				case 'for':
+					$result .=	str_pad('', $indent, "\t").'for('.$command['args'][0].' ; '.$command['args'][1].' ; '.$command['args'][2].' )'	."\n".
+							str_pad('', $indent, "\t").'{'																						."\n".
+							$command['args'][3]->getCode().
+							str_pad('', $indent, "\t").'}'																						."\n";
+					break;
 
 				case 'if':
 					$result .=	str_pad('', $indent, "\t").'if'.$command['args'][0].''			."\n".
@@ -129,6 +135,19 @@ class CodeGenerator
 				'command' => 'expression',
 				'args' => [
 						$expr
+				],
+		];
+	}
+
+	public function addFor($initExpr, $ifExpr, $iterExpr, $bodyCode)
+	{
+		$this->commands[] = [
+				'command' => 'for',
+				'args' => [
+						$initExpr,
+						$ifExpr,
+						$iterExpr,
+						$bodyCode
 				],
 		];
 	}

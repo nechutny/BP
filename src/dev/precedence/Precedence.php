@@ -157,6 +157,11 @@ class Precedence
 		],
 	];
 
+	public function addEndToken($token)
+	{
+		$this->stopTokens[] = $token;
+	}
+
 	public function __construct($scanner)
 	{
 		$this->tableMap = array_flip($this->tableMap);
@@ -254,7 +259,17 @@ class Precedence
 						break;
 
 					case '#':
-						throw new PrecedenceException(print_r($a, TRUE) . print_r($token, TRUE));
+						if($a == '$' && in_array($token['code'], $this->stopTokens))
+						{
+							$this->scanner->back();
+							$token = ['code' => T_SEMICOLON, 'value' => ';'];
+						}
+						else
+						{
+							throw new PrecedenceException(print_r($a, TRUE) . print_r($token, TRUE));
+						}
+						break;
+
 
 					default:
 						die("Chyba v precedenční tabulce");
