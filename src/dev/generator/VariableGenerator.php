@@ -34,6 +34,10 @@ class VariableGenerator
 		{
 			$value = 'nullptr';
 		}
+		elseif($value == '[')
+		{
+			$value = NULL;
+		}
 
 		$this->argumentDefaultValue = $value;
 	}
