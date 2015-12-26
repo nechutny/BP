@@ -81,6 +81,14 @@ class CodeGenerator
 							str_pad('', $indent, "\t").'while'.$command['args'][0]->getCode().''															."\n";
 					break;
 
+				case 'break':
+					$result .= str_pad('', $indent, "\t").'break;'."\n";
+					break;
+
+				case 'continue':
+					$result .= str_pad('', $indent, "\t").'continue;'."\n";
+					break;
+
 				case 'if':
 					$result .=	str_pad('', $indent, "\t").'if'.$command['args'][0]->getCode().''			."\n".
 								str_pad('', $indent, "\t").'{'									."\n".
@@ -315,6 +323,28 @@ class CodeGenerator
 				'args'		=> [
 						$block
 				]
+		];
+	}
+
+	/**
+	 * Add break; statement for loop/switch
+	 */
+	public function addBreak()
+	{
+		$this->commands[] = [
+				'command'	=> 'break',
+				'args'		=> []
+		];
+	}
+
+	/**
+	 * Add continue statement for loop
+	 */
+	public function addContinue()
+	{
+		$this->commands[] = [
+				'command'	=> 'continue',
+				'args'		=> []
 		];
 	}
 }

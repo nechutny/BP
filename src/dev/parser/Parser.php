@@ -15,12 +15,24 @@ class Parser
 	 */
 	public $generator;
 
-	public function __construct($scanner)
+	/**
+	 * Parser constructor.
+	 * @param Scanner $scanner Scanner with parsed input file
+	 */
+	public function __construct(Scanner $scanner)
 	{
 		$this->scanner = $scanner;
 	}
 
-	public function check($what)
+	/**
+	 * Check if is in parser expected sequence
+	 *
+	 * @param int|array $what Which token(s) are expected
+	 *
+	 * @throws EndOfFileException
+	 * @throws ParserError
+	 */
+	protected function check($what)
 	{
 		if(!is_array($what))
 		{
@@ -39,6 +51,9 @@ class Parser
 
 	/**
 	 * Parse whole PHP file
+	 *
+	 * @throws EndOfFileException
+	 * @throws ParserError
 	 */
 	public function parse_file()
 	{
@@ -74,7 +89,13 @@ class Parser
 		}
 	}
 
-	public function parse_comment($codeGenerator = NULL)
+	/**
+	 * Parse comments
+	 *
+	 * @param CodeGenerator|NULL $codeGenerator
+	 * @throws EndOfFileException
+	 */
+	protected function parse_comment(CodeGenerator $codeGenerator = NULL)
 	{
 		$token = $this->scanner->next();
 
@@ -85,9 +106,14 @@ class Parser
 	}
 
 	/**
+	 * Parse function declaration
+	 *
 	 * function name(args) { body }
+	 *
+	 * @throws EndOfFileException
+	 * @throws ParserError
 	 */
-	public function parse_function()
+	protected function parse_function()
 	{
 		$functionGenerator = new FunctionGenerator();
 
@@ -128,7 +154,13 @@ class Parser
 		$this->generator->addFunction($functionGenerator);
 	}
 
-	public function parse_variable($codeGenerator)
+	/**
+	 * Parse variable assign
+	 *
+	 * @param CodeGenerator $codeGenerator
+	 * @throws PrecedenceException
+	 */
+	protected function parse_variable(CodeGenerator $codeGenerator)
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
@@ -138,7 +170,13 @@ class Parser
 		$codeGenerator->addVariables($expr->getUsedVariables());
 	}
 
-	public function parse_expression($codeGenerator)
+	/**
+	 * Parse expression
+	 *
+	 * @param CodeGenerator $codeGenerator
+	 * @throws PrecedenceException
+	 */
+	public function parse_expression(CodeGenerator $codeGenerator)
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
@@ -148,7 +186,15 @@ class Parser
 		$codeGenerator->addVariables($expr->getUsedVariables());
 	}
 
-	public function parse_return($codeGenerator)
+	/**
+	 * Parse return from function
+	 *
+	 * return <expr>;
+	 *
+	 * @param CodeGenerator $codeGenerator
+	 * @throws PrecedenceException
+	 */
+	public function parse_return(CodeGenerator $codeGenerator)
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
@@ -157,7 +203,15 @@ class Parser
 		$codeGenerator->addReturn($exprGenerator);
 	}
 
-	public function parse_echo($codeGenerator)
+	/**
+	 * Parse echo
+	 *
+	 * echo <expr>;
+	 *
+	 * @param CodeGenerator $codeGenerator
+	 * @throws PrecedenceException
+	 */
+	public function parse_echo(CodeGenerator $codeGenerator)
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
@@ -167,8 +221,13 @@ class Parser
 
 	}
 
-
-	public function parser_command($codeGenerator)
+	/**
+	 * Parse one PHP command
+	 *
+	 * @param CodeGenerator $codeGenerator
+	 * @throws EndOfFileException
+	 */
+	public function parser_command(CodeGenerator $codeGenerator)
 	{
 		$token = $this->scanner->next();
 
@@ -223,12 +282,22 @@ class Parser
 				$this->parse_if($codeGenerator);
 				break;
 
+			case T_BREAK:
+				$this->parse_break($codeGenerator);
+				break;
+
 			default:
 				var_dump($token);
 		}
 	}
 
-	public function parse_body($codeGenerator)
+	/**
+	 * Parse N commands until }
+	 *
+	 * @param CodeGenerator $codeGenerator
+	 * @throws EndOfFileException
+	 */
+	public function parse_body(CodeGenerator $codeGenerator)
 	{
 		while(1)
 		{
@@ -246,7 +315,43 @@ class Parser
 		}
 	}
 
-	public function parse_for($codeGenerator)
+	/**
+	 * Parse loop/switch break
+	 *
+	 * @param CodeGenerator $codeGenerator
+	 * @throws ParserError
+	 */
+	public function parse_break(CodeGenerator $codeGenerator)
+	{
+		$codeGenerator->addBreak();
+
+		$this->check(T_SEMICOLON);
+	}
+
+	/**
+	 * Parse loop continue
+	 *
+	 * @param CodeGenerator $codeGenerator
+	 * @throws ParserError
+	 */
+	public function parse_continue(CodeGenerator $codeGenerator)
+	{
+		$codeGenerator->addContinue();
+
+		$this->check(T_SEMICOLON);
+	}
+
+	/**
+	 * Parse for loop
+	 *
+	 * for(<expr>;<expr>;<expr>) { ... }
+	 *
+	 * @param CodeGenerator $codeGenerator
+	 * @throws EndOfFileException
+	 * @throws ParserError
+	 * @throws PrecedenceException
+	 */
+	public function parse_for(CodeGenerator $codeGenerator)
 	{
 		// 'for' eaten
 
@@ -288,7 +393,17 @@ class Parser
 		$codeGenerator->addFor($initExpr, $ifExpr, $iterExpr, $bodyCode);
 	}
 
-	public function parse_while($codeGenerator)
+	/**
+	 * Parse while loop
+	 *
+	 * while(<expr>) { ... }
+	 *
+	 * @param CodeGenerator $codeGenerator
+	 * @throws EndOfFileException
+	 * @throws ParserError
+	 * @throws PrecedenceException
+	 */
+	public function parse_while(CodeGenerator $codeGenerator)
 	{
 		// 'while' eaten
 		$prec = new Precedence($this->scanner);
@@ -314,7 +429,17 @@ class Parser
 		$codeGenerator->addWhile($ifExpr, $bodyCode);
 	}
 
-	public function parse_do($codeGenerator)
+	/**
+	 * Parse do-whiile loop
+	 *
+	 * do { ... } while(<expr>)
+	 *
+	 * @param CodeGenerator $codeGenerator
+	 * @throws EndOfFileException
+	 * @throws ParserError
+	 * @throws PrecedenceException
+	 */
+	public function parse_do(CodeGenerator $codeGenerator)
 	{
 		// 'do' eaten
 
@@ -348,7 +473,7 @@ class Parser
 	 *
 	 * @param $codeGenerator
 	 */
-	public function parse_if($codeGenerator)
+	public function parse_if(CodeGenerator $codeGenerator)
 	{
 		// 'if' eaten
 
@@ -438,7 +563,7 @@ class Parser
 	}
 
 	/**
-	 * [typ] $name [= default]
+	 * [type] $name [= default]
 	 *
 	 * @return array
 	 * @throws Exception
