@@ -15,7 +15,7 @@ class FileGenerator
 	public function getCode()
 	{
 		$result =	'#include <phpcpp.h>'			."\n".
-					'#include <math.h>'			."\n".
+					'#include <math.h>'				."\n".
 					'#include <iostream>'			."\n\n";
 
 		foreach ($this->functions as $function)
@@ -23,20 +23,20 @@ class FileGenerator
 			$result .= $function->getCode();
 		}
 
-		$result .=	'extern "C"'														."\n".
-					'{'																	."\n".
-					'	PHPCPP_EXPORT void *get_module()'								."\n".
-					'	{'																."\n".
-					'		static Php::Extension extension("TestExtension", "1.0");'	."\n".
-																						 "\n";
+		$result .=	'extern "C"'															."\n".
+					'{'																		."\n".
+					'	PHPCPP_EXPORT void *get_module()'									."\n".
+					'	{'																	."\n".
+					'		static Php::Extension extension("TestExtension-dev", "1.0");'	."\n".
+																						 	"\n";
 
 		foreach ($this->functions as $function)
 		{
 			$result .= '		extension.add("'.$function->getName().'", phpFunc_'.$function->getName().$function->generateArguments().');'."\n";
 		}
 
-		$result .=	'		return extension;'											."\n".
-					'	}'																."\n".
+		$result .=	'		return extension;'												."\n".
+					'	}'																	."\n".
 					'}';
 
 		return $result;

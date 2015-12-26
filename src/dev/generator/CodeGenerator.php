@@ -43,11 +43,27 @@ class CodeGenerator
 				case 'expression':
 					$result .= str_pad('', $indent, "\t").''.$command['args'][0].';'."\n";
 					break;
+
 				case 'for':
 					$result .=	str_pad('', $indent, "\t").'for('.$command['args'][0].' ; '.$command['args'][1].' ; '.$command['args'][2].' )'	."\n".
 							str_pad('', $indent, "\t").'{'																						."\n".
 							$command['args'][3]->getCode().
 							str_pad('', $indent, "\t").'}'																						."\n";
+					break;
+
+				case 'while':
+					$result .=	str_pad('', $indent, "\t").'while'.$command['args'][0].''														."\n".
+							str_pad('', $indent, "\t").'{'																						."\n".
+							$command['args'][1]->getCode().
+							str_pad('', $indent, "\t").'}'																						."\n";
+					break;
+
+				case 'dowhile':
+					$result .=	str_pad('', $indent, "\t").'do'																					."\n".
+							str_pad('', $indent, "\t").'{'																						."\n".
+							$command['args'][1]->getCode().
+							str_pad('', $indent, "\t").'}'																						."\n".
+							str_pad('', $indent, "\t").'while'.$command['args'][0].''															."\n";
 					break;
 
 				case 'if':
@@ -152,6 +168,28 @@ class CodeGenerator
 		];
 	}
 
+	public function addWhile($condition, $block)
+	{
+		$this->commands[] = [
+				'command'	=> 'while',
+				'args'		=> [
+						$condition,
+						$block
+				]
+		];
+	}
+
+	public function addDoWhile($condition, $block)
+	{
+		$this->commands[] = [
+				'command'	=> 'dowhile',
+				'args'		=> [
+						$condition,
+						$block
+				]
+		];
+	}
+
 	public function addIf($expr, $block)
 	{
 		$this->commands[] = [
@@ -183,5 +221,4 @@ class CodeGenerator
 				]
 		];
 	}
-
 }

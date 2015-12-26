@@ -189,6 +189,14 @@ class Parser
 				$this->parse_for($codeGenerator);
 				break;
 
+			case T_WHILE:
+				$this->parse_while($codeGenerator);
+				break;
+
+			case T_DO:
+				$this->parse_do($codeGenerator);
+				break;
+
 			case T_RETURN:
 				$this->parse_return($codeGenerator);
 				break;
@@ -264,7 +272,61 @@ class Parser
 		}
 
 		$codeGenerator->addFor($initExpr, $ifExpr, $iterExpr, $bodyCode);
+	}
 
+	public function parse_while($codeGenerator)
+	{
+		// 'while' eaten
+		$prec = new Precedence($this->scanner);
+		$prec->run();
+		$codeGenerator->addVariables($prec->getUsedVariables());
+		$ifExpr = $prec->getCode();
+
+		$token = $this->scanner->next();
+		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
+
+		if($token['code'] == T_LCURLY_PARENTHESIS)
+		{
+			$this->parse_body($bodyCode);
+
+			$this->check(T_RCURLY_PARENTHESIS);
+		}
+		else
+		{
+			$this->scanner->back();
+			$this->parser_command($bodyCode);
+		}
+
+		$codeGenerator->addWhile($ifExpr, $bodyCode);
+	}
+
+	public function parse_do($codeGenerator)
+	{
+		// 'do' eaten
+
+		$token = $this->scanner->next();
+		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
+
+		if($token['code'] == T_LCURLY_PARENTHESIS)
+		{
+			$this->parse_body($bodyCode);
+
+			$this->check(T_RCURLY_PARENTHESIS);
+		}
+		else
+		{
+			$this->scanner->back();
+			$this->parser_command($bodyCode);
+		}
+
+		$this->check(T_WHILE);
+
+		$prec = new Precedence($this->scanner);
+		$prec->run();
+		$codeGenerator->addVariables($prec->getUsedVariables());
+		$ifExpr = $prec->getCode();
+
+		$codeGenerator->addDoWhile($ifExpr, $bodyCode);
 	}
 
 	/**
