@@ -31,6 +31,11 @@ class FunctionGenerator
 	 */
 	protected $codeGenerator;
 
+	/**
+	 * Set name of generated function
+	 *
+	 * @param string $name Function name
+	 */
 	public function setFunctionName($name)
 	{
 		echo "Function name: ".$name."\n";
@@ -38,11 +43,21 @@ class FunctionGenerator
 		$this->name = $name;
 	}
 
+	/**
+	 * Get function name
+	 *
+	 * @return string fucntion name
+	 */
 	public function getName()
 	{
 		return $this->name;
 	}
 
+	/**
+	 * Set fucntion arguments
+	 *
+	 * @param array $args structure with informations about arguments
+	 */
 	public function setArguments(array $args)
 	{
 		$this->args = $args;
@@ -64,11 +79,23 @@ class FunctionGenerator
 		}
 	}
 
+	/**
+	 * Convert function arguments to proper type
+	 *
+	 * @param string $type Type of variable
+	 * @return string C++ code tu use in PHP-CPP definition
+	 */
 	protected function convertToType($type)
 	{
+		// Aliases not supported - specified in PHP documentation
 		$map = [
-			'MIXED'	=> 'Php::Type::String',
-			'ARRAY'	=> 'Php::Type::Array',
+			'MIXED'		=> 'Php::Type::Null',		// Default, anything
+			'ARRAY'		=> 'Php::Type::Array',		// PHP 5.1
+			'CALLABLE'	=> 'Php::Type::Callable',	// PHP 5.4
+			'BOOL'		=> 'Php::Type::Bool', 		// PHP 7
+			'FLOAT'		=> 'Php::Type::Float', 		// PHP 7
+			'INT'		=> 'Php::Type::Numeric',	// PHP 7
+			'STRING'	=> 'Php::Type::String',		// PHP 7
 		];
 
 		if(isset($map[ strtoupper($type)]))
@@ -76,9 +103,14 @@ class FunctionGenerator
 			return $map[ strtoupper($type)];
 		}
 
-		return '"'.$type.'"';
+		return '"'.$type.'"'; // Class name - PHP 5.0
 	}
 
+	/**
+	 * Generate C++ code assigning arguments to variables
+	 *
+	 * @return string C++ code
+	 */
 	public function generateArguments()
 	{
 		$result = [];
@@ -101,6 +133,9 @@ class FunctionGenerator
 		return "";
 	}
 
+	/**
+	 * Extract all variables from code
+	 */
 	protected function variablesFromCode()
 	{
 		foreach($this->codeGenerator->getVariables() as $var)
@@ -112,12 +147,21 @@ class FunctionGenerator
 		}
 	}
 
-
+	/**
+	 * Set code generator
+	 *
+	 * @param CodeGenerator $generator Generator
+	 */
 	public function setCodeGenerator(CodeGenerator $generator)
 	{
 		$this->codeGenerator = $generator;
 	}
 
+	/**
+	 * Get C++ code for function
+	 *
+	 * @return string C++ code
+	 */
 	public function getCode()
 	{
 		$this->variablesFromCode();

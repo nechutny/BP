@@ -28,6 +28,11 @@ class VariableGenerator
 		$this->type = is_null($type) ? self::TYPE_MIXED : $type;
 	}
 
+	/**
+	 * If is variable frum function arguments and have default value, then set it here
+	 *
+	 * @param mixed $value Default value
+	 */
 	public function setArgumentDefaultValue($value)
 	{
 		if($value == 'NULL')
@@ -42,11 +47,21 @@ class VariableGenerator
 		$this->argumentDefaultValue = $value;
 	}
 
+	/**
+	 * Set variable as function argument
+	 *
+	 * @param int $num Argument position (indexed from 0)
+	 */
 	public function assignArgument($num)
 	{
 		$this->argumentNum = $num;
 	}
 
+	/**
+	 * Generate variable definition code
+	 *
+	 * @return string C++ code
+	 */
 	public function getCode()
 	{
 

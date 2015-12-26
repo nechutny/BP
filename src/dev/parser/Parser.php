@@ -132,8 +132,9 @@ class Parser
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
+		$exprGenerator = new ExprGenerator($expr->getData());
 
-		$codeGenerator->addExpression($expr->getCode());
+		$codeGenerator->addExpression($exprGenerator);
 		$codeGenerator->addVariables($expr->getUsedVariables());
 	}
 
@@ -141,8 +142,9 @@ class Parser
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
+		$exprGenerator = new ExprGenerator($expr->getData());
 
-		$codeGenerator->addExpression($expr->getCode());
+		$codeGenerator->addExpression($exprGenerator);
 		$codeGenerator->addVariables($expr->getUsedVariables());
 	}
 
@@ -150,16 +152,18 @@ class Parser
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
+		$exprGenerator = new ExprGenerator($expr->getData());
 
-		$codeGenerator->addReturn($expr->getCode());
+		$codeGenerator->addReturn($exprGenerator);
 	}
 
 	public function parse_echo($codeGenerator)
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
+		$exprGenerator = new ExprGenerator($expr->getData());
 
-		$codeGenerator->addEcho($expr->getCode());
+		$codeGenerator->addEcho($exprGenerator);
 
 	}
 
@@ -181,6 +185,16 @@ class Parser
 				break;
 
 			case T_STRING:
+				$this->scanner->back();
+				$this->parse_expression($codeGenerator);
+				break;
+
+			case T_LNUMBER:
+				$this->scanner->back();
+				$this->parse_expression($codeGenerator);
+				break;
+
+			case T_DNUMBER:
 				$this->scanner->back();
 				$this->parse_expression($codeGenerator);
 				break;
@@ -241,18 +255,18 @@ class Parser
 		$prec = new Precedence($this->scanner);
 		$prec->run();
 		$codeGenerator->addVariables($prec->getUsedVariables());
-		$initExpr = $prec->getCode();
+		$initExpr = new ExprGenerator($prec->getData());
 
 		$prec = new Precedence($this->scanner);
 		$prec->run();
 		$codeGenerator->addVariables($prec->getUsedVariables());
-		$ifExpr = $prec->getCode();
+		$ifExpr = new ExprGenerator($prec->getData());
 
 		$prec = new Precedence($this->scanner);
 		$prec->addEndToken(T_RPARENTHESIS);
 		$prec->run();
 		$codeGenerator->addVariables($prec->getUsedVariables());
-		$iterExpr = $prec->getCode();
+		$iterExpr = new ExprGenerator($prec->getData());
 
 		$this->check(T_RPARENTHESIS);
 
@@ -280,7 +294,7 @@ class Parser
 		$prec = new Precedence($this->scanner);
 		$prec->run();
 		$codeGenerator->addVariables($prec->getUsedVariables());
-		$ifExpr = $prec->getCode();
+		$ifExpr = new ExprGenerator($prec->getData());
 
 		$token = $this->scanner->next();
 		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
@@ -324,7 +338,7 @@ class Parser
 		$prec = new Precedence($this->scanner);
 		$prec->run();
 		$codeGenerator->addVariables($prec->getUsedVariables());
-		$ifExpr = $prec->getCode();
+		$ifExpr = new ExprGenerator($prec->getData());
 
 		$codeGenerator->addDoWhile($ifExpr, $bodyCode);
 	}
@@ -358,7 +372,7 @@ class Parser
 			$this->scanner->back();
 			$this->parser_command($bodyCode);
 		}
-		$codeGenerator->addIf($prec->getCode(), $bodyCode);
+		$codeGenerator->addIf(new ExprGenerator($prec->getData()), $bodyCode);
 		$codeGenerator->addVariables($prec->getUsedVariables());
 
 		// Elseif
@@ -388,7 +402,7 @@ class Parser
 			}
 
 			$codeGenerator->addVariables($prec->getUsedVariables());
-			$codeGenerator->addElseif($prec->getCode(), $bodyCode);
+			$codeGenerator->addElseif(new ExprGenerator($prec->getData()), $bodyCode);
 
 			$token = $this->scanner->next();
 		}
