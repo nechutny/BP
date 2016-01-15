@@ -1,5 +1,6 @@
 #!/bin/env php
 <?php
+require_once(__DIR__ . '/lib/debug.php');
 require_once(__DIR__ . '/scanner/Scanner.php');
 require_once(__DIR__ . '/parser/Parser.php');
 require_once(__DIR__ . '/precedence/Precedence.php');

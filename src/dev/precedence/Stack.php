@@ -113,7 +113,7 @@ class Stack {
 	 */
 	public function debug()
 	{
-		echo "\n\n Stack debug:\n";
+		echo "Stack: ";
 
 		foreach($this->stack as $item)
 		{
@@ -121,17 +121,17 @@ class Stack {
 			{
 				if(isset($item['nonTerminal']))
 				{
-					echo $item['nonTerminal']."\n";
+					echo $item['nonTerminal'].", ";
 				}
 				else
 				{
-					echo $item['value']."\n";
+					echo $item['value'].", ";
 				}
 
 			}
 			else
 			{
-				echo $item."\n";
+				echo $item.", ";
 			}
 		}
 	}

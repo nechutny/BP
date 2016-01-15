@@ -210,13 +210,15 @@ class Precedence
 				switch ($this->getFromTable($a, $token))
 				{
 					case '=':
+						debug::printString(debug::TYPE_PRECEDENCE, "= so push token");
 						$stack->push($token);
 						$token = $this->scanner->next(TRUE);
 						break;
 
 					case '<':
-						$stack->pushTerminal('<');
+						debug::printString(debug::TYPE_PRECEDENCE, "< so push < and token");
 
+						$stack->pushTerminal('<');
 						$stack->push($token);
 						$token = $this->scanner->next(TRUE);
 						break;
@@ -277,7 +279,7 @@ class Precedence
 						}
 						else
 						{
-							echo "OK - rule: " . $key . " " . $rule['target'] . " -> " . implode(' ', $rule['source']) . "\n";
+							debug::printString(debug::TYPE_PRECEDENCE, "rule: " . $key . " " . $rule['target'] . " -> " . implode(' ', $rule['source']));
 						}
 						break;
 
@@ -305,7 +307,7 @@ class Precedence
 				$token = ['code' => T_SEMICOLON, 'value' => ';'];
 			}
 
-			//$stack->debug();
+			debug::printStack(debug::TYPE_PRECEDENCE, $stack);
 
 		} while($this->normalizeCodes($token) != '$' || $stack->topTerminal() != '$'  );
 

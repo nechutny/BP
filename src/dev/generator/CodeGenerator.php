@@ -44,6 +44,7 @@ class CodeGenerator
 			switch($command['command'])
 			{
 				case 'echo':
+					// TODO: Move flush as optional parameter
 					$result .= str_pad('', $indent, "\t").'Php::out << ('.$command['args'][0]->getCode().') << std::flush;'."\n";
 					break;
 
@@ -67,7 +68,7 @@ class CodeGenerator
 					break;
 
 				case 'while':
-					$result .=	str_pad('', $indent, "\t").'while'.$command['args'][0]->getCode().''														."\n".
+					$result .=	str_pad('', $indent, "\t").'while'.$command['args'][0]->getCode().''											."\n".
 							str_pad('', $indent, "\t").'{'																						."\n".
 							$command['args'][1]->getCode().
 							str_pad('', $indent, "\t").'}'																						."\n";
@@ -78,7 +79,7 @@ class CodeGenerator
 							str_pad('', $indent, "\t").'{'																						."\n".
 							$command['args'][1]->getCode().
 							str_pad('', $indent, "\t").'}'																						."\n".
-							str_pad('', $indent, "\t").'while'.$command['args'][0]->getCode().''															."\n";
+							str_pad('', $indent, "\t").'while'.$command['args'][0]->getCode().''												."\n";
 					break;
 
 				case 'break':
