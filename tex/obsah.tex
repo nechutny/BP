@@ -248,7 +248,7 @@ function includeAno($co)
 
 		%TODO: Bude podpora vytváøení instancí PHP tøíd v C++, èi jen pùjde o definici tøíd bez mo¾nosti je v transformovaném kódu pou¾ít? Nároènost vs. pou¾itelnost.
 
-		Umo¾nit definovat tøídy bez podpory dìdìní a implementace interface. V~kódu nepùjde vytváøet instance PHP tøíd. Podporovány namespace, modifikátory viditelnosti a statické metody.Konkrétní tokeny jsou uvedeny v~tabulce \ref{table:phpTokenClass}.
+		Umo¾nit definovat tøídy bez podpory dìdìní a implementace interface. V~kódu nepùjde vytváøet instance PHP tøíd. Podporovány namespace, modifikátory viditelnosti a statické metody. Konkrétní tokeny jsou uvedeny v~tabulce \ref{table:phpTokenClass}.
 
 		\begin{center}
 			\begin{tabular}{ | l | l | l |} \hline
@@ -488,12 +488,12 @@ $a = TRUE &&  FALSE; //  $a = (TRUE AND FALSE)  -> $a == FALSE
 $a = TRUE AND FALSE; // ($a = TRUE) AND FALSE   -> $a == TRUE
 			\end{lstlisting}
 
-			Jazyk C++ v¹ak obsahuje pouze operátory s vy¹¹í prioritou, ne¾ pøiøazení. Kromì priority operátorù se chování neli¹í\cite{PhpLogicOperators}. Je tedy tøeba kromì nahrazení zapísu ve formì slova za funkènì odpovídající zápis z jazyka C++ také provést uzavøení levé a pravé strany do závorek.
+			Jazyk C++ v¹ak obsahuje pouze operátory s vy¹¹í prioritou, ne¾ pøiøazení. Kromì priority operátorù se chování neli¹í\cite{PhpLogicOperators}. Je tedy tøeba kromì nahrazení zápisu ve formì slova za funkènì odpovídající zápis z jazyka C++ také provést uzavøení levé a pravé strany do závorek.
 
 			Výsledná transformace tedy bude \function{\textless výraz \textgreater OR \textless výraz \textgreater $\rightarrow$ ( \textless výraz \textgreater ) $||$ ( \textless výraz \textgreater )}
 
 		\subsection{Dìlení}
-			V pøípadì dìlení èísel v PHP se neprovádí celoèíselné, ale i pro výraze \function{5/4} je výsledkem desetinné èíslo. Pøi transformaci operátorù dìlení bude tedy tøeba provést zmìnu typu na float/double. V jazyce C++ je rozdíl mezi výrazy \function{5/4} a \function{5.0/4.0}, kdy v prvním pøípadì je výsledkem \function{1} a v druhém \function{1.2}. Pøi transformaci tedy bude tøeba oba operátory dìlení pøetypovat na desetinné èíslo.
+			V pøípadì dìlení èísel v PHP se neprovádí celoèíselné, ale i pro výraz \function{5/4} je výsledkem desetinné èíslo. Pøi transformaci operátorù dìlení bude tedy tøeba provést zmìnu typu na float/double. V jazyce C++ je rozdíl mezi výrazy \function{5/4} a \function{5.0/4.0}, kdy v prvním pøípadì je výsledkem \function{1} a v druhém \function{1.2}. Pøi transformaci tedy bude tøeba oba operátory dìlení pøetypovat na desetinné èíslo.
 
 
 		\subsection{Potlaèení chyby}
