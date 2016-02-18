@@ -16,6 +16,13 @@ class Scanner {
 	public function __construct($file)
 	{
 		$file = file_get_contents($file);
+		
+		echo "Input file: \n\n";
+		
+		echo $file;
+		
+		echo "\n\n\n";
+		
 		$tokens = token_get_all($file);
 
 		$tok = NULL;
