@@ -37,7 +37,11 @@ catch(EndOfFileException $e)
 {
 	echo "Code:\n\n\n";
 
-	echo $parser->generator->getCode();
+	$code = $parser->generator->getCode();
+	
+	file_put_contents('test.cpp', $code);
+	
+	echo $code;
 
 	echo "\n\n\nDone\n";
 }
