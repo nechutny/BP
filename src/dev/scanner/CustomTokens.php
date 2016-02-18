@@ -21,3 +21,5 @@ define('T_MINUS', -12);
 define('T_MUL', -13);
 define('T_DIV', -14);
 define('T_NEG', -15);
+
+define('T_NULL', -16);

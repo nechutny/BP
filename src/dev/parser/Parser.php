@@ -2,6 +2,7 @@
 
 require_once( __DIR__ . '/../precedence/Precedence.php');
 require_once( __DIR__ . '/../generator/Generator.php');
+require_once( __DIR__ . '/../variable/Scope.php');
 
 class Parser
 {
@@ -136,7 +137,8 @@ class Parser
 		$this->check(T_RPARENTHESIS);
 		$this->check(T_LCURLY_PARENTHESIS);
 
-		$codeGenerator = new CodeGenerator();
+		$varScope = new Scope();
+		$codeGenerator = new CodeGenerator(1, $varScope);
 		$this->parse_body($codeGenerator);
 		$functionGenerator->setCodeGenerator($codeGenerator);
 
@@ -155,7 +157,7 @@ class Parser
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
-		$exprGenerator = new ExprGenerator($expr->getData());
+		$exprGenerator = new ExprGenerator($expr->getData(), $codeGenerator->getScope());
 
 		$codeGenerator->addExpression($exprGenerator);
 		$codeGenerator->addVariables($expr->getUsedVariables());
@@ -171,7 +173,7 @@ class Parser
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
-		$exprGenerator = new ExprGenerator($expr->getData());
+		$exprGenerator = new ExprGenerator($expr->getData(), $codeGenerator->getScope());
 
 		$codeGenerator->addExpression($exprGenerator);
 		$codeGenerator->addVariables($expr->getUsedVariables());
@@ -189,7 +191,7 @@ class Parser
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
-		$exprGenerator = new ExprGenerator($expr->getData());
+		$exprGenerator = new ExprGenerator($expr->getData(), $codeGenerator->getScope());
 
 		$codeGenerator->addReturn($exprGenerator);
 	}
@@ -206,7 +208,7 @@ class Parser
 	{
 		$expr = new Precedence($this->scanner);
 		$expr->run();
-		$exprGenerator = new ExprGenerator($expr->getData());
+		$exprGenerator = new ExprGenerator($expr->getData(), $codeGenerator->getScope());
 
 		$codeGenerator->addEcho($exprGenerator);
 
@@ -351,23 +353,23 @@ class Parser
 		$prec = new Precedence($this->scanner);
 		$prec->run();
 		$codeGenerator->addVariables($prec->getUsedVariables());
-		$initExpr = new ExprGenerator($prec->getData());
+		$initExpr = new ExprGenerator($prec->getData(), $codeGenerator->getScope());
 
 		$prec = new Precedence($this->scanner);
 		$prec->run();
 		$codeGenerator->addVariables($prec->getUsedVariables());
-		$ifExpr = new ExprGenerator($prec->getData());
+		$ifExpr = new ExprGenerator($prec->getData(), $codeGenerator->getScope());
 
 		$prec = new Precedence($this->scanner);
 		$prec->addEndToken(T_RPARENTHESIS);
 		$prec->run();
 		$codeGenerator->addVariables($prec->getUsedVariables());
-		$iterExpr = new ExprGenerator($prec->getData());
+		$iterExpr = new ExprGenerator($prec->getData(), $codeGenerator->getScope());
 
 		$this->check(T_RPARENTHESIS);
 
 		$token = $this->scanner->next();
-		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
+		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1, $codeGenerator->getScope());
 
 		if($token['code'] == T_LCURLY_PARENTHESIS)
 		{
@@ -400,10 +402,10 @@ class Parser
 		$prec = new Precedence($this->scanner);
 		$prec->run();
 		$codeGenerator->addVariables($prec->getUsedVariables());
-		$ifExpr = new ExprGenerator($prec->getData());
+		$ifExpr = new ExprGenerator($prec->getData(), $codeGenerator->getScope());
 
 		$token = $this->scanner->next();
-		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
+		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1, $codeGenerator->getScope());
 
 		if($token['code'] == T_LCURLY_PARENTHESIS)
 		{
@@ -435,7 +437,7 @@ class Parser
 		// 'do' eaten
 
 		$token = $this->scanner->next();
-		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
+		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1, $codeGenerator->getScope());
 
 		if($token['code'] == T_LCURLY_PARENTHESIS)
 		{
@@ -454,7 +456,7 @@ class Parser
 		$prec = new Precedence($this->scanner);
 		$prec->run();
 		$codeGenerator->addVariables($prec->getUsedVariables());
-		$ifExpr = new ExprGenerator($prec->getData());
+		$ifExpr = new ExprGenerator($prec->getData(), $codeGenerator->getScope());
 
 		$codeGenerator->addDoWhile($ifExpr, $bodyCode);
 	}
@@ -475,7 +477,7 @@ class Parser
 
 		// If
 		$token = $this->scanner->next();
-		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
+		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1, $codeGenerator->getScope());
 
 		if($token['code'] == T_LCURLY_PARENTHESIS)
 		{
@@ -488,7 +490,7 @@ class Parser
 			$this->scanner->back();
 			$this->parser_command($bodyCode);
 		}
-		$codeGenerator->addIf(new ExprGenerator($prec->getData()), $bodyCode);
+		$codeGenerator->addIf(new ExprGenerator($prec->getData(), $codeGenerator->getScope()), $bodyCode);
 		$codeGenerator->addVariables($prec->getUsedVariables());
 
 		// Elseif
@@ -500,7 +502,7 @@ class Parser
 
 			$token = $this->scanner->next();
 
-			$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
+			$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1, $codeGenerator->getScope());
 
 
 
@@ -527,7 +529,7 @@ class Parser
 		if($token['code'] == T_ELSE)
 		{
 			$token = $this->scanner->next();
-			$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1);
+			$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1, $codeGenerator->getScope());
 
 			if($token['code'] == T_LCURLY_PARENTHESIS)
 			{

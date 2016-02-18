@@ -12,10 +12,12 @@ class CodeGenerator
 	 * CodeGenerator constructor.
 	 *
 	 * @param int $indent Indention level
+	 * @param Scope|array $scope Variable scope
 	 */
-	public function __construct($indent = 1)
+	public function __construct($indent = 1, Scope $scope)
 	{
 		$this->indent = $indent;
+		$this->scope = $scope;
 	}
 
 	/**
@@ -128,6 +130,16 @@ class CodeGenerator
 	public function addVariables(array $names)
 	{
 		$this->variables = array_merge($this->variables, array_flip($names));
+	}
+
+	/**
+	 * Get all variables in this scope
+	 *
+	 * @return Scope Variable scope
+	 */
+	public function getScope()
+	{
+		return $this->variables;
 	}
 
 	/**

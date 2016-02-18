@@ -3,10 +3,12 @@
 class ExprGenerator
 {
 	protected $data = [];
+	protected $varScope = NULL;
 
-	public function __construct(array $data)
+	public function __construct(array $data, Scope $scope)
 	{
 		$this->data = $data;
+		$this->varScope = $scope;
 	}
 
 

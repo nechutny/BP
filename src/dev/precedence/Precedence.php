@@ -9,6 +9,9 @@ class Precedence
 
 	protected $stopTokens = [T_COMMA, T_SEMICOLON];
 
+	/**
+	 * @var null|Stack
+	 */
 	protected $result = NULL;
 
 	protected $variables = [];

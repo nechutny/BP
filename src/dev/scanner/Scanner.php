@@ -24,7 +24,7 @@ class Scanner {
 		{
 			if(!is_array($token))
 			{
-				switch($token)
+				switch(strtoupper($token))
 				{
 					case '(':
 						$tname = 'T_LPARENTHESIS';
@@ -67,6 +67,9 @@ class Scanner {
 						break;
 					case '!':
 						$tname = 'T_NEG';
+						break;
+					case 'NULL':
+						$tname = 'T_NULL';
 						break;
 					default:
 						$tname = 'T_UNSUPPORTED';
