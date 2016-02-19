@@ -1,4 +1,7 @@
 <?php
+require_once( __DIR__ . '/../variable/Variable.php');
+require_once( __DIR__ . '/../variable/Type.php');
+
 
 class ExprGenerator
 {
@@ -11,9 +14,49 @@ class ExprGenerator
 		$this->varScope = $scope;
 	}
 
+	public function analyse()
+	{
+		$this->recursiveAnalyse($this->data);
+
+
+		echo "\n\nAnalyse tree: \n";
+		print_r($this->data);
+		echo "\n\n\n";
+	}
+
+	public function recursiveAnalyse(array &$data)
+	{
+		if(isset($data['nonTerminal']))
+		{
+			foreach($data['terminals'] as &$trm)
+			{
+				$this->recursiveAnalyse($trm);
+			}
+			$type = TypeDetector::analyseExpression($data['terminals'], $this->varScope);
+			$data['type'] = $type;
+			if($type == 'mixed')
+			{
+				echo "Type: ".$type." - ".print_r($data, true);
+			}
+
+		}
+		elseif(isset($data['value']))
+		{
+			if($data['code'] == T_VARIABLE)
+			{
+				$this->varScope[ $data['value'] ] = new Variable( $data['value'] );
+			}
+		}
+		else
+		{
+			throw new PrecedenceException('Got unexpected structure.  '.print_r($data));
+		}
+	}
+
 
 	public function getCode()
 	{
+
 		return $this->recursiveCode($this->data);
 	}
 

@@ -7,6 +7,8 @@ class Scope implements ArrayAccess, Iterator, Countable
 	 */
 	protected $variables = [];
 
+	protected $position = 0;
+
 	public function __construct()
 	{
 	}
@@ -15,27 +17,27 @@ class Scope implements ArrayAccess, Iterator, Countable
 
 	public function next()
 	{
-		// TODO: Implement next() method.
+		++$this->position;
 	}
 
 	public function current()
 	{
-		// TODO: Implement current() method.
+		return $this->variables[ array_keys($this->variables )[ $this->position ] ];
 	}
 
 	public function rewind()
 	{
-		// TODO: Implement rewind() method.
+		$this->position = 0;
 	}
 
 	public function valid()
 	{
-		// TODO: Implement valid() method.
+		return ($this->position < count($this->variables));
 	}
 
 	public function key()
 	{
-		// TODO: Implement key() method.
+		return array_keys($this->variables )[ $this->position ];
 	}
 
 	/* === Countable ================================================================================================= */

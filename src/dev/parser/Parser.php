@@ -160,7 +160,7 @@ class Parser
 		$exprGenerator = new ExprGenerator($expr->getData(), $codeGenerator->getScope());
 
 		$codeGenerator->addExpression($exprGenerator);
-		$codeGenerator->addVariables($expr->getUsedVariables());
+		//$codeGenerator->addVariables($expr->getUsedVariables());
 	}
 
 	/**
@@ -176,7 +176,7 @@ class Parser
 		$exprGenerator = new ExprGenerator($expr->getData(), $codeGenerator->getScope());
 
 		$codeGenerator->addExpression($exprGenerator);
-		$codeGenerator->addVariables($expr->getUsedVariables());
+		//$codeGenerator->addVariables($expr->getUsedVariables());
 	}
 
 	/**
@@ -352,18 +352,18 @@ class Parser
 
 		$prec = new Precedence($this->scanner);
 		$prec->run();
-		$codeGenerator->addVariables($prec->getUsedVariables());
+		//$codeGenerator->addVariables($prec->getUsedVariables());
 		$initExpr = new ExprGenerator($prec->getData(), $codeGenerator->getScope());
 
 		$prec = new Precedence($this->scanner);
 		$prec->run();
-		$codeGenerator->addVariables($prec->getUsedVariables());
+		//$codeGenerator->addVariables($prec->getUsedVariables());
 		$ifExpr = new ExprGenerator($prec->getData(), $codeGenerator->getScope());
 
 		$prec = new Precedence($this->scanner);
 		$prec->addEndToken(T_RPARENTHESIS);
 		$prec->run();
-		$codeGenerator->addVariables($prec->getUsedVariables());
+		//$codeGenerator->addVariables($prec->getUsedVariables());
 		$iterExpr = new ExprGenerator($prec->getData(), $codeGenerator->getScope());
 
 		$this->check(T_RPARENTHESIS);
@@ -401,7 +401,7 @@ class Parser
 		// 'while' eaten
 		$prec = new Precedence($this->scanner);
 		$prec->run();
-		$codeGenerator->addVariables($prec->getUsedVariables());
+		//$codeGenerator->addVariables($prec->getUsedVariables());
 		$ifExpr = new ExprGenerator($prec->getData(), $codeGenerator->getScope());
 
 		$token = $this->scanner->next();
@@ -455,7 +455,7 @@ class Parser
 
 		$prec = new Precedence($this->scanner);
 		$prec->run();
-		$codeGenerator->addVariables($prec->getUsedVariables());
+		//$codeGenerator->addVariables($prec->getUsedVariables());
 		$ifExpr = new ExprGenerator($prec->getData(), $codeGenerator->getScope());
 
 		$codeGenerator->addDoWhile($ifExpr, $bodyCode);
@@ -491,7 +491,7 @@ class Parser
 			$this->parser_command($bodyCode);
 		}
 		$codeGenerator->addIf(new ExprGenerator($prec->getData(), $codeGenerator->getScope()), $bodyCode);
-		$codeGenerator->addVariables($prec->getUsedVariables());
+		//$codeGenerator->addVariables($prec->getUsedVariables());
 
 		// Elseif
 		$token = $this->scanner->next();
@@ -519,8 +519,8 @@ class Parser
 				$this->parser_command($bodyCode);
 			}
 
-			$codeGenerator->addVariables($prec->getUsedVariables());
-			$codeGenerator->addElseif(new ExprGenerator($prec->getData()), $bodyCode);
+			//$codeGenerator->addVariables($prec->getUsedVariables());
+			$codeGenerator->addElseif(new ExprGenerator($prec->getData(),$codeGenerator->getScope()), $bodyCode);
 
 			$token = $this->scanner->next();
 		}
@@ -543,7 +543,7 @@ class Parser
 				$this->parser_command($bodyCode);
 			}
 
-			$codeGenerator->addVariables($prec->getUsedVariables());
+			//$codeGenerator->addVariables($prec->getUsedVariables());
 			$codeGenerator->addElse($bodyCode);
 		}
 		else

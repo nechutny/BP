@@ -72,11 +72,20 @@ class Scanner {
 					case '/':
 						$tname = 'T_DIV';
 						break;
+					case '%':
+						$tname = 'T_MOD';
+						break;
 					case '!':
 						$tname = 'T_NEG';
 						break;
 					case 'NULL':
 						$tname = 'T_NULL';
+						break;
+					case '<':
+						$tname = 'T_LESS';
+						break;
+					case '>':
+						$tname = 'T_GREATER';
 						break;
 					default:
 						$tname = 'T_UNSUPPORTED';

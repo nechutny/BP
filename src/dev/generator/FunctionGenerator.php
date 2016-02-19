@@ -138,7 +138,7 @@ class FunctionGenerator
 	 */
 	protected function variablesFromCode()
 	{
-		foreach($this->codeGenerator->getVariables() as $var)
+		foreach($this->codeGenerator->getVariables() as $var => $val)
 		{
 			if(!isset($this->vars[ $var ]))
 			{

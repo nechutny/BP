@@ -17,7 +17,7 @@ class CodeGenerator
 	public function __construct($indent = 1, Scope $scope)
 	{
 		$this->indent = $indent;
-		$this->scope = $scope;
+		$this->variables = $scope;
 	}
 
 	/**
@@ -151,16 +151,20 @@ class CodeGenerator
 	{
 		foreach($this->commands as $command)
 		{
-			foreach($command['args'] as $arg)
+			foreach ($command['args'] as $arg)
 			{
-				if($arg instanceof CodeGenerator)
+				if ($arg instanceof ExprGenerator)
 				{
-					$this->addVariables($arg->getVariables());
+					$arg->analyse();
+				}
+				if ($arg instanceof CodeGenerator)
+				{
+					$arg->getVariables();
 				}
 			}
 		}
 
-		return array_keys($this->variables);
+		return $this->variables;
 	}
 
 	/**
