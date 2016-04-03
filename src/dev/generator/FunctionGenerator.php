@@ -138,8 +138,6 @@ class FunctionGenerator
 	 */
 	protected function variablesFromCode()
 	{
-		$scope = $this->codeGenerator->getScope();
-
 		$tree = [];
 		foreach($this->codeGenerator->getVariables($tree) as $var => $val)
 		{

@@ -63,8 +63,6 @@ class Variable
 			return NULL;
 		}
 
-		echo "return ".$type;
-
 		return $type;
 	}
 
@@ -97,8 +95,9 @@ class Variable
 
 	public function debug()
 	{
-		echo "\n\n Variable name:".$this->name."\n Used:".$this->isUsed." \n Isset: ".$this->lineIsset."\n types:";
+		echo "\n\nVariable name: ".$this->name."\nUsed:".$this->isUsed." \nIsset:".$this->lineIsset."\nTypes: ";
 		print_r($this->type);
+		echo "-----\n";
 	}
 
 	public function __construct($name, $type = Variable::TYPE_UNKNOWN)

@@ -131,17 +131,7 @@ class ExprGenerator
 		$arg = $this->recursiveCode($op);
 
 		$arg = 'php2cpp::to_string('.$arg.')';
-
-		/*
-		if(in_array($op['type'], ['float', 'int']))
-		{
-
-		}
-		elseif($op['type'] == 'string')
-		{
-			$arg = '(const char*)'.$arg;
-		}*/
-
+		
 		return $arg;
 	}
 

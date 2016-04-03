@@ -79,8 +79,6 @@ class VariableGenerator
 	 */
 	public function getCode()
 	{
-		print_r($this->variable);
-
 		if(!is_null($this->variable))
 		{
 			$type = $this->variable->isOneType();
