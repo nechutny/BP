@@ -24,9 +24,11 @@ class FileGenerator
 	 */
 	public function getCode()
 	{
-		$result =	'#include <phpcpp.h>'			."\n".
-					'#include <math.h>'				."\n".
-					'#include <iostream>'			."\n\n";
+		$result =	'#include <phpcpp.h>'				."\n".
+					'#include <math.h>'					."\n".
+					'#include <iostream>'				."\n".
+					'#include "cpp/PhpValString.cpp"'	."\n".
+					'#include "cpp/PhpValFloat.cpp"'	."\n\n";
 
 		foreach ($this->functions as $function)
 		{

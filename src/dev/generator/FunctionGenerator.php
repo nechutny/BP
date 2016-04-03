@@ -50,7 +50,7 @@ class FunctionGenerator
 	 */
 	public function getName()
 	{
-		return $this->name;
+		return "compiled_".$this->name;
 	}
 
 	/**
@@ -138,7 +138,10 @@ class FunctionGenerator
 	 */
 	protected function variablesFromCode()
 	{
-		foreach($this->codeGenerator->getVariables() as $var => $val)
+		$scope = $this->codeGenerator->getScope();
+
+		$tree = [];
+		foreach($this->codeGenerator->getVariables($tree) as $var => $val)
 		{
 			if(!isset($this->vars[ $var ]))
 			{
@@ -166,17 +169,20 @@ class FunctionGenerator
 	{
 		$this->variablesFromCode();
 
+		$this->codeGenerator->getScope()->debug();
+
 		$variables = '';
 		foreach($this->vars as $var)
 		{
+			$var->setVariable( $this->codeGenerator->getScope()[ '$'.$var->getName() ] );
 			$variables .= $var->getCode();
 		}
 
-		return	'Php::Value phpFunc_'.$this->name.'(Php::Parameters &args)'			."\n".
+		return	'Php::Value phpFunc_'.$this->getName().'(Php::Parameters &args)'	."\n".
 				'{'																	."\n".
 				''.$variables														."\n".
 				''.$this->codeGenerator->getCode()									."\n".
-				'	return nullptr;'													."\n".
+				'	return nullptr;'												."\n".
 				'}'																	."\n\n";
 
 

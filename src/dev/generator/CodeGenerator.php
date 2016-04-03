@@ -147,19 +147,23 @@ class CodeGenerator
 	 *
 	 * @return array Variable names
 	 */
-	public function getVariables()
+	public function getVariables($tree)
 	{
-		foreach($this->commands as $command)
+		foreach($this->commands as $key1 => $command)
 		{
-			foreach ($command['args'] as $arg)
+			foreach ($command['args'] as $key2 => $arg)
 			{
+				$treeCopy = $tree;
+				$treeCopy[] = $key1;
+				$treeCopy[] = $key2;
+
 				if ($arg instanceof ExprGenerator)
 				{
-					$arg->analyse();
+					$arg->analyse($treeCopy);
 				}
 				if ($arg instanceof CodeGenerator)
 				{
-					$arg->getVariables();
+					$arg->getVariables($treeCopy);
 				}
 			}
 		}

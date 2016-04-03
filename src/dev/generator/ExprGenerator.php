@@ -14,10 +14,13 @@ class ExprGenerator
 		$this->varScope = $scope;
 	}
 
-	public function analyse()
+	public function analyse($tree)
 	{
+		// First analyse - original types
 		$this->recursiveAnalyse($this->data);
 
+		// Second analyse - expected output types
+		$this->outputTypeAnalyse($this->data, NULL, $tree);
 
 		echo "\n\nAnalyse tree: \n";
 		print_r($this->data);
@@ -34,17 +37,38 @@ class ExprGenerator
 			}
 			$type = TypeDetector::analyseExpression($data['terminals'], $this->varScope);
 			$data['type'] = $type;
-			if($type == 'mixed')
+			/*if($type == 'mixed')
 			{
 				echo "Type: ".$type." - ".print_r($data, true);
-			}
+			}*/
 
 		}
 		elseif(isset($data['value']))
 		{
+			$data['type'] = 'mixed';
+
 			if($data['code'] == T_VARIABLE)
 			{
-				$this->varScope[ $data['value'] ] = new Variable( $data['value'] );
+				if(!isset($this->varScope[ $data['value'] ]))
+				{
+					$this->varScope[ $data['value'] ] = new Variable( $data['value'] );
+				}
+			}
+			elseif($data['code'] == T_DNUMBER)
+			{
+				$data['type'] = 'float';
+			}
+			elseif($data['code'] == T_LNUMBER)
+			{
+				$data['type'] = 'int';
+			}
+			elseif($data['code'] == T_CONSTANT_ENCAPSED_STRING)
+			{
+				$data['type'] = 'string';
+			}
+			else
+			{
+				echo "\n\nFOO: ".$data['code']." / ".$data['name']."\n";
 			}
 		}
 		else
@@ -53,11 +77,79 @@ class ExprGenerator
 		}
 	}
 
+	public function outputTypeAnalyse(array &$data, array $parent = NULL, array $tree = [])
+	{
+		if(isset($data['nonTerminal']))
+		{
+			if(isset($data['terminals'][2]) && isset($data['terminals'][1]['code']) && $data['terminals'][1]['code'] == T_ASSIGN)
+			{ // Assign copy type from source to target
+				$data['type'] = $data['terminals'][0]['type'];
+			}
+
+			if(!is_null($parent))
+			{ // Top
+				$data['outType'] = $parent['type'];
+			}
+			else
+			{
+				$data['outType'] = $data['type'];
+			}
+
+
+			foreach($data['terminals'] as $key => &$trm)
+			{
+				$treeCopy = $tree;
+				$treeCopy[] = $key;
+				$this->outputTypeAnalyse($trm, $data, $treeCopy);
+			}
+		}
+		elseif(isset($data['value']))
+		{
+			$data['outType'] = $parent['outType'];
+
+			if($data['code'] == T_VARIABLE)
+			{
+				$this->varScope[ $data['value'] ]->setType($tree, $data['outType'] );
+			}
+
+		}
+		else
+		{
+			throw new PrecedenceException('Got unexpected structure.  '.print_r($data, true));
+		}
+	}
+
 
 	public function getCode()
 	{
 
 		return $this->recursiveCode($this->data);
+	}
+
+	protected function stringOperator($op)
+	{
+		$arg = $this->recursiveCode($op);
+
+		$arg = 'php2cpp::to_string('.$arg.')';
+
+		/*
+		if(in_array($op['type'], ['float', 'int']))
+		{
+
+		}
+		elseif($op['type'] == 'string')
+		{
+			$arg = '(const char*)'.$arg;
+		}*/
+
+		return $arg;
+	}
+
+	protected function doubleOperator($op)
+	{
+		$arg = $this->recursiveCode($op);
+
+		return 'php2cpp::to_float('.$arg.')';
 	}
 
 	/**
@@ -79,12 +171,14 @@ class ExprGenerator
 			// Pow
 			if(count($op['terminals']) == 3 && isset($op['terminals'][1]) && isset($op['terminals'][1]['value']) && $op['terminals'][1]['value'] == '**')
 			{
-				return ' pow('.$this->recursiveCode($op['terminals'][2]).','.$this->recursiveCode($op['terminals'][0]).')';
+				return ' pow('.$this->doubleOperator($op['terminals'][2]).','.$this->doubleOperator($op['terminals'][0]).')';
 			}
 			// Concatenation
 			elseif(count($op['terminals']) == 3 && isset($op['terminals'][1]) && isset($op['terminals'][1]['value']) && $op['terminals'][1]['value'] == '.')
 			{
-				return ' std::string( (const char*)'.$this->recursiveCode($op['terminals'][2]).').append( (const char*)'.$this->recursiveCode($op['terminals'][0]).')';
+				$arg1 = $this->stringOperator($op['terminals'][2]);
+				$arg2 = $this->stringOperator($op['terminals'][0]);
+				return ' std::string( '.$arg1.').append( '.$arg2.')';
 			}
 			// OR, XOR, AND keywords, except ',' lowest priority (not (!!!) same as ||, && etc.)
 			elseif(count($op['terminals']) == 3 && isset($op['terminals'][1]) && isset($op['terminals'][1]['value']) && in_array(strtoupper($op['terminals'][1]['value']), ['AND','OR','XOR']))
@@ -100,10 +194,10 @@ class ExprGenerator
 
 				return $this->recursiveCode($op['terminals'][2]).' '.$op['terminals'][1]['value'].' '.$this->recursiveCode($op['terminals'][0]);
 			}
-			// Divide - typecast to float
-			elseif(count($op['terminals']) == 3 && isset($op['terminals'][1]) && isset($op['terminals'][1]['value']) && $op['terminals'][1]['value'] == '/')
+			// mul, div, sub, add, ...
+			elseif(count($op['terminals']) == 3 && isset($op['terminals'][1]) && isset($op['terminals'][1]['value']) && in_array($op['terminals'][1]['value'], ['/', '*', '+', '-', '%']))
 			{
-				return '(float)('.$this->recursiveCode($op['terminals'][2]).') '.$op['terminals'][1]['value'].' (float)('.$this->recursiveCode($op['terminals'][0]).')';
+				return ''.$this->doubleOperator($op['terminals'][2]).' '.$op['terminals'][1]['value'].' '.$this->doubleOperator($op['terminals'][0]).' ';
 			}
 
 			foreach(array_reverse($op['terminals']) as $term)
@@ -113,12 +207,49 @@ class ExprGenerator
 		}
 		elseif(isset($op['value']))
 		{
-			if($op['code'] == T_VARIABLE)
+			if(in_array($op['code'], [ T_LNUMBER, T_DNUMBER, T_CONSTANT_ENCAPSED_STRING]))
 			{
+				// Value
+
+				$outVal = $op['value'];
+				if($op['code'] == T_CONSTANT_ENCAPSED_STRING)
+				{
+					$outVal = substr($outVal, 1, -1);
+				}
+
+				if($op['outType'] == 'string')
+				{
+
+					if(!in_array($op['type'], ['int', 'float']))
+					{
+						$outVal = '"' . $outVal . '"';
+					}
+				}
+				elseif($op['outType'] == 'int')
+				{
+					$outVal = (int)$outVal;
+				}
+				elseif($op['outType'] == 'float')
+				{
+					$outVal = (float)$outVal;
+				}
+
+				$result .= ''.$outVal;
+			}
+			elseif($op['code'] == T_VARIABLE)
+			{
+				// Variable
+
 				return ' phpVar_'.substr($op['value'],1);
 			}
+			else
+			{
+				// Operators
 
-			$result .= ' '.$op['value'];
+				return ' '.$op['value'];
+			}
+
+
 		}
 		else
 		{

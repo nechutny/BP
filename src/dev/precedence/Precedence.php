@@ -314,10 +314,6 @@ class Precedence
 
 		} while($this->normalizeCodes($token) != '$' || $stack->topTerminal() != '$'  );
 
-		//print_r($stack->top());
-
-
-
 		$this->result = $stack->top();
 	}
 

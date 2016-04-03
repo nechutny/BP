@@ -13,6 +13,14 @@ class Scope implements ArrayAccess, Iterator, Countable
 	{
 	}
 
+	public function debug()
+	{
+		foreach ($this->variables as $variable)
+		{
+			$variable->debug();
+		}
+	}
+
 	/* === Iterator ================================================================================================== */
 
 	public function next()

@@ -2,13 +2,13 @@
 
 class Variable
 {
-	const TYPE_UNKNOWN = 1;
-	const TYPE_BOOL = 2;
-	const TYPE_INT = 4;
-	const TYPE_DOUBLE = 8;
-	const TYPE_STRING = 16;
-	const TYPE_ARRAY = 32;
-	const TYPE_OBJECT = 64;
+	const TYPE_UNKNOWN = 'unknown';
+	const TYPE_BOOL = 'boolean';
+	const TYPE_INT = 'int';
+	const TYPE_DOUBLE = 'double';
+	const TYPE_STRING = 'string';
+	const TYPE_ARRAY = 'array';
+	const TYPE_OBJECT = 'object';
 
 	/**
 	 * @var string $name Variable name
@@ -16,9 +16,9 @@ class Variable
 	protected $name;
 
 	/**
-	 * @var int $type Variable type
+	 * @var array $type Variable type
 	 */
-	protected $type;
+	protected $type = [];
 
 	/**
 	 * @var int $special Is something special? (eg. function argument)
@@ -35,9 +35,79 @@ class Variable
 	 */
 	protected $isUsed = FALSE;
 
-	public function __construct($name, $type = 0)
+	public function setType(array $tree, $type)
+	{
+		$ptr = &$this->type;
+
+		foreach ($tree as $i)
+		{
+			if(!isset($ptr[ $i ]))
+			{
+				$ptr[ $i ] = [];
+			}
+
+			$ptr = & $ptr[ $i ];
+		}
+
+		$ptr = $type;
+	}
+
+	public function isOneType()
+	{
+		try {
+			$type = $this->recursiveType($this->type, NULL);
+
+		}
+		catch (NotOneTypeException $e)
+		{
+			return NULL;
+		}
+
+		echo "return ".$type;
+
+		return $type;
+	}
+
+	protected function recursiveType($tree, $type = NULL)
+	{
+		if(!is_array($tree))
+		{
+			if($tree != $type)
+			{
+				if(is_null($type))
+				{
+					return $tree;
+				}
+				else
+				{
+					throw new NotOneTypeException();
+				}
+			}
+
+			return $type;
+		}
+
+		foreach ($tree as $val)
+		{
+			$type = $this->recursiveType($val, $type);
+		}
+
+		return $type;
+	}
+
+	public function debug()
+	{
+		echo "\n\n Variable name:".$this->name."\n Used:".$this->isUsed." \n Isset: ".$this->lineIsset."\n types:";
+		print_r($this->type);
+	}
+
+	public function __construct($name, $type = Variable::TYPE_UNKNOWN)
 	{
 		$this->name = $name;
-		$this->type = $type;
 	}
+}
+
+class NotOneTypeException extends Exception
+{
+
 }

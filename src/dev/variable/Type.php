@@ -91,12 +91,10 @@ class TypeDetector
 				}
 				elseif($expr[0]['code'] == T_LNUMBER)
 				{
-					// TODO - detect from scope
 					$type = self::TYPE_INT;
 				}
 				elseif($expr[0]['code'] == T_DNUMBER)
 				{
-					// TODO - detect from scope
 					$type = self::TYPE_FLOAT;
 				}
 				elseif($expr[0]['code'] == T_RPARENTHESIS)
@@ -112,7 +110,7 @@ class TypeDetector
 			{
 				if(isset($expr[1]) && isset($expr[2]))
 				{
-						$type = self::detectOperator($expr[1]['code']);
+					$type = self::detectOperator($expr[1]['code']);
 				}
 				elseif(isset($expr[1]) && isset($expr[1]['code']))
 				{ // Neg, pre inc/dec

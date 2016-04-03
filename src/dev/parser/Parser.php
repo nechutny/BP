@@ -613,8 +613,6 @@ class Parser
 		{
 			return array_merge([$arg], $this->parse_args());
 		}
-
-		//print_r($token);
 	}
 
 	/**

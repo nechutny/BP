@@ -12,6 +12,11 @@ class VariableGenerator
 
 	protected $type;
 
+	/**
+	 * @var Variable
+	 */
+	protected $variable;
+
 	protected $argumentNum;
 	protected $argumentDefaultValue = NULL;
 
@@ -26,6 +31,11 @@ class VariableGenerator
 		$this->name = substr($name,1); // Remove $ from beginning
 
 		$this->type = is_null($type) ? self::TYPE_MIXED : $type;
+	}
+
+	public function getName()
+	{
+		return $this->name;
 	}
 
 	/**
@@ -57,6 +67,11 @@ class VariableGenerator
 		$this->argumentNum = $num;
 	}
 
+	public function setVariable(Variable $var)
+	{
+		$this->variable = $var;
+	}
+
 	/**
 	 * Generate variable definition code
 	 *
@@ -64,6 +79,27 @@ class VariableGenerator
 	 */
 	public function getCode()
 	{
+		print_r($this->variable);
+
+		if(!is_null($this->variable))
+		{
+			$type = $this->variable->isOneType();
+			if($type)
+			{
+				switch($type)
+				{
+					case 'int':
+						$this->type = self::TYPE_INT;
+						break;
+					case 'float':
+						$this->type = self::TYPE_FLOAT;
+						break;
+					case 'string':
+						$this->type = self::TYPE_STRING;
+						break;
+				}
+			}
+		}
 
 		if(!is_null($this->argumentNum))
 		{
@@ -79,7 +115,19 @@ class VariableGenerator
 		}
 		else
 		{
-			$argument = ' = nullptr';
+			if($this->type == self::TYPE_INT)
+			{
+				$argument = ' = 0';
+			}
+			elseif($this->type == self::TYPE_FLOAT)
+			{
+				$argument = ' = 0.0';
+			}
+			else
+			{
+				$argument = ' = nullptr';
+			}
+
 		}
 
 		return "\t".$this->type.' phpVar_'.$this->name.$argument.';'."\n";
