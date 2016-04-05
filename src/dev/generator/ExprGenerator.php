@@ -180,7 +180,22 @@ class ExprGenerator
 			// mul, div, sub, add, ...
 			elseif(count($op['terminals']) == 3 && isset($op['terminals'][1]) && isset($op['terminals'][1]['value']) && in_array($op['terminals'][1]['value'], ['/', '*', '+', '-', '%']))
 			{
-				return ''.$this->doubleOperator($op['terminals'][2]).' '.$op['terminals'][1]['value'].' '.$this->doubleOperator($op['terminals'][0]).' ';
+				$arg1 = $op['terminals'][2];
+				$arg2 = $op['terminals'][0];
+
+				if($op['type'] != 'int')
+				{
+					$arg1 = $this->doubleOperator($arg1);
+					$arg2 = $this->doubleOperator($arg2);
+				}
+				else
+				{
+					$arg1 = $this->recursiveCode($arg1);
+					$arg2 = $this->recursiveCode($arg2);
+				}
+
+
+				return ''.$arg1.' '.$op['terminals'][1]['value'].' '.$arg2.' ';
 			}
 
 			foreach(array_reverse($op['terminals']) as $term)

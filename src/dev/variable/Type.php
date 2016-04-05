@@ -16,7 +16,7 @@ class TypeDetector
 
 	}
 
-	static function detectOperator($operator)
+	static function detectOperator($operator, $op1 = NULL, $op2 = NULL)
 	{
 		if($operator == T_NULL)
 		{
@@ -62,6 +62,14 @@ class TypeDetector
 			T_MOD,
 		]))
 		{
+			if(in_array($operator, [T_MINUS_EQUAL, T_MOD_EQUAL, T_MUL_EQUAL, T_PLUS_EQUAL, T_MUL, T_PLUS, T_MINUS]))
+			{
+				if(isset($op1) && isset($op2) && $op1['type'] == self::TYPE_INT && $op2['type'] == self::TYPE_INT)
+				{
+					return self::TYPE_INT;
+				}
+			}
+
 			// int vs double
 			return self::TYPE_FLOAT;
 		}
@@ -110,7 +118,7 @@ class TypeDetector
 			{
 				if(isset($expr[1]) && isset($expr[2]))
 				{
-					$type = self::detectOperator($expr[1]['code']);
+					$type = self::detectOperator($expr[1]['code'], $expr[0], $expr[2]);
 				}
 				elseif(isset($expr[1]) && isset($expr[1]['code']))
 				{ // Neg, pre inc/dec
