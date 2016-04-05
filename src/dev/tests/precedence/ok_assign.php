@@ -7,8 +7,10 @@ function main($a,$b) {
 	$int_test1 = 15;
 	$int_test2 = 16+4;
 	$int_test3 = "5"-4;
+	$int_test4 = 19*48;
 
 	$float_test1 = $a*$b;
 	$float_test2 = 4.5*8;
 	$float_test3 = 6**4;
+	$float_test4 = 72/4;
 }

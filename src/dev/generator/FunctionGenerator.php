@@ -67,7 +67,6 @@ class FunctionGenerator
 
 		$scope = $this->codeGenerator->getScope();
 
-		var_dump($scope);
 
 		foreach($args as $key => $arg)
 		{

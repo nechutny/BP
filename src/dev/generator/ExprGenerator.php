@@ -22,9 +22,9 @@ class ExprGenerator
 		// Second analyse - expected output types
 		$this->outputTypeAnalyse($this->data, NULL, $tree);
 
-		echo "\n\nAnalyse tree: \n";
+		/*echo "\n\nAnalyse tree: \n";
 		print_r($this->data);
-		echo "\n\n\n";
+		echo "\n\n\n";*/
 	}
 
 	public function recursiveAnalyse(array &$data)
