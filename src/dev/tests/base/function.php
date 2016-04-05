@@ -16,8 +16,10 @@ function foo($z, array $bar = NULL)
 	bar($z);
 	$ccccc = bar();
 
+	bar(1,2,3);
 
-	// return
+
+	return 15;
 	//return "aaaa $y $bar";
 }
 

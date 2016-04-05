@@ -129,6 +129,11 @@ class Parser
 
 		$functionGenerator->setFunctionName($token['value']);
 
+		$varScope = new Scope();
+		$codeGenerator = new CodeGenerator(1, $varScope);
+		
+		$functionGenerator->setCodeGenerator($codeGenerator);
+
 		$this->check(T_LPARENTHESIS);
 
 		$args = $this->parse_args();
@@ -137,10 +142,9 @@ class Parser
 		$this->check(T_RPARENTHESIS);
 		$this->check(T_LCURLY_PARENTHESIS);
 
-		$varScope = new Scope();
-		$codeGenerator = new CodeGenerator(1, $varScope);
+
 		$this->parse_body($codeGenerator);
-		$functionGenerator->setCodeGenerator($codeGenerator);
+
 
 		$this->check(T_RCURLY_PARENTHESIS);
 

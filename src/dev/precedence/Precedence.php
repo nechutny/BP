@@ -7,7 +7,7 @@ class Precedence
 
 	protected $scanner;
 
-	protected $stopTokens = [T_COMMA, T_SEMICOLON];
+	protected $stopTokens = [T_SEMICOLON];
 
 	/**
 	 * @var null|Stack
@@ -166,10 +166,14 @@ class Precedence
 			'source'	=> ['(','E',')'],
 			'target'	=> 'E',
 		],
+		[
+			'source'	=> ['E',',','E'],
+			'target'	=> 'E',
+		],
 
 		// TODO: handle functions with arguments
 		[
-			'source'	=> ['func','(','E',')'],
+			'source'	=> ['func','(', 'E', ')'],
 			'target'	=> 'E',
 		],
 		[
@@ -303,6 +307,33 @@ class Precedence
 						die("Chyba v precedenční tabulce");
 
 				}
+
+				// This solve function calls with any argument number
+				try
+				{
+					$e1 = $stack->top();
+					$comma = $stack->top(1);
+					$e2 = $stack->top(2);
+					if(
+							isset($e1['nonTerminal']) && $e1['nonTerminal'] == 'E' &&
+							isset($comma['code']) && $comma['code'] == T_COMMA &&
+							isset($e2['nonTerminal']) && $e2['nonTerminal'] == 'E'
+						)
+					{
+						$stack->pop();
+						$stack->pop();
+						$stack->pop();
+
+						$stack->push(['nonTerminal' => 'E', 'terminals' => [$e1, $comma, $e2]]);
+
+
+						$stack->debug();
+						echo "\n";
+					}
+				}
+				catch (StackEmptyException $e)
+				{ }
+
 			}
 			catch(PrecedenceNotInTableException $e)
 			{

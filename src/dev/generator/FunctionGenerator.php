@@ -65,10 +65,16 @@ class FunctionGenerator
 		echo "Arguments:\n";
 		print_r($args);
 
+		$scope = $this->codeGenerator->getScope();
+
+		var_dump($scope);
+
 		foreach($args as $key => $arg)
 		{
+			$scope[ $arg['name'] ] = new Variable($arg['name']);
 			$var = new VariableGenerator($arg['name']);
 			$var->assignArgument($key);
+			$var->setVariable($scope[ $arg['name'] ]);
 
 			if($arg['value'][0])
 			{

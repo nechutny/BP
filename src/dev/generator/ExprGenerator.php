@@ -37,10 +37,6 @@ class ExprGenerator
 			}
 			$type = TypeDetector::analyseExpression($data['terminals'], $this->varScope);
 			$data['type'] = $type;
-			/*if($type == 'mixed')
-			{
-				echo "Type: ".$type." - ".print_r($data, true);
-			}*/
 
 		}
 		elseif(isset($data['value']))
@@ -66,10 +62,7 @@ class ExprGenerator
 			{
 				$data['type'] = 'string';
 			}
-			else
-			{
-				echo "\n\nFOO: ".$data['code']." / ".$data['name']."\n";
-			}
+
 		}
 		else
 		{
@@ -131,7 +124,7 @@ class ExprGenerator
 		$arg = $this->recursiveCode($op);
 
 		$arg = 'php2cpp::to_string('.$arg.')';
-		
+
 		return $arg;
 	}
 
