@@ -3,5 +3,7 @@
 function main($arg)
 {
 	echo $arg."\n";
-	echo strlen($arg);
+	$b = strlen($arg);
+
+	echo $b;
 }

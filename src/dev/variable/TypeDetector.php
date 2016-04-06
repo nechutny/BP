@@ -123,6 +123,21 @@ class TypeDetector
 				{
 					$type = Type::TYPE_STRING;
 				}
+				if($expr[0]['code'] == T_RPARENTHESIS)
+				{ // Function call?
+					if(count($expr) >= 3)
+					{
+						if(
+							isset($expr[ count($expr) - 1 ]['code']) &&
+							isset($expr[ count($expr) - 2 ]['code']) &&
+							$expr[ count($expr) - 1 ]['code'] == T_STRING &&
+							$expr[ count($expr) - 2 ]['code'] == T_LPARENTHESIS
+						)
+						{
+							$type = FunctionReturnType::get( $expr[ count($expr) - 1 ]['value'] );
+						}
+					}
+				}
 			}
 			else
 			{

@@ -2,6 +2,7 @@
 require_once( __DIR__ . '/../variable/Type.php');
 require_once( __DIR__ . '/../variable/Variable.php');
 require_once( __DIR__ . '/../variable/TypeDetector.php');
+require_once( __DIR__ . '/../variable/BuiltInFunctions.php');
 
 
 
@@ -64,6 +65,10 @@ class ExprGenerator
 			{
 				$data['type'] = Type::TYPE_STRING;
 			}
+			elseif($data['code'] == T_STRING)
+			{
+				$data['type'] = FunctionReturnType::get($data['value']);
+			}
 
 		}
 		else
@@ -85,7 +90,7 @@ class ExprGenerator
 			{
 				if($parent['type'] == Type::TYPE_NO_PROPAGATE)
 				{
-					$data['outType'] = $data['type']; //$data['type'];
+					$data['outType'] = $data['type'];
 				}
 				else
 				{

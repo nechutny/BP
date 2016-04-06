@@ -78,7 +78,7 @@ class Variable
 				{
 					return $tree;
 				}
-				elseif($type == Type::TYPE_INT && $tree = Type::TYPE_FLOAT)
+				elseif($type == Type::TYPE_INT && $tree == Type::TYPE_FLOAT)
 				{ // Int can be assigned to double
 					return Type::TYPE_FLOAT;
 				}
