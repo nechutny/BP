@@ -85,6 +85,11 @@ class TypeDetector
 		{
 			return Type::TYPE_STRING;
 		}
+		elseif ($operator == T_COMMA)
+		{
+			// TODO Correct types
+			return Type::TYPE_NO_PROPAGATE;
+		}
 
 		return $operator;
 	}
@@ -133,7 +138,6 @@ class TypeDetector
 				{ // post inc/dec
 					$type = self::detectOperator($expr[0]['code']);
 				}
-
 			}
 		}
 

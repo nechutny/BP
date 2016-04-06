@@ -10,4 +10,6 @@ class Type {
 	const TYPE_ARRAY = 'array';
 	const TYPE_MIXED = 'mixed';
 
+	const TYPE_NO_PROPAGATE = 'no-propagate';
+
 }

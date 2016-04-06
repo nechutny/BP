@@ -82,11 +82,19 @@ class ExprGenerator
 			}
 
 			if(!is_null($parent))
-			{ // Top
-				$data['outType'] = $parent['type'];
+			{
+				if($parent['type'] == Type::TYPE_NO_PROPAGATE)
+				{
+					$data['outType'] = Type::TYPE_MIXED; //$data['type'];
+				}
+				else
+				{
+					$data['outType'] = $parent['type'];
+				}
+
 			}
 			else
-			{
+			{ // top
 				$data['outType'] = $data['type'];
 			}
 
@@ -106,7 +114,6 @@ class ExprGenerator
 			{
 				$this->varScope[ $data['value'] ]->setType($tree, $data['outType'] );
 			}
-
 		}
 		else
 		{
@@ -199,6 +206,32 @@ class ExprGenerator
 
 				return ''.$arg1.' '.$op['terminals'][1]['value'].' '.$arg2.' ';
 			}
+			// Function call
+			elseif( count($op['terminals']) >= 3 &&
+				isset($op['terminals'][0]['code']) && isset($op['terminals'][ count($op['terminals']) - 2 ]['code']) && isset($op['terminals'][ count($op['terminals']) - 1 ]['code']) &&
+				$op['terminals'][0]['code'] == T_RPARENTHESIS &&
+				$op['terminals'][ count($op['terminals']) - 2 ]['code'] == T_LPARENTHESIS &&
+				$op['terminals'][ count($op['terminals']) - 1 ]['code'] == T_STRING
+			)
+			{
+				// Arguments to string
+				$args = '';
+				$copy = $op['terminals'];
+				$len = count($copy);
+
+				// unset function name and parenthesis
+				unset($copy[0]);
+				unset($copy[ $len - 1 ]);
+				unset($copy[ $len - 2 ]);
+
+				foreach(array_reverse($copy) as $term)
+				{
+					$args .= ', '.$this->recursiveCode($term);
+				}
+
+				// Function call
+				return 'Php::call("'.$op['terminals'][ count($op['terminals']) - 1 ]['value'].'"'.$args.')';
+			}
 
 			foreach(array_reverse($op['terminals']) as $term)
 			{
@@ -242,8 +275,13 @@ class ExprGenerator
 
 				return ' phpVar_'.substr($op['value'],1);
 			}
+			elseif($data['code'] == T_STRING)
+			{
+				return 'Php::constant("'.$data['value'].'")';
+			}
 			else
 			{
+
 				// Operators
 
 				return ' '.$op['value'];
