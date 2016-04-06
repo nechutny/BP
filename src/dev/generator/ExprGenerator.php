@@ -1,6 +1,8 @@
 <?php
-require_once( __DIR__ . '/../variable/Variable.php');
 require_once( __DIR__ . '/../variable/Type.php');
+require_once( __DIR__ . '/../variable/Variable.php');
+require_once( __DIR__ . '/../variable/TypeDetector.php');
+
 
 
 class ExprGenerator
@@ -22,9 +24,9 @@ class ExprGenerator
 		// Second analyse - expected output types
 		$this->outputTypeAnalyse($this->data, NULL, $tree);
 
-		/*echo "\n\nAnalyse tree: \n";
+		echo "\n\nAnalyse tree: \n";
 		print_r($this->data);
-		echo "\n\n\n";*/
+		echo "\n\n\n";
 	}
 
 	public function recursiveAnalyse(array &$data)
@@ -41,7 +43,7 @@ class ExprGenerator
 		}
 		elseif(isset($data['value']))
 		{
-			$data['type'] = 'mixed';
+			$data['type'] = Type::TYPE_MIXED;
 
 			if($data['code'] == T_VARIABLE)
 			{
@@ -52,15 +54,15 @@ class ExprGenerator
 			}
 			elseif($data['code'] == T_DNUMBER)
 			{
-				$data['type'] = 'float';
+				$data['type'] = Type::TYPE_FLOAT;
 			}
 			elseif($data['code'] == T_LNUMBER)
 			{
-				$data['type'] = 'int';
+				$data['type'] = Type::TYPE_INT;
 			}
 			elseif($data['code'] == T_CONSTANT_ENCAPSED_STRING)
 			{
-				$data['type'] = 'string';
+				$data['type'] = Type::TYPE_STRING;
 			}
 
 		}
@@ -183,7 +185,7 @@ class ExprGenerator
 				$arg1 = $op['terminals'][2];
 				$arg2 = $op['terminals'][0];
 
-				if($op['type'] != 'int')
+				if($op['type'] != Type::TYPE_INT)
 				{
 					$arg1 = $this->doubleOperator($arg1);
 					$arg2 = $this->doubleOperator($arg2);
@@ -215,19 +217,19 @@ class ExprGenerator
 					$outVal = substr($outVal, 1, -1);
 				}
 
-				if($op['outType'] == 'string')
+				if($op['outType'] == Type::TYPE_STRING)
 				{
 
-					if(!in_array($op['type'], ['int', 'float']))
+					if(!in_array($op['type'], [Type::TYPE_INT, Type::TYPE_FLOAT]))
 					{
 						$outVal = '"' . $outVal . '"';
 					}
 				}
-				elseif($op['outType'] == 'int')
+				elseif($op['outType'] == Type::TYPE_INT)
 				{
 					$outVal = (int)$outVal;
 				}
-				elseif($op['outType'] == 'float')
+				elseif($op['outType'] == Type::TYPE_FLOAT)
 				{
 					$outVal = (float)$outVal;
 				}

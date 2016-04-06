@@ -1,5 +1,6 @@
 <?php
-function main($a,$b) {
+function main($a,$b = 19) {
+
 	$str_test1 = "1234";
 	$str_test2 = "aaa". (5**5);
 	$str_test3 = (4*5)."aaa" . (5*3);
@@ -15,5 +16,6 @@ function main($a,$b) {
 	$float_test4 = 72/4;
 	$float_test5 = 15;
 	$float_test5 = $float_test5 / 4;
+	$float_test6 = "4.5"+5;
 
 }

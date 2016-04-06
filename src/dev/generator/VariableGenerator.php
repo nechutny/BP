@@ -86,13 +86,13 @@ class VariableGenerator
 			{
 				switch($type)
 				{
-					case 'int':
+					case Type::TYPE_INT:
 						$this->type = self::TYPE_INT;
 						break;
-					case 'float':
+					case Type::TYPE_FLOAT:
 						$this->type = self::TYPE_FLOAT;
 						break;
-					case 'string':
+					case Type::TYPE_STRING:
 						$this->type = self::TYPE_STRING;
 						break;
 				}

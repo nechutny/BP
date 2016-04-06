@@ -2,6 +2,7 @@
 
 class Variable
 {
+	/*
 	const TYPE_UNKNOWN = 'unknown';
 	const TYPE_BOOL = 'boolean';
 	const TYPE_INT = 'int';
@@ -9,6 +10,7 @@ class Variable
 	const TYPE_STRING = 'string';
 	const TYPE_ARRAY = 'array';
 	const TYPE_OBJECT = 'object';
+	*/
 
 	/**
 	 * @var string $name Variable name
@@ -76,9 +78,9 @@ class Variable
 				{
 					return $tree;
 				}
-				elseif($type == 'int' && $tree = 'float')
+				elseif($type == Type::TYPE_INT && $tree = Type::TYPE_FLOAT)
 				{ // Int can be assigned to double
-					return $tree;
+					return Type::TYPE_FLOAT;
 				}
 				else
 				{
@@ -104,7 +106,7 @@ class Variable
 		echo "-----\n";
 	}
 
-	public function __construct($name, $type = Variable::TYPE_UNKNOWN)
+	public function __construct($name, $type = Type::TYPE_MIXED)
 	{
 		$this->name = $name;
 	}
