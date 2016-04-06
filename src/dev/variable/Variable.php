@@ -76,6 +76,10 @@ class Variable
 				{
 					return $tree;
 				}
+				elseif($type == 'int' && $tree = 'float')
+				{ // Int can be assigned to double
+					return $tree;
+				}
 				else
 				{
 					throw new NotOneTypeException();

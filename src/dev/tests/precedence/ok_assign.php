@@ -13,4 +13,7 @@ function main($a,$b) {
 	$float_test2 = 4.5*8;
 	$float_test3 = 6**4;
 	$float_test4 = 72/4;
+	$float_test5 = 15;
+	$float_test5 = $float_test5 / 4;
+
 }
