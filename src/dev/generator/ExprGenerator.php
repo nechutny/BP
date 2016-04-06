@@ -85,7 +85,7 @@ class ExprGenerator
 			{
 				if($parent['type'] == Type::TYPE_NO_PROPAGATE)
 				{
-					$data['outType'] = Type::TYPE_MIXED; //$data['type'];
+					$data['outType'] = $data['type']; //$data['type'];
 				}
 				else
 				{
