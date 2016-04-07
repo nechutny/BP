@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:xhtml="http://www.w3.org/1999/xhtml"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   style="background-color: rgb(255, 255, 255);"
+   width="561px"
+   height="268px"
+   version="1.1"
+   id="svg2"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="PhpExtensionLifeCycleDiagram.svg">
+  <metadata
+     id="metadata89">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2113"
+     id="namedview87"
+     showgrid="false"
+     inkscape:zoom="4.3560803"
+     inkscape:cx="271.99731"
+     inkscape:cy="119.91774"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs4">
+    <linearGradient
+       x1="0%"
+       y1="0%"
+       x2="0%"
+       y2="100%"
+       id="mx-gradient-dae8fc-1-7ea6e0-1-s-0">
+      <stop
+         offset="0%"
+         style="stop-color:#DAE8FC"
+         id="stop7" />
+      <stop
+         offset="100%"
+         style="stop-color:#7EA6E0"
+         id="stop9" />
+    </linearGradient>
+    <linearGradient
+       x1="0%"
+       y1="0%"
+       x2="0%"
+       y2="100%"
+       id="mx-gradient-f5f5f5-1-b3b3b3-1-s-0">
+      <stop
+         offset="0%"
+         style="stop-color:#F5F5F5"
+         id="stop12" />
+      <stop
+         offset="100%"
+         style="stop-color:#B3B3B3"
+         id="stop14" />
+    </linearGradient>
+    <linearGradient
+       x1="0%"
+       y1="0%"
+       x2="0%"
+       y2="100%"
+       id="mx-gradient-d5e8d4-1-97d077-1-s-0">
+      <stop
+         offset="0%"
+         style="stop-color:#D5E8D4"
+         id="stop17" />
+      <stop
+         offset="100%"
+         style="stop-color:#97D077"
+         id="stop19" />
+    </linearGradient>
+  </defs>
+  <g
+     transform="translate(0.5,0.5)"
+     id="g21">
+    <path
+       d="M 111 26 L 234.63 26"
+       fill="none"
+       stroke="#000000"
+       stroke-miterlimit="10"
+       pointer-events="none"
+       id="path23" />
+    <path
+       d="M 239.88 26 L 232.88 29.5 L 234.63 26 L 232.88 22.5 Z"
+       fill="#000000"
+       stroke="#000000"
+       stroke-miterlimit="10"
+       pointer-events="none"
+       id="path25" />
+    <rect
+       x="1"
+       y="1"
+       width="110"
+       height="50"
+       rx="7.5"
+       ry="7.5"
+       fill-opacity="0.5"
+       fill="url(#mx-gradient-dae8fc-1-7ea6e0-1-s-0)"
+       stroke="#6c8ebf"
+       stroke-opacity="0.5"
+       pointer-events="none"
+       id="rect27" />
+    <g
+       transform="translate(12,20)"
+       id="g29">
+      <switch
+         id="switch31">
+        <foreignObject
+           pointer-events="all"
+           width="88"
+           height="16"
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">NaËtenÌ modulu<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           x="44"
+           y="14"
+           font-size="12px"
+           id="text33"
+           style="font-size:12px;font-family:Helvetica;text-anchor:middle;fill:#000000">Naƒçten√≠ modulu</text>
+      </switch>
+    </g>
+    <path
+       d="M 301 51 L 301 104.63"
+       fill="none"
+       stroke="#000000"
+       stroke-miterlimit="10"
+       pointer-events="none"
+       id="path35" />
+    <path
+       d="M 301 109.88 L 297.5 102.88 L 301 104.63 L 304.5 102.88 Z"
+       fill="#000000"
+       stroke="#000000"
+       stroke-miterlimit="10"
+       pointer-events="none"
+       id="path37" />
+    <rect
+       x="241"
+       y="1"
+       width="120"
+       height="50"
+       rx="7.5"
+       ry="7.5"
+       fill-opacity="0.5"
+       fill="url(#mx-gradient-f5f5f5-1-b3b3b3-1-s-0)"
+       stroke="#666666"
+       stroke-opacity="0.5"
+       pointer-events="none"
+       id="rect39" />
+    <g
+       opacity="0.5"
+       transform="translate(246,20)"
+       id="g41">
+      <switch
+         id="switch43">
+        <foreignObject
+           pointer-events="all"
+           width="109"
+           height="16"
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">P¯ÌchozÌ poæadavek<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           x="55"
+           y="14"
+           font-size="12px"
+           id="text45"
+           style="font-size:12px;font-family:Helvetica;text-anchor:middle;fill:#000000">P≈ô√≠choz√≠ po≈æadavek</text>
+      </switch>
+    </g>
+    <path
+       d="M 361 241 L 551 241 L 551 26 L 367.37 26"
+       fill="none"
+       stroke="#000000"
+       stroke-miterlimit="10"
+       pointer-events="none"
+       id="path47" />
+    <path
+       d="M 362.12 26 L 369.12 22.5 L 367.37 26 L 369.12 29.5 Z"
+       fill="#000000"
+       stroke="#000000"
+       stroke-miterlimit="10"
+       pointer-events="none"
+       id="path49" />
+    <path
+       d="M 241 241 L 117.37 241"
+       fill="none"
+       stroke="#000000"
+       stroke-miterlimit="10"
+       pointer-events="none"
+       id="path51" />
+    <path
+       d="M 112.12 241 L 119.12 237.5 L 117.37 241 L 119.12 244.5 Z"
+       fill="#000000"
+       stroke="#000000"
+       stroke-miterlimit="10"
+       pointer-events="none"
+       id="path53" />
+    <rect
+       x="241"
+       y="216"
+       width="120"
+       height="50"
+       rx="7.5"
+       ry="7.5"
+       fill-opacity="0.5"
+       fill="url(#mx-gradient-f5f5f5-1-b3b3b3-1-s-0)"
+       stroke="#666666"
+       stroke-opacity="0.5"
+       pointer-events="none"
+       id="rect55" />
+    <g
+       opacity="0.5"
+       transform="translate(248,235)"
+       id="g57">
+      <switch
+         id="switch59">
+        <foreignObject
+           pointer-events="all"
+           width="105"
+           height="16"
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Poûadavek vy¯Ìzen<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           x="53"
+           y="14"
+           font-size="12px"
+           id="text61"
+           style="font-size:12px;font-family:Helvetica;text-anchor:middle;fill:#000000">Po≈æadavek vy≈ô√≠zen</text>
+      </switch>
+    </g>
+    <path
+       d="M 301 181 L 301 209.63"
+       fill="none"
+       stroke="#000000"
+       stroke-miterlimit="10"
+       pointer-events="none"
+       id="path63" />
+    <path
+       d="M 301 214.88 L 297.5 207.88 L 301 209.63 L 304.5 207.88 Z"
+       fill="#000000"
+       stroke="#000000"
+       stroke-miterlimit="10"
+       pointer-events="none"
+       id="path65" />
+    <path
+       d="M 252 171 L 252 196 L 141 196 L 141 146 L 224.63 146"
+       fill="none"
+       stroke="#000000"
+       stroke-miterlimit="10"
+       pointer-events="none"
+       id="path67" />
+    <path
+       d="M 229.88 146 L 222.88 149.5 L 224.63 146 L 222.88 142.5 Z"
+       fill="#000000"
+       stroke="#000000"
+       stroke-miterlimit="10"
+       pointer-events="none"
+       id="path69" />
+    <ellipse
+       cx="301"
+       cy="146"
+       rx="70"
+       ry="35"
+       fill-opacity="0.5"
+       fill="url(#mx-gradient-d5e8d4-1-97d077-1-s-0)"
+       stroke="#82b366"
+       stroke-opacity="0.5"
+       pointer-events="none"
+       id="ellipse71" />
+    <g
+       transform="translate(260,140)"
+       id="g73">
+      <switch
+         id="switch75">
+        <foreignObject
+           pointer-events="all"
+           width="82"
+           height="16"
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 82px; white-space: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Vol·nÌ funkcÌ<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           x="41"
+           y="14"
+           font-size="12px"
+           id="text77"
+           style="font-size:12px;font-family:Helvetica;text-anchor:middle;fill:#000000">Vol√°n√≠ funkc√≠</text>
+      </switch>
+    </g>
+    <rect
+       x="1"
+       y="216"
+       width="110"
+       height="50"
+       rx="7.5"
+       ry="7.5"
+       fill-opacity="0.5"
+       fill="url(#mx-gradient-dae8fc-1-7ea6e0-1-s-0)"
+       stroke="#6c8ebf"
+       stroke-opacity="0.5"
+       pointer-events="none"
+       id="rect79" />
+    <g
+       transform="translate(12,235)"
+       id="g81">
+      <switch
+         id="switch83">
+        <foreignObject
+           pointer-events="all"
+           width="87"
+           height="16"
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">ZruöenÌ modulu<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           x="44"
+           y="14"
+           font-size="12px"
+           id="text85"
+           style="font-size:12px;font-family:Helvetica;text-anchor:middle;fill:#000000">Zru≈°en√≠ modulu</text>
+      </switch>
+    </g>
+  </g>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="134.75417"
+     y="210.83853"
+     id="text4258"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan4260"
+       x="134.75417"
+       y="210.83853"
+       style="font-size:12.5px">Vykon√°v√°n√≠ skriptu</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="132.91766"
+     y="253.76701"
+     id="text4262"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan4264"
+       x="132.91766"
+       y="253.76701"
+       style="font-size:12.5px">Ukonƒçen√≠ PHP</tspan></text>
+</svg>

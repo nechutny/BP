@@ -1,4 +1,4 @@
-\documentclass{ExcelAtFIT}
+\documentclass[czech]{ExcelAtFIT}
 %\documentclass[czech]{ExcelAtFIT} % when writing in CZECH
 %\documentclass[slovak]{ExcelAtFIT} % when writing in SLOVAK
 \usepackage{listings}
@@ -35,6 +35,9 @@
    showtabs=false,
    captionpos=b
 }
+
+\renewcommand{\lstlistingname}{Kód}
+\newcommand{\function}[1]{\texttt{#1}}
 
 %--------------------------------------------------------
 %--------------------------------------------------------
@@ -84,11 +87,13 @@
 
 \Abstract{
 
-This papper focus on development of tool for automated translation functions written in PHP 5.6 language into C++ source. Targeted output source code should be compiled as PHP extension module and loaded in the same way as MySQL PDO, GD etc. So in result we can call these functions from PHP as originals, but is expected faster execution, because we don't need more to parse and interpret source plus garbage collector is no more needed. Developed tool parse input source into abstract syntactic tree and analyze them for determining variable types and generate output code.
+Tato práce se zaměřuje na návrh a tvorbu nástroje pro automatizovaný překlad funkcí napsaných v~podmnožině jazyka PHP do C++. Vygenerovaný zdrojový kód je možno zkompilovat jako rozšíření PHP a zavést stejným způsobem, jako například MySQL, PDO, GD apod. Ve výsledku je tedy možno zavolat tyto funkce z~PHP, jako by se jednalo o~původní. Předpokladem je však rozdíl v~rychlosti vykonávání, protože odpadá parsování zdrojových kódů, jejich interpretace, či režie způsobená správou paměti. Vytvořený nástroj provádí převod zdrojového kódu do abstraktního syntaktického stromu, analyzuje jej pro určení datových typů proměnných a následně provádí generování C++ kódu.
 
-\todo{What is the problem? What is the topic?, the aim of this paper?}
+%This papper focus on development of tool for automated translation functions written in PHP 5.6 language into C++ source. Targeted output source code should be compiled as PHP extension module and loaded in the same way as MySQL PDO, GD etc. So in result we can call these functions from PHP as originals, but is expected faster execution, because we don't need more to parse and interpret source plus garbage collector is no more needed. Developed tool parse input source into abstract syntactic tree and analyze them for determining variable types and generate output code.
 
-\todo{How is the problem solved, the aim achieved (methodology)?}
+%\todo{What is the problem? What is the topic?, the aim of this paper?}
+
+%\todo{How is the problem solved, the aim achieved (methodology)?}
 
 \todo{What are the specific results? How well is the problem solved?}
 
@@ -123,41 +128,63 @@ This papper focus on development of tool for automated translation functions wri
 %--------------------------------------------------------
 \section{Introduction}
 
-	\textbf{[Motivation (9 lines)]}
+	%\textbf{[Motivation (9 lines)]}
 		%\phony{What is the raison d'\^{e}tre of your project? Why should anyone care? No general meaningless claims. Make bulletproof arguments for the importance of your work.}
 
-		Current web applications written in PHP contains tens of libraries, which programmer doesn't need to modify and just use them. These libraries sometime consume a lot of processor time, because are interpreted and are used other mechanisms from scripting language eg. garbage collector\cite{gcOptimize}. Web application response time is for costumer one of main reason to leave it, and scaling such systems is not economic solution. This solution allow to decrease servers load with minimal need of application modification.
+		Současné webové aplikace napsané v~PHP obsahují desítky knihoven, které programátoři nepotřebují upravovat a chtějí je jen použít. Tyto knihovny někdy provádějí výpočetně náročné operace. Jelikož jsou tyto knihovny interpretovány, tak dochází k~dalšímu zdržení v~důsledku dalších mechanismů. Příkladem je správa paměti, která může způsobovat výrazné zpomalení. To například ukázala optimalizace nástroje Composer\cite{gcOptimize}, které bylo dosaženo vypnutím automatického uvolňování nepoužívané paměti a dosáhla 30\% - 90\% zrychlení (v~závislosti na množství prováděných operací). Dlouhá doba načítání webové stránky je jedním z~hlavních důvodů pro opuštění návštěvníkem. Škálování takovýchto náročných systémů pak nemusí být ekonomické řešení. Tento nástroj však umožňuje snížit vytížení serverů s~nutností minimální úpravy aplikace.
 
-	\textbf{[Problem definition (17 lines)]}
+		%Current web applications written in PHP contains tens of libraries, which programmer doesn't need to modify and just use them. These libraries sometime consume a lot of processor time, because are interpreted and are used other mechanisms from scripting language eg. garbage collector\cite{gcOptimize}. Web application response time is for costumer one of main reason to leave it, and scaling such systems is not economic solution. This solution allow to decrease servers load with minimal need of application modification.
+
+	%\textbf{[Problem definition (17 lines)]}
 		 %\phony{What exactly are you solving? What is the core and what is a bonus? What parameters should a proper solution of the problem have? Define the problem precisely and state how its solution should be evaluated.}
 
-		Translating source code from dynamicly typed scripting language to strongly typed compiled code is problematic in a lof of ways. One of the main problems is detecting variable types from source code. Next we have a lot of not so easily translatable constructions such as warning supression, space ship operator etc.
+		Překlad zdrojového kódu z~dynamicky typovaného jazyka do silně typovaného je problematický hned z~několika důvodů. Prvním je detekce datových typů ze zdrojového kódu. Dále tu máme různé obtížně přeložitelné konstrukce, jako například potlačení chybového výpisu, operátor proovnání apod.
 
-		Firstly we need to parse existing source and tranform it into abstract syntactic tree for futher analysation. Based on this structure we can analyse varible possible values, call graphs etc. to determine data types. This solution doesn't cover all possibilities, so in this project we are also experimenting with generating code for more types and choosing execution tree at run-time.
+		%Translating source code from dynamicly typed scripting language to strongly typed compiled code is problematic in a lof of ways. One of the main problems is detecting variable types from source code. Next we have a lot of not so easily translatable constructions such as warning supression, space ship operator etc.
 
-		Last part of this article focus on benchmark tests of translated code and problems with some constructions.
+		Prvně je třeba naparsovat zdrojové kód a převést jej do abstraktního syntaktického stromu pro následnou analýzu. Na základě této struktury můžeme provést analýzu možných hodnot, graf volání apod. pro detekci datových typů. Toto řešení však nepokrývá veškeré možnosti, takže v~projektu také experimentuji s~generováním kódu pro více variant a následnou volbou vykonaného kódu v~době běhu na základě obdržených hodnot.
+
+		%Firstly we need to parse existing source and tranform it into abstract syntactic tree for futher analysation. Based on this structure we can analyse varible possible values, call graphs etc. to determine data types. This solution doesn't cover all possibilities, so in this project we are also experimenting with generating code for more types and choosing execution tree at run-time.
+
+		%Poslední část tohoto článku se zabývá porovnáním výkonu přeloženého kódu s~originálním kódem v~PHP \todo{Stihnu?} a problémy s~některými konstrukcemi.
+
+		%Last part of this article focus on benchmark tests of translated code and problems with some constructions.
 
 
 
-	\textbf{[Existing solutions (23 lines)]}
+	%\textbf{[Existing solutions (23 lines)]}
 		%\phony{Discuss existing solutions, be fair in identifying their strengths and weaknesses. Cite important works from the field of your topic. Try to define well what is the \textit{state of the art}. You can include a Section 2 titled ``Background'' or ``Previous Works'' and have the details there and make this paragraph short. Or, you can enlarge this paragraph to a whole page. In many scientific papers, \emph{this} is the most valuable part if it is written properly.}
 
-		In current time there isn't direct competitive solution. We can compare this project with Facebook's project HPHPc which intended to compile whole PHP application into one binary executable. This is different concept, because HPHPc's implementation require recompiling application even when was changed only few lines of file and then redistribute eventualy a few gigabites large binary files. This solution is intended to compile just libraries, when they are not changed so often and main application using these libraries is still interpreted. HPHPc project was replaced with HHVM that is Just In Time compiler runing in Virtual Machine which solve problems with recompiling.
-
-		There is also project PHC that compile too php application into executable binary, but have experimental support for creating php extensions from php code. This feauture can't be tested, because code is no more maintained and I was unable to compile it even not on debian stable with PHP 5.3 and some code changes.
-
-		Most of other solutions in fact just pack php script into data part of executable containing PHP and interpret it when executed.
-
-	\textbf{[Our solution (13 lines)]}
-		\phony{Make a quick outline of your approach -- pitch your solution.  The solution will be described in detail later, but give the reader a very quick overview now.}
-
-		This solution use PHP's functions for tokenizing source code and have added bastract layer for more precise token detection, own recursive parser, stack precedence analysator. Own solution was chosen because of optimizating gather informations.
-
-		Method for variable type detection is used ... . Code is then generated as C++ so user can modify it before compiling.
+		V~současné době zde není přímo konkurenční řešení. Můžeme porovnat tento projekt s~HPHPc od společnosti Facebook, které však bylo zamýšleno pro kompilaci celé PHP aplikace do jednoho velkého binárního souboru. Toto je rozdílný koncept, jelikož HPHPc vyžadovalo překompilování celé aplikace i v~případě drobné změny a následnou distribuci až několik GB velkého souboru na servery. Toto řešení je však zaměřeno pouze na kompilaci knihoven, které nejsou měněny často a hlavní aplikace je stále interpretována. Projekt HPHPc byla nahrazena projektem HHVM\footnote{\url{http://hhvm.com/}}, který je JIT kompilátor spouštějící PHP v~VM, čímž řeší zmíněné nedostatky HPHPc.
 
 
-	\textbf{[Contributions (7 lines)]}
-		\phony{Sell your solution. Pinpoint your achievements. Be fair and objective.}
+		%In current time there isn't direct competitive solution. We can compare this project with Facebook's project HPHPc which intended to compile whole PHP application into one binary executable. This is different concept, because HPHPc's implementation require recompiling application even when was changed only few lines of file and then redistribute eventualy a few gigabites large binary files. This solution is intended to compile just libraries, when they are not changed so often and main application using these libraries is still interpreted. HPHPc project was replaced with HHVM that is Just In Time compiler runing in Virtual Machine which solve problems with recompiling.
+
+		Dále existuje projekt PHC\footnote{\url{http://www.phpcompiler.org/}}, který také kompiluje PHP aplikaci do spustitelného binárního souboru a má experimentální podporu pro generování rozšíření PHP. Bohužel se mi nepodařilo tuto funkcionalitu otestovat, protože kód již není delší dobu udržován a nepodařilo se mi jej zkompilovat na Debian stable s~PHP 5.3 i přes různé úpravy kódu.
+
+		%There is also project PHC that compile too php application into executable binary, but have experimental support for creating php extensions from php code. This feauture can't be tested, because code is no more maintained and I was unable to compile it even not on debian stable with PHP 5.3 and some code changes.
+
+		Většina zbylých řešení ve výsledku pouze zabalí PHP skript do datové části spustitelného souboru a přibalí PHP interpret. Nejedná se tedy de facto o~překladač, ale o~pouhé zabalení skriptu k~interpretru.
+
+		%Most of other solutions in fact just pack php script into data part of executable containing PHP and interpret it when executed.
+
+	%\textbf{[Our solution (13 lines)]}
+		%\phony{Make a quick outline of your approach -- pitch your solution.  The solution will be described in detail later, but give the reader a very quick overview now.}
+
+		Toto řešení používá funkce z~PHP pro převod zdrojového kódu na tokeny a přidává další vrstvu abstrakce pro přesnější rozlišení tokenů. Pro parsování zdrojových kódů je použit vlastní parser s~rekurzivním sestupem a zásobníková precedenční analýza. Vlastní řešení bylo zvoleno pro snadnost úpravy, získání veškerých potřebných údajů v~požadovaném formátu a vyzkoušení si teorie v~praxi.
+
+		%This solution use PHP's functions for tokenizing source code and have added abstract layer for more precise token detection, own recursive parser, stack precedence analysator. Own solution was chosen because of optimizating gather informations.
+
+		Derivační strom z~precedenční analýzy je použit pro zjištění použitých proměnných a operací s~nimi prováděných. Dvěma průchody stromu jsou na základě prováděných operací a volaných funkcí přiřazeny proměnným datové typy. Současně s~parsováním a precedenční analýzou probíhá také předávání informací generátorům, které mají na starosti výsledný C++ kód.
+
+		Po úspěšném rozparsování a zanalyzování zdrojového kódu je provedeno generování kódu na zjištěných zjištěných informací,
+
+
+	%\textbf{[Contributions (7 lines)]}
+		%\phony{Sell your solution. Pinpoint your achievements. Be fair and objective.}
+		Nástroj, jehož návrh a implemetace je v~tomto článku popisována je možnost, jak dosahnout snadno rychlejší odezvy PHP aplikací. V~současné době je praktické použití komplikované implementací pouhé podmnožiny jazyka PHP a zejména absence objektové části je pro překlad moderních knihoven problematická. To však vzhledem k~pokračujícímu vývoji nemusí být překážkou nastálo.
+
+
 
 
 
@@ -165,201 +192,115 @@ This papper focus on development of tool for automated translation functions wri
 %--------------------------------------------------------
 %--------------------------------------------------------
 %--------------------------------------------------------
-\section{How To Use This Template}
-\label{sec:HowToUse}
 
-\begin{lstlisting}[caption=PHP supported expressions, label=code:phpCodeExample, language=PHP]
+\section{Theoretical background}
+
+	Některé knihovny jsou náročné na výpočet a i přesto implementovány v~PHP pro jeho jednoduchost na psaní a velký rozsah funkcí, kdy se není třeba zaměřovat na správu paměti, čtení ze souboru apod. Cílem je ponechat tuto jednoduchost a přinést zrychlení. Příkladem může být rozpoznání obličeje\footnote{\url{https://github.com/mauricesvay/php-facedetection}}, nebo generování PDF z~HTML - mPdf.
+
+	Optimalizace přepisováním částí systému do C/C++ není zcela běžná, ale používá se u~velkých projektů - třeba Yahoo provádí přepisování náročných částí aplikace do C++\cite{yahooCpp}. Z~open source knihoven je pak příkladem třeba framework Phalcon\footnote{\url{https://phalconphp.com/en/}}, či Ice, které jsou kompletně napsané v~jazyce C. Zpřístupňují MVC model s~databázovou vrstvou, šablonami a dalšími funkcemi, jako klasické frameworky implementované v~PHP. Dle testů\cite{phalconBenchmark} webová aplikace využívající výhod této optimalizace je schopna odbavit násobky příchozích požadavků oproti čistým implementacím v~PHP. Je tedy zřejmé, že tato optimalizace má smysl a právě cílem této práce je zjednodušit tvorbu C++ knihoven pro PHP.
+
+
+	Životní cyklus PHP rozšíření sestává z~několika stavů. Při startu PHP jsou načteny sdílené knihovny definované v~konfiguračním souboru direktivou \function{extension=}, a zavolána funkce vracející informace o~rozšíření. Tyto informace obsahují verzi PHP API, callbacky a funkce, třídy, rozhraní a konstanty, které rozšíření poskytuje.
+
+	Po inicializaci PHP jsou zavolány inicializační funkce rozšířeních, které umožňují provést alokaci paměti, otevření deskriptorů k~souborům apod. V~tomto kroku je například vhodné, aby modul pro logování otevřel soubor, do kterého bude zapisovat, jelikož bude pro všechny požadavky stejný a je zbytečné jej otevírat a zavírat při každém požadavku.
+
+	PHP proces čeká na příchozí požadavek k~odbavení. Při jeho přijetí nastaví potřebné proměnné a spustí interpretaci skriptu. Spolu s~nastavením proměnných je zavolán další callback z~rozšíření, který může připravit k~načtení již konkrétní hodnoty pro daný požadavek - může tím být například vlastní implementace session.
+
+	\begin{figure}[t]
+		\centering
+		\includegraphics[width=1.0\linewidth]{PhpExtensionLifeCycleDiagram.pdf}
+		\caption{Životní cyklus PHP rozšíření.}
+		\label{fig:phpExtensionLifeCycle}
+	\end{figure}
+
+
+	Následně dochází k~případným voláním funkcí při vykonávání skriptu obsluhující požadavek. Po dokončení požadavku je zavolán další callback, který umožňuje provést uvolnění paměti a další operace pro funkcionalitu rozšíření. Z~důvodu optimalizace nedochází po obsloužení požadavku k~ukončení procesu PHP, ale proces čeká na další příchozí požadavek. Pokud dojde k~vypnutí webového serveru, tak je zavolán další callback, který by měl provést úklid zbylých věcí - protiklad k~prvně volanému callbacku. Celý tento proces znázorňuje diagram na obrázku \ref{fig:phpExtensionLifeCycle} na straně \pageref{fig:phpExtensionLifeCycle}.
+
+
+	Z~PHP rozšíření není možné ovlivňovat seznam vložených souborů pro funkce \function{include\_once} a \function{require\_once}. Pokud bude přeložen zdrojový kód vkládající část pomocí jedné z~těchto funkcí, tak v~době vykonávání bude možné provést vložení znovu.
+
+	Velmi problematickým je pak překlad konstrukcí jako \function{\$\$varName}, které v~jazyce PHP zpřístupní proměnnou, jejíž název je uložen v~proměnné \function{\$varName}. Vzhledem k~tomu, že hodnota proměnné může být předána jako argument funkce, či načtena ze souboru a nemusí být v~době překladu známa, se jedná o~velmi problematickou konstrukci, která není v~současné implementaci podporována.
+
+
+
+
+\section{Methodology}
+
+	Při návrhu nástroje bylo třeba vybrat vhodnou podmnožinu jazyka PHP k~implemetaci. Vzhledem k~rozsahu nebylo možné za omezený čas implementovat podporu kompletní gramatiky jazyka. Vybraná podmnožina by měla umožnit tvorbu funkcí, volání funkcí a řízení toku programu. Tedy implmentovat konstrukce pro podmínky, cykly a zaměřit se zejmána na podporu výrazů, která je klíčová. Při transformaci výrazů mezi těmito jazyky je třeba řešit odlišnosti v~prioritě a chování. Příkladem je inkrementace, kterou je možné v~PHP provádět i nad hodnotami typu float.
+
+	V~současné době neimplementovanou, ale v~budoucnu plánovanou funkcionalitou je podpora objektového programování - tj. podpora pro třídy, dědičnost, rozhraní, namespace, trait apod.
+
+	Nástroj provádí jako jednu ze svých funkcí analýzu výrazů a kódu pro detekci datových typů. Použití C++ třídy s~přetíženými operátory povádějící převod hodnoty do požadovaného typu pro veškeré proměnné by mohlo mít nepříznivý dopad na rychlost a proto pokud je to možné jsou použity primitivní datové typy long, double, std::string, boolean a std::vector.
+
+\begin{lstlisting}[caption=Podporované výrazy PHP, label=code:phpCodeExample, language=PHP]
 function hello($name, array $arg = []) {
-	foreach($arg as $a)
+	foreach($arg AS $a)
 	{
 		if(rand() AND 1 ** "15")
 		{
 			echo "Hello ".$name." -- ".$a;
 		}
 	}
-	return @count($arg);
+	return count(str_replace("a","b",$arg));
 }
 \end{lstlisting}
 
+	Kód \ref{code:phpCodeExample} ukazuje některé podporované konstrukce překladače pro převod z~PHP do jazyka C++ - možnost definovat výchozí hodnotu argumentů, podpora pro mocninu, vyhodnocování výrazů, či volání vestavěných funkcí.
 
-Here will go several sections describing \textbf{your work}. From theoretical background (Section 2), through your own methodology (Section 3), experiments and implementation (Section 4 and possibly 5), to conclusions (Section 6). Instead of such technical content, here in this template we give a few hints how to write the paper.
+	%- třeba vybrat správnou podmnožinu jazyka, aby z~ní bylo možné sestavit rozumně velké funkce pro testování. Proto se hlavní část zaměřuje na výrazy, kdy je podporována většina operátorů. Zde je třeba řešit spoustu odlišností PHP a C++.
+
+	%- z~důvodu komplexnosti byla vypuštěna objektová část jazyka PHP.
+
+	% - detekce datových typů je podstatná část z~důvodu optimalizace, jelikož režie C++ třídy s~přetíženými operátory provádějící dynamická přetypování je výrazně vyšší, než použtí nativních datových typů jako je double apod.
+
+
+
+
+
+
+\section{Experiments and implementations}
+
+	Před zahájím návrhu a implemetace jsem provedl několik testů pro změření rozdílů doby vykonávání. Na obrázku č. \ref{fig:bubbleSort} na straně \pageref{fig:bubbleSort} můžeme vidět graf ukazující dobu potřebnou pro seřazení stejného pole o~50 000 náhodných čísel algoritmem Bubble sort. Výrazný rozdíl časů - 3.42s a 0.24s v~prospěch pro C++ naznačuje, že je možné dosáhnout výrazné optimalizace. V~tomto případě zrychlení 14.24x. Obdobných výsledků hovořících v~prospěch C++ verze zavedené jako rozšíření byly i další experimenty. Uvedu dále například součet všech čísel od 1 do 100 000 000 000, kdy čísla jsou ještě více rozdílná - 73s PHP a 0.35s C++. Tyto testy byly prováděny na počtači s~OS Fedora 21, Intel i7 4702MQ, SSD. Měření bylo provedeno 50x a vypočten matematický průměr. Žádná z~naměřených hodnot nevybočovala výrazněji z~průmeru.
+
+	%- experimentování s~syntetickým kódem (napsaným za účelem testování, není z~reálné aplikace). Přepis do C++ ručně, tedy zřejmě nejoptimálnější verze. Implementace Bubble sortu pro 50 000 stejných náhodných položek PHP: 3.42s, C++: 0.24s tj. 14.25x rychlejší. Součet čísel od 0 do N PHP: 73s, C++: 0.35s \todo{zanést do grafu}.
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.7\linewidth]{keep-calm.png}
-	\caption{Good writing is bad writing that was rewritten several times.  Don't worry, start somewhere.}
-	\label{fig:KeepCalm}
+	\includegraphics[width=1.0\linewidth]{bubbleSort.pdf}
+	\caption{Porovnání rychlosti Bubble sortu.}
+	\label{fig:bubbleSort}
 \end{figure}
 
-Here is a list of actions to do first when you want to write an Excel@FIT paper:
-\begin{enumerate}
-	\item Download all the template files (Sec.~\ref{sec:FilesInTemplate}) into a directory. Maybe setup a GIT sync for backup, sharing, and for use from multiple computers.
-	\item Rename \textit{2016-ExcelFIT-ShortName.tex} -- replace ShortName with something that identifies your work and is short enough.  For example: \textit{VehicleBoxes}, \textit{VanishingPoints}, \textit{FastShadows}, \textit{NewProbeTesting}, \textit{CheapDynamicDNS}, \ldots  This ensures that the filename already gives a hint what is in there (\textit{mypaper.pdf} is really stupid).
-	\item Decide the language of your paper.  English is recommended, as it is the language of science and technology.  However, if you want to write in Czech or Slovak, you may.  Use the correct option to the \textit{$\backslash$documentclass} command -- the very first line of the template.  The option may be either \textit{[czech]} or \textit{[slovak]}.
-	\item Insert meta information: \textbf{your name}, \textbf{e-mail}, \textbf{paper title}.  Make sure the year in the top right corner of the document is correct.  Do not hesitate to use ěščřžýáíé in your name -- the \LaTeX{} template is configured to eat UTF8 Unicode.
-	\item Insert teaser images (``image abstract'').  Use as many \textit{$\backslash$TeaserImage} commands as suitable -- three or four will usually be fine for a one-line teaser.  If you absolutely don't have any image showing your work (what kind of work could that be, anyway?!), remove the \textit{$\backslash$Teaser} command.
-	\item Insert references to supplementary material.  That will typically be clickable links to a youtube / vimeo video and to downloadable code, hyperlink to an online demo, or a github repo. If you have anything else relevant, put it in.  If there is no supplementary material (really?!), remove or comment out the \textit{$\backslash$Supplementary} command.
-	\item Keep calm and start writing (Figure~\ref{fig:KeepCalm}).  Some suggestions how to do this are in Section~\ref{sec:HowToWrite}.
-	\item When your paper is accepted to Excel@FIT, uncomment \textit{$\backslash$ExcelFinalCopy} at the beginning of this file.  The line numbers will disappear from the sides of the text and your paper is ready for final publication.
-\end{enumerate}
+	Rozšíření je možné implementovat v~C prostřednictvím rozhraní definovaného společností Zend, která stojí za referenčním interpretrem PHP. Dokumentace i s~návody je dostupná na jejím webu. Po průzkumu možností jsem zvolil knihovnu PHP-CPP\footnote{\url{http://www.php-cpp.com/}} od společnosti Copernica, která umožňuje pohodlnější tvorbu PHP rozšíření přidáním abstrakce a zpřístupněním funkcí z~PHP v~prostředí jazyka C++.
 
-Jean-Luc Lebrun \cite{Lebrun2011} offers excellent recommendations for the canonical sections of scientific/technical papers.  That is why Abstract, Introduction, and Conclusions in this template are already structured (remove the \textbf{[Bold labels]} in the Introduction and Conclusions, they are there just for your information and should not remain in the paper).  This structure is no more than a recommendation, but divert from it only in cases when you exactly know what you are doing.  The ``phony'' texts (typeset in \phony{gray color}) roughly indicate the lengths of individual parts of these sections.  Replace them with reasonable amounts of text.
+	Tato knihovna implementuje třídu PHP::Value, která slouží pro předávání argumentů z~PHP do funkcí a zpět. Pro samotné použití v generovaném kódu místo nativních typů není vhodná, jelikož ejí provázání s PHP interpretem má vysokou režii.
 
-%--------------------------------------------------------
-%--------------------------------------------------------
-\subsection{What Files are Here and Why}
-\label{sec:FilesInTemplate}
+	Pro tvorbu programu byl zvolen jazyk PHP, který poskytuje prostředky pro rychlý vývoj s možnostmi provádět rychlé změny v kódu. Dalším důvodem pro PHP je vestavěný tokenizer pro zdrojový jazyk. Ten bylo třeba rozšířit o podrobnější kategorizaci tokenů o což se stará vlastní scanner.
 
-The template package for Excel@FIT papers contains these files:
-\begin{description}[noitemsep]
-	\item[2016-ExcelFIT-ShortName.tex] This is the template for the main \LaTeX{} file -- this is your paper.  Do yourself a favor and replace \textit{ShortName} in the filename with something meaningful.
-	\item[2016-ExcelFIT-ShortName-bib.bib] You can delete the contents of this file completely and start adding BibTeX references.  It is much easier to use a small editing tool (Section~\ref{sec:UsefulTools}, JabRef) than to format \textit{.bib} file manually.  Rename the file so that \textit{ShortName} is consistent with the previous file (and update the filename in the \textit{.tex} file).
-	\item[ExcelAtFIT.cls] \LaTeX{} class file based on the \emph{Stylish Article}%
-	  \footnote{\url{http://www.latextemplates.com/template/stylish-article}} document class.  Do not modify this file.
-	\item[ExcelAtFIT-logo.pdf] This is the logo on the title page.
-	\item[VUT-FIT-logo.pdf] Another logo on the title page.
-	\item[images/placeholder.pdf] Placeholder image; include it, scale it as needed, then replace it with real content.\\ \includegraphics[height=4em]{placeholder.pdf}
-	\item[images/keep-calm.png] You don't need this file; it is only used in this template to show how to include a \textit{.png} file (Figure~\ref{fig:KeepCalm}).
-\end{description}
+	Pro tvorbu abstraktního syntaktického stromu z tokenů je použit vlastní parser s rekurzivním sestupem. V průběhu parsování jsou již zadávány generátorům kódu informace o konstrukcích, které mají generovat a prováděna derivace výrazů precedenční analýzou.
 
-%--------------------------------------------------------
-%--------------------------------------------------------
-%--------------------------------------------------------
-%--------------------------------------------------------
-\section{How To Write the Paper --- A Few Hints}
-\label{sec:HowToWrite}
+	Před samotným generováním C++ kódu dochází k detekci datových typů. Tato detekce je provedena ve dvou krocích. Při prvním průchodu stromem jsou určeny požadované vstupní typy hodnot do uzlů stromu a výsledná hodnota. Například při operaci dělení je zřejmé, že výsledkem bude typ float, či u konkatenace řetězec a jeho vstupní argumenty budou také řetězec (u jiných typů se provede přetypování). Obdobně jsou pak určeny typy hodnot - čísla, řetězce, či návratové hodnoty vestavěných funkcí.
 
-A reasonable way to start writing is sketching the \textbf{abstract} \cite{Herout-Abstract}.  Writing the abstract helps focus on what is important in the paper, what is the contribution, the meaning for the community.  This exercise might take some 20 minutes and it pays back by clearing the key points of the text.
-In 99\,\% cases it is very reasonable to stick to the abstract structure \cite{Lebrun2011} which is provided in this template.
+	Druhým průchodem tímto stromem s částečnými informacemi o typech jsou doplněny zbylé typy v závislosti na operacích - pokud je prováděno sčítání dvou hodnot typu int, tak výsledkem bude int. V případě, že je jedna z nich bude typu double, tak již výsledek bude také typu double. V případě přiřazení do proměnné je tento typ uložen k proměnné s adresou značící místo použití typu.
 
-Once you have the abstract, it should be very clear what is the message of the paper, what is the newly introduced knowledge, what are the proofs of its contribution, etc.  This is the right time to start constructing the \emph{skeleton} of the paper: it's \textbf{comics edition}~\cite{Herout-Comics}.
-This thing is composed of mainly four items:
-\begin{enumerate} [noitemsep]
-	\item \textbf{Sections and subsections.}
-	\item \textbf{Figures and tables.}  At this phase, knowing that ``once there will be a figure about this and that'' is just fine.  That is why we have the \textit{placeholder.pdf} image -- see Figure~\ref{fig:WidePicture}.  If this totally generic image can be replaced by some temporary image which still needs more work, but which is closer to the target version, go ahead. A hand-drawing photographed by a cellphone is perfect at this stage.
-	\item \textbf{Todo's.} In the early comics version, every section is filled by one or more \texttt{$\backslash$todo} commands and nothing else.  A todo in the text might look like: \todo{you should do something}.  Unlike some elaborated todo packages, this simple solution (defined in the template) does not break the page formatting and it is perfectly sufficient.
-	\item \textbf{Phony placeholder texts.}  These help you estimate the proportions of individual sections and subsections and to better aim at the correct paper length. Use \textit{$\backslash$blind\{3\}} to get three paragraphs of beautiful \phony{grey phony text}.
-\end{enumerate}
-One hour is usually enough for creating a nice comics edition of the paper.  No reason to wait, make a copy of the template and start butchering it.
+	Pokud se nepodaří detekovat s jistotou typ proměnné, tak je raději zvolen benevoletnější, který umožní uložit všechny možné proměnné - tedy pro číslo raději double, než int. V případě úplné neznalosti typu je použita instance třídy PHP::Value, která má větší režii, ale umožňuje práci s všemi datovými typy.
 
-Having the comics edition usually lubricates the whole writing process.  Now, the paper contains 20 or so todo's -- why not take the easiest one of them and replace it with a few lines of text within 15 minutes or even less.  Writing is no more a scary complex work.
+	Při generování C++ kódu jsou řešeny rozdíly mezi C++ a PHP. Průchodem bloků kódu jsou získány všechny použité proměnné a definovány na začátku funkce. Důvodem je rozdílný obor platnosti proměnných. Dále je v instanci třídy reprezentující proměnnou uloženo od jaké části kódu byla proměnná definována a kde byla zrušena funkcí \function{unset}, aby došlo k nahrazení konstrukce \function{isset} za správnou hodnotu.
 
-%--------------------------------------------------------
-%--------------------------------------------------------
-\subsection{Images and Tables}
-\label{sec:Images}
+	Další generátor je specializovaný pro generování výrazů. Při generování řeší konverzi výsledků podvýrazů na datový typ potřebný pro další operace prostřednictvím funkcí \function{php2cpp::to\_string} a \function{php2cpp::to\_float} implementovaných v C++. Dalším úkolem je konverze operátorů chybějících v C++. Pro operátor mocniny je volána funkce \function{pow} z matematické knihovny a rozdílné priority operátorů jsou řešeny závorkováním.
 
-Visuals (figures, tables, good equations, section headings) make the skeleton of a properly written paper.  A time-stressed reader should be able to get the idea from only browsing them.
-Therefore:
-\begin{enumerate}[noitemsep]
-\item \textbf{Make them perfect.}  Cheap and ugly images -- cheap and ugly paper.  Imperfect or shorter text -- who cares?
-\item \textbf{Make them self-contained.}  Be not afraid to have a ten-lines-long caption under an image.  The image plus its caption must make perfect sense by themselves, without reading the text.
-\item \textbf{Make them many.}  EVERY technical idea is better explained by an image.  Two images per page are a moderate start.
-\end{enumerate}
-\LaTeX{} lets you easily insert both vector and raster graphics. It is reasonable to use three formats:
-\begin{description}[noitemsep]
-\item[.pdf] Perfect for vector graphics.  All graphs \textbf{must} be in vector and therefore in .pdf.  Gnuplot, pyplot, Matlab -- they all produce vector graphs in .pdf easily.  Diagrams, system structures, sketches -- all vector graphics.  It's 2016, not 1980 anymore\ldots
-\item[.jpg] Suitable for photos.  \textbf{Never} for plots or screenshots.
-\item[.png] Good for precise raster graphics.  Screenshots, raster plots, raster outputs of programs.  Not for diagrams and plots -- unless it is a one-in-ten-years exception.
-\end{description}
-Caption of a table goes \textbf{before} the table (e.g. Table~\ref{tab:ExampleTable}), just the opposite way than with figures.  There is no logic behind, that's just how it is.
+	Volání vestavěných funkcí PHP, či uživatele definovaných je řešeno pomocí metod z knihovny PHP-CPP pro provázání s interpretem.
 
-%--------------------------------------------------------
-%--------------------------------------------------------
-\subsection{Sections and Subsections}
-\label{sec:Sections}
-
-It is usually wrong to have subsections in the Introduction; it is always wrong to have them in Conclusions.  In this kind of paper, it is very likely to be wrong to have any subsubsections.
-
-Section headings are the skeleton of the paper -- make them accurate and descriptive.  One-word section titles (apart from Introduction and Conclusions) are typically wrong, because they are not descriptive.
-``Proposed Method for Running X by Using Y'' is better than ``The Method''.
-``Implemented Application for PQR Communication'' is better than ``Application''.  The outline of all section titles should contain all the keywords relevant for the work.  Just by seeing them, the reader should be able to tell precisely the topic of the paper.  If not, the section headers are wrong (usually too short and generic).
-
-%--------------------------------------------------------
-%--------------------------------------------------------
-\subsection{Keywords}
-\label{sec:Keywords}
-
-Keywords are specified at the top of the document.
-\begin{enumerate}[noitemsep]
-	\item When making the list of keywords, ask yourself this: ``What should one write to google, so that the right answer would be my paper?''
-	\item Very generic terms (``IT'', ``Graphics'', ``Hardware'') are useless. Narrow terms are fine (``Matrix Code Recognition'', ``Appearance-Based Vehicle Segmentation'', \ldots)
-\end{enumerate}
-
-%--------------------------------------------------------
-%--------------------------------------------------------
-%--------------------------------------------------------
-%--------------------------------------------------------
-\section{Some Useful Tools}
-\label{sec:UsefulTools}
-
-This list is not a list and it is by no means complete.  If you prefer other tools -- cool, stick with them.  If you are just beginning, consider these.
-
-\begin{description}
-	\item[\href{http://miktex.org/download}{MikTeX}] Problem-free \LaTeX{} for Windows; a distribution with perfect automation of package download. Single setup, no more worries.
-	\item[\href{http://texstudio.sourceforge.net/}{TeXstudio}] Portable and opensource GUI for \LaTeX{} writing.  Ctrl+click jumps from pdf to latex and back.  Integrated spellchecker, syntax highlighting, multifile projects, etc.  First, install MikTeX, then TeXstudio.  Ten minutes and you are a \LaTeX{} master.
-	\item[\href{http://jabref.sourceforge.net/download.php}{JabRef}] Nice and simple Java program for managing \textit{.bib} files with references.  Not much to learn -- one window, a straightforward form for editing the entries.
-	\item[\href{https://inkscape.org/en/download/}{InkScape}] Opensource and portable editor of vector files (SVG and -- conveniently -- PDF).  The proper tool for making great drawings for papers -- not the easiest to learn, though.
-	\item[GIT] Great for team collaboration on \LaTeX{} projects, but also helpful to a single author -- for versioning, backup, multi-computer, \ldots
-	\item[\href{http://www.overleaf.com/}{Overleaf}] Online \LaTeX{} editing -- some love it, to others it might seem a little too slow, though\ldots
-\end{description}
+	%- Použití knihovny PHP-CPP, popsat jak zjednodušuje vývoj (třída PHP::Value) a naopak zas nevhodnost postavit řešení čistě na ní - pomalost práce s~tímto datovým typem.
 
 
-%--------------------------------------------------------
-%--------------------------------------------------------
-%--------------------------------------------------------
-%--------------------------------------------------------
-\section{Frequently Used \LaTeX{} Fragments}
-\label{sec:Fragments}
+	%- implemetace parseru
 
-Here goes an example of a table:
-\begin{table}[h]
-	\vskip6pt
-	\caption{Table of Grades}
-	\centering
-	\begin{tabular}{llr}
-		\toprule
-		\multicolumn{2}{c}{Name} \\
-		\cmidrule(r){1-2}
-		First name & Last Name & Grade \\
-		\midrule
-		John & Doe & $7.5$ \\
-		Richard & Miles & $2$ \\
-		\bottomrule
-	\end{tabular}
-	\label{tab:ExampleTable}
-\end{table}
+	%- precedenční analýza
 
-Figure~\ref{fig:WidePicture} shows a wide figure, Figure~\ref{fig:KeepCalm} is a single-column figure with width specified relatively to the column.
-\begin{figure*}[t]\centering % Using \begin{figure*} makes the figure take up the entire width of the page
-  \centering
-  \includegraphics[width=0.8\linewidth,height=1.7in]{placeholder.pdf}\\[1pt]
-  \includegraphics[width=0.2\linewidth]{placeholder.pdf}
-  \includegraphics[width=0.2\linewidth]{placeholder.pdf}
-  \includegraphics[width=0.2\linewidth]{placeholder.pdf}
-  \includegraphics[width=0.2\linewidth]{placeholder.pdf}
-  \caption{Wide Picture.  The whole figure can be composed of several smaller images.  If you want to address individual images in the caption or from the text, use the \textit{subcaption} package.}
-  \label{fig:WidePicture}
-\end{figure*}
-Some mathematics $\cos\pi=-1$ and $\alpha$ in the text%
-\footnote{And some mathematics $\cos\pi=-1$ and $\alpha$ in a footnote.}.
+	%- detekce datových typů - operace, hodnoty, přiřazení výsledků, návratové hodnoty vestavěných funkcí, \todo{ typy parametrů vestavěných funkcí? }, dvojí průchod stromem, uložení v~struktuře adresované cestou v~kodu
 
-Now, this is an equation:
-\begin{linenomath}
-\begin{equation}
-\cos^3 \theta =\frac{1}{4}\cos\theta+\frac{3}{4}\cos 3\theta
-\label{eq:refname2}
-\end{equation}
-\end{linenomath}
-and here is a bunch of equations aligned horizontally:
-\begin{linenomath}
-\begin{align}
-	3x &= 6y + 12 \\
-	x &= 2y + 4
-\end{align}
-\end{linenomath}
 
-\blind{1}
 
 
 %--------------------------------------------------------
@@ -369,20 +310,25 @@ and here is a bunch of equations aligned horizontally:
 \section{Conclusions}
 \label{sec:Conclusions}
 
-\textbf{[Paper Summary]} What was the paper about, then? What the reader needs to remember about it?
-\phony{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae aliquet metus. Sed pharetra vehicula sem ut varius. Aliquam molestie nulla et mauris suscipit, ut commodo nunc mollis.}
+	%\textbf{[Paper Summary]} \phony{What was the paper about, then? What the reader needs to remember about it?}
 
-\textbf{[Highlights of Results]} Exact numbers. Remind the reader that the paper matters.
-\phony{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus fermentum ipsum at venenatis. Curabitur ultricies, mauris eu ullamcorper mattis, ligula purus dapibus mi, vel dapibus odio nulla et ex. Sed viverra cursus mattis. Suspendisse ornare semper condimentum. Interdum et malesuada fames ac ante ipsum.}
+	Konverze PHP knihoven do C++ je možná a použití dává smysl při konverzi knihoven, či jiných neměnných částí. Vhodné i při vývoji, kdy testování trvá kratší dobu a je možno měnit kód aplikace.
 
-\textbf{[Paper Contributions]} What is the original contribution of this work? Two or three thoughts that one should definitely take home.
-\phony{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent posuere mattis ante at imperdiet. Cras id tincidunt purus. Aliquam erat volutpat. Morbi non gravida nisi, non iaculis tortor. Quisque at fringilla neque.}
 
-\textbf{[Future Work]} How can other researchers / developers make use of the results of this work?  Do you have further plans with this work? Or anybody else?
-\phony{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin posuere massa, non convallis purus ultricies sit amet. Duis at nisl tincidunt, maximus risus a, aliquet massa. Vestibulum libero odio, condimentum ut ex non, eleifend.}
+\textbf{[Highlights of Results]} \phony{Exact numbers. Remind the reader that the paper matters.}
 
-\section*{Acknowledgements}
-I would like to thank my supervisor X. Y. for his help.
+
+\textbf{[Paper Contributions]} \phony{What is the original contribution of this work? Two or three thoughts that one should definitely take home.}
+
+
+\textbf{[Future Work]} \phony{ How can other researchers / developers make use of the results of this work?  Do you have further plans with this work? Or anybody else? }
+
+- Dostupné zdrojové kódy pod open licencí \todo{vyřešit licenci} umožňující vyzkoušet si překlad a v~případě úspěchu nasadit.
+
+- Plány do budoucna: Podpora tříd, propracovanější detekce datových typů (nyní je občas použit double i když by stačil long), omezit zbytečná volání to\_string a to\_float.
+
+%\section*{Acknowledgements}
+%I~would like to thank my supervisor X. Y. for his help.
 
 %--------------------------------------------------------
 %--------------------------------------------------------
