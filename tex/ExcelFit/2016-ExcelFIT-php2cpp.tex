@@ -10,19 +10,38 @@
   keywordstyle=\color{blue}\bfseries,
   ndkeywords={class, extend, implements, array, bool, int, string, float, throw, this},
   ndkeywordstyle=\color{darkgray}\bfseries,
-  identifierstyle=\color{black},
+  %identifierstyle=\color{black},
   sensitive=false,
   comment=[l]{//},
   morecomment=[s]{/*}{*/},
-  commentstyle=\color{purple}\ttfamily,
-  stringstyle=\color{red}\ttfamily,
+  %commentstyle=\color{purple}\ttfamily,
+  %stringstyle=\color{red}\ttfamily,
+  keywordstyle=\bfseries\color{red!70!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
   morestring=[b]',
   morestring=[b]"
 }
 
+
+\lstdefinestyle{customPhp}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=PHP,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
 \lstset{
    language=PHP,
-   backgroundcolor=\color{lightgray},
+   backgroundcolor=\color{white},
    extendedchars=true,
    basicstyle=\footnotesize\ttfamily,
    showstringspaces=false,
@@ -33,8 +52,10 @@
    tabsize=2,
    breaklines=true,
    showtabs=false,
-   captionpos=b
+   captionpos=b,
+   style=customPhp
 }
+
 
 \renewcommand{\lstlistingname}{Kód}
 \newcommand{\function}[1]{\texttt{#1}}
@@ -89,17 +110,8 @@
 
 \Abstract{
 
-Tato práce se zaměřuje na návrh a tvorbu nástroje pro automatizovaný překlad funkcí napsaných v~podmnožině jazyka PHP do C++. Vygenerovaný zdrojový kód je možno zkompilovat jako rozšíření PHP a zavést stejným způsobem, jako například MySQL, PDO, GD apod. Ve výsledku je tedy možno zavolat tyto funkce z~PHP, jako by se jednalo o~původní interpretovanou funkci. Předpokladem je však rozdíl v~rychlosti vykonávání, protože odpadá analýza zdrojových kódů, jejich interpretace, či režie způsobená správou paměti. Vytvořený nástroj provádí převod zdrojového kódu do abstraktního syntaktického stromu, staticky jej analyzuje pro určení datových typů proměnných a následně provádí generování C++ kódu.
-
+Tato práce se zaměřuje na návrh a tvorbu nástroje pro automatizovaný překlad funkcí napsaných v~podmnožině jazyka PHP do C++. Vygenerovaný zdrojový kód je možno zkompilovat jako rozšíření PHP a zavést stejným způsobem, jako například MySQL, PDO, GD apod. Ve výsledku je tedy možno zavolat tyto funkce z~PHP, jako by se jednalo o~původní interpretovanou funkci. Předpokladem je však rozdíl v~rychlosti vykonávání, protože odpadá analýza zdrojových kódů, jejich interpretace, či režie způsobená správou paměti. Vytvořený nástroj provádí převod zdrojového kódu do abstraktního syntaktického stromu, staticky jej analyzuje pro určení datových typů proměnných a následně provádí generování C++ kódu. Výsledné zrychlení pak záleží na charakteristice překládaného kódu a použití je komplikované kvůli implementaci podmnožiny PHP.
 %This papper focus on development of tool for automated translation functions written in PHP 5.6 language into C++ source. Targeted output source code should be compiled as PHP extension module and loaded in the same way as MySQL PDO, GD etc. So in result we can call these functions from PHP as originals, but is expected faster execution, because we don't need more to parse and interpret source plus garbage collector is no more needed. Developed tool parse input source into abstract syntactic tree and analyze them for determining variable types and generate output code.
-
-%\todo{What is the problem? What is the topic?, the aim of this paper?}
-
-%\todo{How is the problem solved, the aim achieved (methodology)?}
-
-\todo{What are the specific results? How well is the problem solved?}
-
-\todo{So what? How useful is this to Science and to the reader?}
 }
 
 %\Teaser{
@@ -157,7 +169,7 @@ Tato práce se zaměřuje na návrh a tvorbu nástroje pro automatizovaný přek
 	%\textbf{[Existing solutions (23 lines)]}
 		%\phony{Discuss existing solutions, be fair in identifying their strengths and weaknesses. Cite important works from the field of your topic. Try to define well what is the \textit{state of the art}. You can include a Section 2 titled ``Background'' or ``Previous Works'' and have the details there and make this paragraph short. Or, you can enlarge this paragraph to a whole page. In many scientific papers, \emph{this} is the most valuable part if it is written properly.}
 
-		V~současné době zde není přímo konkurenční řešení. Můžeme porovnat tento projekt s~HPHPc od společnosti Facebook, které však bylo zamýšleno pro kompilaci celé PHP aplikace do jednoho velkého binárního sou\-bo\-ru. Toto je rozdílný koncept, jelikož HPHPc vy\-ža\-do\-va\-lo překompilování celé aplikace i v~případě drobné změny a následnou distribuci až několik GB velkého souboru na servery. Představené řešení je však zaměřeno pouze na kompilaci knihoven, které nejsou měněny často a hlavní aplikace je stále interpretována. Projekt HPHPc byl nahrazen projektem HHVM\footnote{\url{http://hhvm.com/}}, který je JIT kompilátor spouštějící bytecode ve virtálním stroji, čímž řeší zmíněné nedostatky HPHPc\cite{hphpcHipHop}.
+		V~současné době zde není přímo konkurenční ře\-še\-ní. Můžeme porovnat tento projekt s~HPHPc od společnosti Facebook, které však bylo zamýšleno pro kompilaci celé PHP aplikace do jednoho velkého bi\-nár\-ní\-ho sou\-bo\-ru. Toto je rozdílný koncept, jelikož HPHPc vy\-ža\-do\-va\-lo překompilování celé aplikace i v~případě drobné změny a následnou distribuci až několik GB velkého souboru na servery. Představené řešení je však zaměřeno pouze na kompilaci knihoven, které nejsou měněny často a hlavní aplikace je stále interpretována. Projekt HPHPc byl nahrazen projektem HHVM\footnote{\url{http://hhvm.com/}}, který je JIT kompilátor spouštějící bytecode ve virtálním stroji, čímž řeší zmíněné nedostatky HPHPc\cite{hphpcHipHop}.
 
 
 		%In current time there isn't direct competitive solution. We can compare this project with Facebook's project HPHPc which intended to compile whole PHP application into one binary executable. This is different concept, because HPHPc's implementation require recompiling application even when was changed only few lines of file and then redistribute eventualy a few gigabites large binary files. This solution is intended to compile just libraries, when they are not changed so often and main application using these libraries is still interpreted. HPHPc project was replaced with HHVM that is Just In Time compiler runing in Virtual Machine which solve problems with recompiling.
@@ -177,7 +189,7 @@ Tato práce se zaměřuje na návrh a tvorbu nástroje pro automatizovaný přek
 
 		%This solution use PHP's functions for tokenizing source code and have added abstract layer for more precise token detection, own recursive parser, stack precedence analysator. Own solution was chosen because of optimizating gather informations.
 
-		Abstraktní syntaktický strom z~precedenční analýzy je použit pro zjištění použitých proměnných a operací s~nimi prováděných. Dvěma průchody stromu jsou na základě prováděných operací a volaných funkcí přiřazeny proměnným datové typy. Současně s~par\-so\-vá\-ním a precedenční analýzou probíhá také předávání informací generátorům, které mají na starosti výsledný C++ kód.
+		Abstraktní syntaktický strom z~precedenční a\-na\-lý\-zy je použit pro zjištění použitých proměnných a operací s~nimi prováděných. Dvěma průchody stromu jsou na základě prováděných operací a volaných funkcí přiřazeny proměnným datové typy. Současně s~par\-so\-vá\-ním a precedenční analýzou probíhá také předávání informací generátorům, které mají na starosti výsledný C++ kód.
 
 		Po úspěšném rozparsování a zanalyzování zdrojového kódu je provedeno generování kódu na základě zjištěných informací,
 
@@ -235,19 +247,20 @@ Tato práce se zaměřuje na návrh a tvorbu nástroje pro automatizovaný přek
 	Nástroj provádí jako jednu ze svých funkcí analýzu výrazů a kódu pro detekci datových typů. Použití C++ třídy s~přetíženými operátory povádějící převod hodnoty do požadovaného typu pro veškeré proměnné by mohlo mít nepříznivý dopad na rychlost, a proto, pokud je to možné, jsou použity primitivní datové typy \function{long}, \function{double}, \function{std::string}, \function{boolean} a \function{std::vector} / \function{std::map}.
 
 \begin{lstlisting}[caption=Podporované výrazy PHP, label=code:phpCodeExample, language=PHP]
-function hello($name, array $arg = []) {
-	foreach($arg AS $a)
-	{
-		if(rand() AND 1 ** "15")
-		{
-			echo "Hello ".$name." -- ".$a;
-		}
-	}
-	return count(str_replace("a","b",$arg));
+function hello($name, array $arg = [])
+{
+  foreach($arg AS $a)
+  {
+    if(rand() AND 1 ** "15")
+    {
+      echo "Hello ".$name." -- ".$a;
+    }
+  }
+  return str_replace("a","b",$arg);
 }
 \end{lstlisting}
 
-	Kód \ref{code:phpCodeExample} ukazuje některé podporované konstrukce překladače pro převod z~PHP do jazyka C++ - možnost definovat výchozí hodnotu argumentů, podpora pro mocninu, vyhodnocování výrazů, či volání vestavěných funkcí.
+	Kód \ref{code:phpCodeExample} ukazuje některé podporované konstrukce překladače pro převod z~PHP do jazyka C++ - možnost definovat výchozí hodnotu argumentů, podpora pro mocninu, vyhodnocování výrazů, či volání ve\-sta\-vě\-ných funkcí.
 
 	%- třeba vybrat správnou podmnožinu jazyka, aby z~ní bylo možné sestavit rozumně velké funkce pro testování. Proto se hlavní část zaměřuje na výrazy, kdy je podporována většina operátorů. Zde je třeba řešit spoustu odlišností PHP a C++.
 
@@ -262,7 +275,7 @@ function hello($name, array $arg = []) {
 
 \section{Experimenty a implementace}
 
-	Před zahájením návrhu a implemetace jsem provedl několik testů pro změření rozdílů doby vykonávání. Na obrázku č. \ref{fig:bubbleSort} můžeme vidět graf ukazující dobu potřebnou pro seřazení stejného pole o~50 000 ná\-hod\-ných číslech algoritmem Bubble sort. Zdrojové kódy obou variant jsou přiloženy u~zdrojového kódu projektu. Výrazný rozdíl časů - 3.42s a 0.24s v~prospěch pro C++ naznačuje, že je možné dosáhnout výrazné optimalizace. V~tomto případě zrychlení 14.24x. Obdobných výsledků hovořících v~prospěch C++ verze zavedené jako rozšíření byly i další experimenty. Uvedu dále například součet všech čísel od 1 do 100 000 000 000, kdy čísla jsou ještě více rozdílná - 73s PHP a 0.35s C++. Tyto testy byly prováděny na počtači s~OS Fedora 21, Intel i7 4702MQ, SSD. Měření bylo provedeno 50x a vypočten matematický průměr. Žádná z~naměřených hodnot nevybočovala výrazněji z~prů\-mě\-ru.
+	Před zahájením návrhu a implemetace jsem provedl několik testů pro změření rozdílů doby vykonávání. Na obrázku č. \ref{fig:bubbleSort} můžeme vidět graf ukazující dobu potřebnou pro seřazení stejného pole o~50 000 ná\-hod\-ných číslech algoritmem Bubble sort. Zdrojové kódy obou variant jsou přiloženy u~zdrojového kódu projektu. Výrazný rozdíl časů - 3.42s a 0.24s v~prospěch pro C++ naznačuje, že je možné dosáhnout výrazné optimalizace. V~tomto případě zrychlení 14.24x. Obdobných výsledků hovořících v~prospěch C++ verze zavedené jako rozšíření byly i další experimenty. U\-ve\-du dále například součet všech čísel od 1 do 100 000 000 000, kdy čísla jsou ještě více rozdílná - 73s PHP a 0.35s C++. Tyto testy byly prováděny na počtači s~OS Fedora 21, Intel i7 4702MQ, SSD. Měření bylo provedeno 50x a vypočten matematický průměr. Žádná z~naměřených hodnot nevybočovala výrazněji z~prů\-mě\-ru.
 
 	%- experimentování s~syntetickým kódem (napsaným za účelem testování, není z~reálné aplikace). Přepis do C++ ručně, tedy zřejmě nejoptimálnější verze. Implementace Bubble sortu pro 50 000 stejných náhodných položek PHP: 3.42s, C++: 0.24s tj. 14.25x rychlejší. Součet čísel od 0 do N PHP: 73s, C++: 0.35s \todo{zanést do grafu}.
 
@@ -273,11 +286,11 @@ function hello($name, array $arg = []) {
 	\label{fig:bubbleSort}
 \end{figure}
 
-	Zrychlení bude velmi záležet na charakteristice překládaného kódu. V případě, že se bude jednat o pouhá volání vestavěných, či knihovních funkcí, které jsou již zkompilované, tak zrychlení bude maximálně v řádu jednotek procent, či dokonce nulové. Mnohem zajímavějších výsledků je však možno dosahnout v případě funkcí, které provádějí ve větší míře operace s proměnnými, viz výše uvedený Bubble sort.
+	Zrychlení bude velmi záležet na charakteristice překládaného kódu. V~případě, že se bude jednat o~pouhá volání vestavěných, či knihovních funkcí, které jsou již zkompilované, tak zrychlení bude ma\-xi\-mál\-ně v~řádu jednotek procent, či dokonce nulové. Mnohem zajímavějších výsledků je však možno dosahnout v~případě funkcí, které provádějí ve větší míře operace s~proměnnými, viz výše uvedený Bubble sort.
 
 	Rozšíření je možné implementovat v~C pro\-střed\-nic\-tvím rozhraní definovaného společností Zend, která stojí za referenčním interpretrem PHP. Dokumentace i s~návody je dostupná na jejím webu. Po průzkumu možností jsem zvolil knihovnu PHP-CPP\footnote{\url{http://www.php-cpp.com/}} od spo\-leč\-nos\-ti Copernica, která umožňuje pohodlnější tvorbu PHP rozšíření přidáním abstrakce a zpřístupněním funkcí z~PHP v~prostředí jazyka C++.
 
-	Tato knihovna implementuje třídu \function{Php::Value}, která slouží pro předávání argumentů z~PHP do funkcí implementovaných v jazyce C++ a zpět. Pro samotné použití v~generovaném kódu místo nativních typů není vhodná, jelikož její provázání s~PHP interpretem má vysokou režii.
+	Tato knihovna implementuje třídu \function{Php::Value}, která slouží pro předávání argumentů z~PHP do funkcí implementovaných v~jazyce C++ a zpět. Pro samotné použití v~generovaném kódu místo nativních typů není vhodná, jelikož její provázání s~PHP interpretem má vysokou režii.
 
 	Pro tvorbu programu byl zvolen jazyk PHP, který poskytuje prostředky pro rychlý vývoj s~možnostmi provádět rychlé změny v~kódu. Dalším důvodem pro PHP je vestavěný tokenizer pro zdrojový jazyk. Ten bylo třeba rozšířit o~podrobnější kategorizaci tokenů, o~což se stará vlastní lexikální analyzátor.
 
@@ -331,7 +344,7 @@ function hello($name, array $arg = []) {
 
 	Jsou dostupné zdrojové kódy pod open source licencí Apache 2.0 umožňující vyzkoušet si překlad a v~případě úspěchu nasadit, či se zapojit do vývoje.
 
-	V~budoucnu je plánována podpora tříd, propracovanější detekce datových typů (nyní je občas použit double i když by stačil long), omezit zbytečná volání \function{to\_string} a \function{to\_float}. Dále je plánováno experimentování s~další detekcí datových typů, kdy slibné výsledky by mohlo poskytnout sledování hodnot pro\-měn\-ných v~interpretované verzi při provozu. Při dos\-ta\-teč\-ně velkém množství vzorků by bylo možné vygenerovat optimalizovanou verzi + obecnou. Při zavolání knihovny by se poté zvolila varianta dle typů argumentů.
+	V~budoucnu je plánována podpora tříd, propracovanější detekce datových typů (nyní je občas použit double i když by stačil long), omezit zbytečná volání \function{to\_string} a \function{to\_float}. Dále je plánováno ex\-pe\-ri\-men\-to\-vá\-ní s~další detekcí datových typů, kdy slibné výsledky by mohlo poskytnout sledování hodnot pro\-měn\-ných v~interpretované verzi při provozu. Při dos\-ta\-teč\-ně velkém množství vzorků by bylo možné vygenerovat optimalizovanou verzi + obecnou. Při zavolání knihovny by se poté zvolila varianta dle typů argumentů.
 
 %\section*{Acknowledgements}
 %I~would like to thank my supervisor X. Y. for his help.
