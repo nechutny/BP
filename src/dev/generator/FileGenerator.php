@@ -43,7 +43,8 @@ class FileGenerator
 					'#include <math.h>'					."\n".
 					'#include <iostream>'				."\n".
 					'#include "cpp/PhpValString.cpp"'	."\n".
-					'#include "cpp/PhpValFloat.cpp"'	."\n\n";
+					'#include "cpp/PhpValFloat.cpp"'	."\n".
+					'#include "cpp/PhpArrayKey.cpp"'	."\n\n";
 
 		foreach ($this->functions as $function)
 		{

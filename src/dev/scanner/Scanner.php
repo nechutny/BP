@@ -72,6 +72,9 @@ class Scanner {
 					case '=':
 						$tname = 'T_ASSIGN';
 						break;
+					case '[':
+						$tname = 'T_ARRAY_OPEN';
+						break;
 					case ']':
 						$tname = 'T_ARRAY_CLOSE';
 						break;

@@ -105,6 +105,10 @@ class TypeDetector
 			// TODO Correct types
 			return Type::TYPE_NO_PROPAGATE;
 		}
+		elseif($operator == T_ARRAY_CLOSE)
+		{
+			return Type::TYPE_ARRAY;
+		}
 
 		return $operator;
 	}
@@ -156,6 +160,8 @@ class TypeDetector
 			}
 			else
 			{
+				var_dump($expr);
+
 				if(isset($expr[1]) && isset($expr[2]))
 				{
 					$type = self::detectOperator($expr[1]['code'], $expr[0], $expr[2]);
@@ -169,6 +175,10 @@ class TypeDetector
 					$type = self::detectOperator($expr[0]['code']);
 				}
 			}
+		}
+		else
+		{
+			var_dump($expr);
 		}
 
 

@@ -227,6 +227,39 @@ class ExprGenerator
 
 				return ''.$arg1.' '.$op['terminals'][1]['value'].' '.$arg2.' ';
 			}
+			// Inc, dec
+			elseif(count($op['terminals']) == 2 && isset($op['terminals'][1]) && isset($op['terminals'][1]['code']) && in_array($op['terminals'][1]['code'], [T_INC, T_DEC]))
+			{
+				$arg1 = $op['terminals'][0];
+
+				if($op['type'] != Type::TYPE_INT)
+				{
+					$arg1 = $this->doubleOperator($arg1);
+				}
+				else
+				{
+					$arg1 = $this->recursiveCode($arg1);
+				}
+
+
+				return '('.$arg1.' '.($op['terminals'][1]['code'] == T_INC ? '+' : '-').' 1 )';
+			}
+			// Array
+			elseif(count($op['terminals']) == 4 &&
+				isset($op['terminals'][0]) && isset($op['terminals'][0]['code']) && $op['terminals'][0]['code'] == T_ARRAY_CLOSE &&
+				isset($op['terminals'][2]) && isset($op['terminals'][2]['code']) && $op['terminals'][2]['code'] == T_ARRAY_OPEN
+			)
+			{
+				$arg1 = $op['terminals'][1];
+				$arg2 = $op['terminals'][3];
+
+				$arg1 = $this->recursiveCode($arg1);
+				$arg2 = $this->recursiveCode($arg2);
+
+
+
+				return '('.$arg2.'.get('.$arg1.'))';
+			}
 			// Function call
 			elseif( count($op['terminals']) >= 3 &&
 				isset($op['terminals'][0]['code']) && isset($op['terminals'][ count($op['terminals']) - 2 ]['code']) && isset($op['terminals'][ count($op['terminals']) - 1 ]['code']) &&

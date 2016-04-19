@@ -30,15 +30,16 @@ define('T_ASSIGN', -8);
 define('T_CONCAT', -9);
 
 define('T_ARRAY_CLOSE', -10);
+define('T_ARRAY_OPEN', -11);
 
-define('T_PLUS', -11);
-define('T_MINUS', -12);
-define('T_MUL', -13);
-define('T_DIV', -14);
-define('T_NEG', -15);
-define('T_MOD', -16);
+define('T_PLUS', -12);
+define('T_MINUS', -13);
+define('T_MUL', -14);
+define('T_DIV', -15);
+define('T_NEG', -16);
+define('T_MOD', -17);
 
-define('T_NULL', -17);
+define('T_NULL', -18);
 
-define('T_LESS', -18);
-define('T_GREATER', -19);
+define('T_LESS', -19);
+define('T_GREATER', -20);
