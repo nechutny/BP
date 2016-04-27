@@ -69,7 +69,7 @@
 
 %   LEAVE this line commented out for the REVIEW VERSIONS
 %   UNCOMMENT this line to get the FINAL VERSION
-%\ExcelFinalCopy
+\ExcelFinalCopy
 
 
 %--------------------------------------------------------
@@ -145,7 +145,7 @@ Tato práce se zaměřuje na návrh a tvorbu nástroje pro automatizovaný přek
 	%\textbf{[Motivation (9 lines)]}
 		%\phony{What is the raison d'\^{e}tre of your project? Why should anyone care? No general meaningless claims. Make bulletproof arguments for the importance of your work.}
 
-		Současné webové aplikace napsané v~PHP obsahují desítky knihoven, které programátoři nepotřebují upravovat a chtějí je jen použít. Tyto knihovny někdy provádějí výpočetně náročné operace. Jelikož jsou interpretovány, tak dochází k~zpomalení v~důsledku použitých mechanismů. Příkladem je správa paměti, která může způsobovat výrazné zpomalení. Na tuto skutečnost poukázala optimalizace nástroje Composer, které bylo dosaženo vypnutím automatického u\-vol\-ňo\-vá\-ní nepoužívané paměti, a dosáhla 30\% - 90\% zrych\-lení (v~závislosti na množství prováděných operací)\cite{gcOptimize}. Dlouhá doba načítání webové stránky je jedním z~hlav\-ních důvodů pro opuštění návštěvníkem. Škálování takových náročných systémů pak nemusí být e\-ko\-no\-mic\-ké řešení. Tento nástroj však umožňuje snížit vytížení serverů s~nutností minimální úpravy aplikace.
+		Současné webové aplikace napsané v~PHP obsahují desítky knihoven, které programátoři nepotřebují upravovat a chtějí je jen použít. Tyto knihovny někdy provádějí výpočetně náročné operace a jelikož jsou interpretovány, tak dochází k~zpomalení v~důsledku použitých mechanismů. Příkladem je správa paměti, která může způsobovat výrazné zpomalení. Na tuto skutečnost poukázala optimalizace nástroje Composer, které bylo dosaženo vypnutím automatického u\-vol\-ňo\-vá\-ní nepoužívané paměti, a dosáhla 30\% - 90\% zrych\-lení (v~závislosti na množství prováděných operací)\cite{gcOptimize}. Dlouhá doba načítání webové stránky je jedním z~hlav\-ních důvodů pro opuštění návštěvníkem. Škálování takových náročných systémů pak nemusí být e\-ko\-no\-mic\-ké řešení. Tento nástroj však umožňuje snížit vytížení serverů s~nutností minimální úpravy aplikace.
 
 		%Current web applications written in PHP contains tens of libraries, which programmer doesn't need to modify and just use them. These libraries sometime consume a lot of processor time, because are interpreted and are used other mechanisms from scripting language eg. garbage collector\cite{gcOptimize}. Web application response time is for costumer one of main reason to leave it, and scaling such systems is not economic solution. This solution allow to decrease servers load with minimal need of application modification.
 
@@ -156,7 +156,7 @@ Tato práce se zaměřuje na návrh a tvorbu nástroje pro automatizovaný přek
 
 		%Translating source code from dynamicly typed scripting language to strongly typed compiled code is problematic in a lof of ways. One of the main problems is detecting variable types from source code. Next we have a lot of not so easily translatable constructions such as warning supression, space ship operator etc.
 
-		Nejprve je třeba provést syntaktickou analázu zdrojových kódů a převést je do abstraktního syntaktického stromu pro následnou analýzu. Na základě této struktury můžeme provést analýzu možných hodnot, graf volání apod. pro detekci datových typů. Toto řešení však nepokrývá veškeré možnosti, takže v~projektu jsem také experimentoval s~generováním kódu pro více variant a následnou volbou vykonaného kódu za běhu na základě obdržených hodnot.
+		Překlad probíhá následovně: Nejprve je třeba pro\-vést syntaktickou analázu zdrojových kódů a převést je do abstraktního syntaktického stromu pro následnou analýzu. Na základě této struktury můžeme provést analýzu možných hodnot, graf volání pro detekci datových typů. Toto řešení však nepokrývá veškeré možnosti, takže v~projektu jsem také experimentoval s~generováním kódu pro více variant a následnou volbou vykonaného kódu za běhu na základě obdržených hodnot.
 
 		%Firstly we need to parse existing source and tranform it into abstract syntactic tree for futher analysation. Based on this structure we can analyse varible possible values, call graphs etc. to determine data types. This solution doesn't cover all possibilities, so in this project we are also experimenting with generating code for more types and choosing execution tree at run-time.
 
@@ -169,12 +169,12 @@ Tato práce se zaměřuje na návrh a tvorbu nástroje pro automatizovaný přek
 	%\textbf{[Existing solutions (23 lines)]}
 		%\phony{Discuss existing solutions, be fair in identifying their strengths and weaknesses. Cite important works from the field of your topic. Try to define well what is the \textit{state of the art}. You can include a Section 2 titled ``Background'' or ``Previous Works'' and have the details there and make this paragraph short. Or, you can enlarge this paragraph to a whole page. In many scientific papers, \emph{this} is the most valuable part if it is written properly.}
 
-		V~současné době zde není přímo konkurenční ře\-še\-ní. Můžeme porovnat tento projekt s~HPHPc od společnosti Facebook, které však bylo zamýšleno pro kompilaci celé PHP aplikace do jednoho velkého bi\-nár\-ní\-ho sou\-bo\-ru. Toto je rozdílný koncept, jelikož HPHPc vy\-ža\-do\-va\-lo překompilování celé aplikace i v~případě drobné změny a následnou distribuci až několik GB velkého souboru na servery. Představené řešení je však zaměřeno pouze na kompilaci knihoven, které nejsou měněny často a hlavní aplikace je stále interpretována. Projekt HPHPc byl nahrazen projektem HHVM\footnote{\url{http://hhvm.com/}}, který je JIT kompilátor spouštějící bytecode ve virtálním stroji, čímž řeší zmíněné nedostatky HPHPc\cite{hphpcHipHop}.
+		V~současné době zde není přímo konkurenční ře\-še\-ní. Můžeme porovnat tento projekt s~HPHPc od společnosti Facebook, které však bylo zamýšleno pro kompilaci celé PHP aplikace do jednoho velkého bi\-nár\-ní\-ho sou\-bo\-ru. Toto je rozdílný koncept, jelikož HPHPc vy\-ža\-do\-va\-lo překompilování celé aplikace i v~případě drobné změny a následnou distribuci až několik GB velkého souboru na servery. Představené řešení je však zaměřeno pouze na kompilaci knihoven, které nejsou měněny často a hlavní aplikace je stále interpretována. Projekt HPHPc byl nahrazen projektem HHVM\footnote{\url{http://hhvm.com/}}, který je JIT kompilátor (překládající jen použité části kódu) spouštějící bytecode ve virtálním stroji, čímž řeší zmíněné nedostatky HPHPc\cite{hphpcHipHop}.
 
 
 		%In current time there isn't direct competitive solution. We can compare this project with Facebook's project HPHPc which intended to compile whole PHP application into one binary executable. This is different concept, because HPHPc's implementation require recompiling application even when was changed only few lines of file and then redistribute eventualy a few gigabites large binary files. This solution is intended to compile just libraries, when they are not changed so often and main application using these libraries is still interpreted. HPHPc project was replaced with HHVM that is Just In Time compiler runing in Virtual Machine which solve problems with recompiling.
+		Dále existuje projekt PHC\footnote{\url{http://www.phpcompiler.org/}}, který také kompiluje PHP aplikaci do spustitelného binárního souboru a má experimentální podporu pro generování rozšíření PHP. Bohužel projekt není již přes 6 let udržován a nepodařilo se mi tuto funkcionalitu otestovat. Pro\-blé\-mem byla kompilace programu, která nebyla možná ani na Debian stable s~PHP 5.3 a to i přes různé úpravy kódu a instalaci starších verzí knihoven. Ani pokus kontaktovat dva vývojáře z tohoto projektu pro konzultaci mého řešení se bohužel nezdařil.
 
-		Dále existuje projekt PHC\footnote{\url{http://www.phpcompiler.org/}}, který také kompiluje PHP aplikaci do spustitelného binárního souboru a má experimentální podporu pro generování rozšíření PHP. Bohužel se mi nepodařilo tuto funkcionalitu otestovat, protože kód již není delší dobu udržován a nepodařilo se mi jej zkompilovat na Debian stable s~PHP 5.3 i přes jeho různé úpravy.
 
 		%There is also project PHC that compile too php application into executable binary, but have experimental support for creating php extensions from php code. This feauture can't be tested, because code is no more maintained and I was unable to compile it even not on debian stable with PHP 5.3 and some code changes.
 
@@ -207,7 +207,7 @@ Tato práce se zaměřuje na návrh a tvorbu nástroje pro automatizovaný přek
 %--------------------------------------------------------
 %--------------------------------------------------------
 
-\section{Teorie}
+\section{PHP}
 
 	Některé knihovny jsou náročné na výpočet a přesto jsou implementovány v~PHP, pro jeho jednoduchost na psaní a velký rozsah funkcí, kdy se není třeba zaměřovat na správu paměti, čtení ze souboru apod. Cílem je ponechat tuto jednoduchost a přinést zrychlení. Pří\-kla\-dem může být rozpoznání obličeje\footnote{\url{https://github.com/mauricesvay/php-facedetection}}, nebo generování PDF z~HTML - mPdf.
 
@@ -238,13 +238,11 @@ Tato práce se zaměřuje na návrh a tvorbu nástroje pro automatizovaný přek
 
 
 
-\section{Definice}
+\section{Výběr podmnožiny PHP}
 
 	Při návrhu nástroje bylo třeba vybrání vhodné pod\-mno\-žin\-y PHP k~implemetaci. Vzhledem k~rozsahu nebylo možné za omezený čas implementovat podporu kompletní gramatiky jazyka. Vybraná podmnožina by měla umožnit tvorbu funkcí, volání funkcí a řízení toku programu. Tedy implementovat konstrukce pro podmínky, cykly a zaměřit se zejména na podporu výrazů, která je klíčová. Při transformaci výrazů mezi těmito jazyky je třeba řešit odlišnosti v~prioritě a chování některých operátorů.
 
 	V~současné době neimplementovanou, ale v~budoucnu plánovanou funkcionalitou je podpora objektového programování - tj. podpora pro třídy, dědičnost, rozhraní, jmenné prostory, mixins apod.
-
-	Nástroj provádí jako jednu ze svých funkcí analýzu výrazů a kódu pro detekci datových typů. Použití C++ třídy s~přetíženými operátory povádějící převod hodnoty do požadovaného typu pro veškeré proměnné by mohlo mít nepříznivý dopad na rychlost, a proto, pokud je to možné, jsou použity primitivní datové typy \function{long}, \function{double}, \function{std::string}, \function{boolean} a \function{std::vector} / \function{std::map}.
 
 \begin{lstlisting}[caption=Podporované výrazy PHP, label=code:phpCodeExample, language=PHP]
 function hello($name, array $arg = [])
@@ -260,7 +258,11 @@ function hello($name, array $arg = [])
 }
 \end{lstlisting}
 
-	Kód \ref{code:phpCodeExample} ukazuje některé podporované konstrukce překladače pro převod z~PHP do jazyka C++ - možnost definovat výchozí hodnotu argumentů, podpora pro mocninu, vyhodnocování výrazů, či volání ve\-sta\-vě\-ných funkcí.
+	Nástroj provádí jako jednu ze svých funkcí analýzu výrazů a kódu pro detekci datových typů. Použití C++ třídy s~přetíženými operátory povádějící převod hodnoty do požadovaného typu pro veškeré proměnné by mohlo mít nepříznivý dopad na rychlost, a proto, pokud je to možné, jsou použity primitivní datové typy \function{long}, \function{double}, \function{std::string}, \function{boolean} a \function{std::vector} / \function{std::map}.
+
+
+
+	Kód \ref{code:phpCodeExample} ukazuje některé podporované konstrukce překladače pro převod z~PHP do jazyka C++, které je možné použít v zdrojovém kódu - možnost definovat výchozí hodnotu argumentů, podpora pro mocninu, vyhodnocování výrazů, či volání ve\-sta\-vě\-ných funkcí.
 
 	%- třeba vybrat správnou podmnožinu jazyka, aby z~ní bylo možné sestavit rozumně velké funkce pro testování. Proto se hlavní část zaměřuje na výrazy, kdy je podporována většina operátorů. Zde je třeba řešit spoustu odlišností PHP a C++.
 
@@ -275,7 +277,7 @@ function hello($name, array $arg = [])
 
 \section{Experimenty a implementace}
 
-	Před zahájením návrhu a implemetace jsem provedl několik testů pro změření rozdílů doby vykonávání. Na obrázku č. \ref{fig:bubbleSort} můžeme vidět graf ukazující dobu potřebnou pro seřazení stejného pole o~50 000 ná\-hod\-ných číslech algoritmem Bubble sort. Zdrojové kódy obou variant jsou přiloženy u~zdrojového kódu projektu. Výrazný rozdíl časů - 3.42s a 0.24s v~prospěch pro C++ naznačuje, že je možné dosáhnout výrazné optimalizace. V~tomto případě zrychlení 14.24x. Obdobných výsledků hovořících v~prospěch C++ verze zavedené jako rozšíření dosáhly další experimenty. U\-ve\-du dále například součet všech čísel od 1 do 100 000 000 000, kdy čísla jsou ještě více rozdílná - 73s PHP a 0.35s C++. Tyto testy byly prováděny na počtači s~OS Fedora 21, Intel i7 4702MQ, SSD. Měření bylo provedeno 50x a vypočten matematický průměr. Žádná z~naměřených hodnot nevybočovala výrazněji z~prů\-mě\-ru.
+	Před zahájením návrhu a implemetace jsem provedl několik testů pro změření rozdílů doby vykonávání. Na obrázku č. \ref{fig:bubbleSort} můžeme vidět graf ukazující dobu potřebnou pro seřazení stejného pole o~50 000 ná\-hod\-ných číslech algoritmem Bubble sort. Zdrojové kódy obou variant jsou přiloženy u~zdrojového kódu projektu. Výrazný rozdíl časů - 3.42s a 0.24s v~prospěch pro C++ naznačuje, že je možné dosáhnout výrazné optimalizace. V~tomto případě zrychlení 14.24x. Obdobných výsledků hovořících v~prospěch C++ verze zavedené jako rozšíření dosáhly další experimenty. U\-ve\-du dále například součet všech čísel od 1 do 100 000 000 000, kdy čísla jsou ještě více rozdílná - 73s PHP a 0.35s C++. Tyto testy byly prováděny na počítači s~OS Fedora 21 64bit, Intel i7 4702MQ, ReiserFS na SSD. Překladč GCC 4.9.1 s volbou optimalizace -O3. Měření bylo provedeno 50x a vypočten matematický průměr. Žádná z~naměřených hodnot nevybočovala výrazněji z~prů\-mě\-ru.
 
 	%- experimentování s~syntetickým kódem (napsaným za účelem testování, není z~reálné aplikace). Přepis do C++ ručně, tedy zřejmě nejoptimálnější verze. Implementace Bubble sortu pro 50 000 stejných náhodných položek PHP: 3.42s, C++: 0.24s tj. 14.25x rychlejší. Součet čísel od 0 do N PHP: 73s, C++: 0.35s \todo{zanést do grafu}.
 
@@ -286,7 +288,7 @@ function hello($name, array $arg = [])
 	\label{fig:bubbleSort}
 \end{figure}
 
-	Zrychlení bude velmi záležet na charakteristice překládaného kódu. V~případě, že se bude jednat o~pouhá volání vestavěných či knihovních funkcí, které jsou již zkompilované, tak zrychlení bude ma\-xi\-mál\-ně v~řádu jednotek procent, či dokonce nulové. Mnohem zajímavějších výsledků je však možno dosahnout v~případě funkcí, které provádějí ve větší míře operace s~proměnnými, viz výše uvedený Bubble sort.
+	Výsledné rychlení bude velmi záležet na charakteristice překládaného kódu. V~případě, že se bude jednat o~pouhá volání vestavěných či knihovních funkcí, které jsou již zkompilované, tak zrychlení bude ma\-xi\-mál\-ně v~řádu jednotek procent, či dokonce nulové. Mnohem zajímavějších výsledků je však možno dosahnout v~případě funkcí, které provádějí ve větší míře operace s~proměnnými, viz výše uvedený Bubble sort.
 
 	Rozšíření je možné implementovat v~C pro\-střed\-nic\-tvím rozhraní definovaného společností Zend, která stojí za referenčním interpretrem PHP. Dokumentace i s~návody je dostupná na jejím webu. Po průzkumu možností jsem zvolil knihovnu PHP-CPP\footnote{\url{http://www.php-cpp.com/}} od spo\-leč\-nos\-ti Copernica, která umožňuje pohodlnější tvorbu PHP rozšíření přidáním abstrakce a zpřístupněním funkcí z~PHP v~prostředí jazyka C++.
 
@@ -342,7 +344,7 @@ function hello($name, array $arg = [])
 
 	%\textbf{[Future Work]} \phony{ How can other researchers / developers make use of the results of this work?  Do you have further plans with this work? Or anybody else? }
 
-	Jsou dostupné zdrojové kódy pod open source licencí Apache 2.0 umožňující vyzkoušet si překlad a v~případě úspěchu nasadit, či se zapojit do vývoje.
+	Jsou dostupné zdrojové kódy\footnote{\url{https://www.github.com/nechutny/BP}} pod open source licencí Apache 2.0 umožňující vyzkoušet si překlad a v~případě úspěchu nasadit, či se zapojit do vývoje.
 
 	V~budoucnu je plánována podpora tříd, propracovanější detekce datových typů (nyní je občas použit double i když by stačil long), omezení zbytečných volání \function{to\_string} a \function{to\_float}. Dále je plánováno ex\-pe\-ri\-men\-to\-vá\-ní s~další detekcí datových typů, kdy slibné výsledky by mohlo poskytnout sledování hodnot pro\-měn\-ných v~interpretované verzi při provozu. Při dos\-ta\-teč\-ně velkém množství vzorků by bylo možné vygenerovat optimalizovanou verzi + obecnou. Při zavolání knihovny by se poté zvolila varianta dle typů argumentů.
 

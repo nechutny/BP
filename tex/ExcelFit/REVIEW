@@ -1,0 +1,65 @@
+
+
+----------------------- REVIEW 1 ---------------------
+PAPER: 25
+TITLE: Překlad podmnožiny jazyka PHP do C++
+AUTHORS: Stanislav Nechutný
+
+
+----------- Review -----------
+Shrnuté: Předložený článek se týká automatizovaného překladu modulů PHP do C++. Cílem je umožnit programátorům přeložit část projektu v PHP do nativního kódu a tím snížit nároky na zdroje a zvýšit rychlost odpovedí. Podmožina jazyka byla již dle článku implementována (nejsem stavu v rámci velmi omezeného času pro recenze oveřit funkčnost implementace). V plánu studenta je pokrýt témeř kompletní jazyk PHP.
+
+Přínos: navržené řešení umožnuje výrazně snízit zdroje nutné pro vykonánáná PHP skriptů díky překladu jejich částí do nativního kódu.
+
+Druh tématu: inženýrské dílo.
+
+Silné stránky: možnost praktického využití (nejsem bohužel stavu v čase vyhraženém pro recenze posoudit).
+
+Poznámky k samotnému textu:
+* 2 - 10: spousta jednoduchých vět - působí jako výkřiky. Chtělo by to přidat nějaké spojky.
+* 25: větu bych začal "překlad probíhá následovně:"
+* 29: "apod" - nechápu proč to zde je.
+* 45: "JIT" nevysvětleno - co to je?
+* 49 - 53: velmi nevhodně napsané - působí dojmem, nechtělo se mi s tím drbat, tak jsem se na to vybodnul. Doporučuji např: " Bohužel projekt je již delší dobu neudržovaný a nelze ho jednoduše zprovoznit na současných distribucích Linuxu.
+85: sekci přejmenovat. Není to teorie, ale popis PHP. Doporučuji "PHP".
+91: K čemu se ten přiklad váže? Je to příklad zrychlení pomocí nativního kódu, nebo příklad jednoduchosti PHP?
+152: "Definice" -> "Výběr podmnožiny PHP"
+Obrázek 2: doplnit popisek o velikost a typ sady. "Buble sortu X položek typu Y". (možná i vyhodit a vložit do textu).
+210: Zrychlení -> výsledné zrychlení
+298: !!! Chybí link na zdrojové kódy (github/www/ftp/...) !!!
+
+
+----------------------- REVIEW 2 ---------------------
+PAPER: 25
+TITLE: Překlad podmnožiny jazyka PHP do C++
+AUTHORS: Stanislav Nechutný
+
+
+----------- Review -----------
+*** Shrnutí článku ***
+Práce se zaměřuje na překlad otevřeného kódu z PHP do C++ za účelem optimalizace rychlosti. Autor postavil své řešení nad vlastním frontendem (implementoval lexikální, syntaktickou a typovou analýzu z dynamicky typovaného do silně typovaného jazyka) a vytvořil backend jako rozšíření PHP, které umožňuje spouštět zkompilované funkce.
+
+*** Přínos / Zařazení ***
+Práce je implementačního charakteru. Jeho hlavní přínos vidím v praktické použitelnosti, pro optimalizaci aplikací z hlediska rychlosti a výkonu, což v dnešní době muže být kritické, např. pro mobilní platformy nebo webové aplikace, kde se špatná odezva muže odrazit na kvalitě používání.
+
+*** Silné stránky ***
+  1) Dobrá analýza ostatních přístupů a vymezení se vůči nim---práce jasně uvádí alternativní řešení popisované problematiky. Navíc se jasně vůči nim vymezuje (nikoliv však experimentálně).
+  2) Praktická použitelnost---práce má praktické využití a současně vzhledem k malému poctu existujících řešení je i zajímavé pro komunitu vývojářů v jazyce PHP. Rychlá odezva webových stránek a aplikací je zajisté dobrou motivací pro použití.
+  3) Dobré výhledy do budoucna---práce je velice dobrým základem pro budoucí práci a rozšíření, ať už rozšířením o podporu objektů či optimalizaci kódu. Zajímavé by mohlo být automatické kompilování částí programu na základě výsledku statické analýzy kódu (tzn. hledání slabých míst programu automatizovaně).
+
+*** Slabé stránky ***
+  1) Slabší prezentace experimentální části---visuální prezentace provedených experimentu je nedostatečná. Výsledky nejsou dostatečně přesvědčivé a zvolené benchmarky by mohly být praktičtější.
+  2) Slabší popis vlastní implementace---samotný popis vlastní implementace je spíše slovní. Koncepce výsledného programu není z textu jasná, vhodnější by byl popis pomocí diagramu.
+
+*** Konkrétní doporučení na zlepšení ***
+  1) V prezentaci by bylo vhodné se zaměřit na praktickou využitelnost Vaši práce a pokud možno motivaci na základě reálných aplikaci (existuje reálná aplikace, která by z Vašeho řešení těžila?)
+  2) Pokud existují zdrojové kódy Vašeho řešení pod open source licencí, bylo by vhodné je umístit veřejně (např. na githubu) a umožnit tak širší komunitě se zapojit do tohoto projektu. A v článku uvést odkaz.
+  3) Kapitola "Experimenty a implementace" by měla být rozdělena a nebýt strohým slovním popisem. Využijte více konceptuálních diagramu a tabulek pro prezentaci návrhu a prezentaci experimentu. Pokud jste naměřil vetší množství experimentů, pak je shrňte ve formě tabulky, namísto grafu prezentující pouze jediný experiment.
+  4) Text málo zdůvodňuje vlastní tvorbu frontendu pro zpracování jazyka PHP---pokud žádný vhodný PHP parser neexistuje, pak je vhodné toto zmínit. Pokud však existují stávající řešení, které jsou schopny zpracovat celou syntaxi jazyka PHP, pak není dostatečně odůvodnitelné vytvářet vlastní parser.
+  5) Text málo motivuje částečnou kompilaci---v textu je zmíněno, že překlad nepřidává žádnou režii a zkompilovaný kód je vždy rychlejší. Současně existují řešení, které jsou schopny zabalit zkompilovaný program do PHP skriptu. Proč tedy volit částečnou kompilaci, když úplnou bychom dosáhli maximálního zrychlení?
+
+
+--------------
+
+Děkuji za recenze. Připomínky, týkají se některých ne zcela vhodně volených formulací, jsem využil pro úpravu, aby sdělovali myšlenku tak jak byla myšlena. Zejména část s testováním PHC, kterému bylo věnováno více než 15 hodin. Chybějící odkaz na zdrojové kódy jsem doplnil do poznámky - bohužel jsem si neuvědomil, že v případě vytištění nebude funkční odkaz na zdrojové kódy pod abstraktem. Uvedený kód v textu je ukázkou podporovaných konstrukcí z jazyka PHP a tuto informaci sděluje text článku na řádcích 190-194.  Obdobné je to s informacemi o sadě pro test Bubble sort grafu na obrázku č. 2, kdy tato informace je opět v textu na řádcích 198 - 200, který se na tento graf odkazuje.
+V současné době nemám reálnou produkční knihovnu, kterou by bylo možno zkompilovat. Je to způsobeno tím, že dnes většina knihoven je napsána objektově a používají poměrně komplikované konstrukce, které zatím nepodporuji. Důvodem absence rozsáhlejších benchmarků je stále pokračující vývoj, který často poměrně významně mění výsledky a dřívě zmiňovaná podpora pouhé podmnožiny PHP.
