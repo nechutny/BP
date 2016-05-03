@@ -27,6 +27,8 @@ class ExprGenerator
 	protected $data = [];
 	protected $varScope = NULL;
 
+	static $codePlaceholder = '%php2cpp%codePlaceholder%';
+
 	public function __construct(array $data, Scope $scope)
 	{
 		$this->data = $data;
@@ -146,7 +148,7 @@ class ExprGenerator
 	public function getCode()
 	{
 
-		return $this->recursiveCode($this->data);
+		return  str_replace(self::$codePlaceholder, '', $this->recursiveCode($this->data));
 	}
 
 	protected function stringOperator($op)
@@ -232,19 +234,20 @@ class ExprGenerator
 			{
 				$arg1 = $op['terminals'][0];
 
-				if($op['type'] != Type::TYPE_INT)
+				/*if($op['type'] != Type::TYPE_INT)
 				{
 					$arg1 = $this->doubleOperator($arg1);
 				}
 				else
 				{
 					$arg1 = $this->recursiveCode($arg1);
-				}
+				/*}*/
 
 
-				return '('.$arg1.' '.($op['terminals'][1]['code'] == T_INC ? '+' : '-').' 1 )';
+				return '('.$arg1.' '.($op['terminals'][1]['code'] == T_INC ? '+=' : '-=').' 1 )';
+				//return '('.$arg1.' = '.$arg1.'++';
 			}
-			// Array
+			// Array access
 			elseif(count($op['terminals']) == 4 &&
 				isset($op['terminals'][0]) && isset($op['terminals'][0]['code']) && $op['terminals'][0]['code'] == T_ARRAY_CLOSE &&
 				isset($op['terminals'][2]) && isset($op['terminals'][2]['code']) && $op['terminals'][2]['code'] == T_ARRAY_OPEN
@@ -258,7 +261,8 @@ class ExprGenerator
 
 
 
-				return '('.$arg2.'.get('.$arg1.'))';
+				//return ' '.$arg2.'.get('.$arg1.'), '.$arg2.'['.$arg1.'] ';
+				return '( '.$arg2.'['.$arg1.'] '.self::$codePlaceholder.' ).value()';
 			}
 			// Function call
 			elseif( count($op['terminals']) >= 3 &&
@@ -286,10 +290,43 @@ class ExprGenerator
 				// Function call
 				return 'Php::call("'.$op['terminals'][ count($op['terminals']) - 1 ]['value'].'"'.$args.')';
 			}
-
-			foreach(array_reverse($op['terminals']) as $term)
+			if(count($op['terminals']) >= 3 && isset($op['terminals'][ count($op['terminals']) - 2 ]['code']) && isset($op['terminals'][ count($op['terminals']) - 1 ]['code']) && $op['terminals'][ 0 ]['code'] &&
+				$op['terminals'][0]['code'] == T_RPARENTHESIS &&
+				$op['terminals'][ count($op['terminals']) - 2 ]['code'] == T_LPARENTHESIS &&
+				$op['terminals'][ count($op['terminals']) - 1 ]['code'] == T_ARRAY
+			)
 			{
-				$result .= $this->recursiveCode($term);
+				return ' Php::Array()';
+			}
+
+
+			$remove = FALSE;
+			// Array precedence
+			if(isset($op['terminals'][1]) && in_array($op['terminals'][1]['code'], [
+					T_LESS, T_GREATER, T_IS_GREATER_OR_EQUAL, T_IS_EQUAL, T_IS_NOT_IDENTICAL, T_IS_NOT_EQUAL
+				]))
+			{
+				$remove = TRUE;
+			}
+
+			foreach(($op['terminals']) as $key => $term)
+			{
+				$append = $this->recursiveCode($term);
+
+				if($remove)
+				{
+					$append = str_replace(self::$codePlaceholder, '', $append);
+				}
+
+				if(strpos($append, self::$codePlaceholder) !== FALSE)
+				{
+					$result = str_replace(self::$codePlaceholder, $result, $append);
+				}
+				else
+				{
+					$result = $append.$result;
+				}
+
 			}
 		}
 		elseif(isset($op['value']))
