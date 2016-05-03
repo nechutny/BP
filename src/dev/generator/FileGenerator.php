@@ -25,7 +25,7 @@ class FileGenerator
 	/**
 	 * Add function to result code
 	 *
-	 * @param FunctionGenerator $generator Functgion to add
+	 * @param FunctionGenerator $generator Function to add
 	 */
 	public function addFunction(FunctionGenerator $generator)
 	{
@@ -44,7 +44,7 @@ class FileGenerator
 					'#include <iostream>'				."\n".
 					'#include "cpp/PhpValString.cpp"'	."\n".
 					'#include "cpp/PhpValFloat.cpp"'	."\n".
-					'#include "cpp/PhpArrayKey.cpp"'	."\n\n";
+					'#include "cpp/PhpValue.cpp"'		."\n\n";
 
 		foreach ($this->functions as $function)
 		{

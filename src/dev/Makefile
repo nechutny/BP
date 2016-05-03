@@ -41,7 +41,7 @@ INI_DIR				=	/etc/php.d
 #	this with a different fixed directory
 #
 
-EXTENSION_DIR			=	$(shell php-config --extension-dir)
+EXTENSION_DIR		=	$(shell php-config --extension-dir)
 
 
 #
@@ -85,9 +85,9 @@ LINKER				=	g++
 #	with a list of all flags that should be passed to the linker.
 #
 
-COMPILER_FLAGS			=	-Wall -c -O2 -std=c++11 -fpic -o
-LINKER_FLAGS			=	-shared
-LINKER_DEPENDENCIES		=	-lphpcpp
+COMPILER_FLAGS		=	-Wall -c -O2 -std=c++11 -fpic -o
+LINKER_FLAGS		=	-shared
+LINKER_DEPENDENCIES	=	-lphpcpp
 
 
 #
@@ -97,8 +97,8 @@ LINKER_DEPENDENCIES		=	-lphpcpp
 #	So you can probably leave this as it is
 #
 
-RM				=	rm -f
-CP				=	cp -f
+RM					=	rm -f
+CP					=	cp -f
 MKDIR				=	mkdir -p
 
 
@@ -118,12 +118,12 @@ OBJECTS				=	$(SOURCES:%.cpp=%.o)
 #	From here the build instructions start
 #
 
-all:						${OBJECTS} ${EXTENSION}
+all:					${OBJECTS} ${EXTENSION}
 
-${EXTENSION}:					${OBJECTS}
+${EXTENSION}:			${OBJECTS}
 						${LINKER} ${LINKER_FLAGS} -o $@ ${OBJECTS} ${LINKER_DEPENDENCIES}
 
-${OBJECTS}:
+${OBJECTS}: ${SOURCES}
 						${COMPILER} ${COMPILER_FLAGS} $@ ${@:%.o=%.cpp}
 
 install:
