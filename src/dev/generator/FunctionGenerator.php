@@ -46,6 +46,7 @@ class FunctionGenerator
 	 */
 	protected $codeGenerator;
 
+
 	/**
 	 * Set name of generated function
 	 *

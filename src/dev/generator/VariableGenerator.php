@@ -17,11 +17,17 @@
 
 class VariableGenerator
 {
-	const TYPE_MIXED = 'Php::Value';
+	/**
+	 * @var string Which C++ class use for dynamic types
+	 */
+	//static $varClass = 'Php::Value';
+	static $varClass = 'php2cpp::Value';
+
+	const TYPE_MIXED = '%varClass%';
 	const TYPE_STRING = 'std::string';
 	const TYPE_FLOAT = 'double';
 	const TYPE_INT = 'long';
-	const TYPE_ARRAY = 'Php::Val';
+	const TYPE_ARRAY = '%varClass%';
 
 	protected $name;
 
@@ -142,6 +148,8 @@ class VariableGenerator
 			}
 
 		}
+
+		$this->type = str_replace('%varClass%', self::$varClass, $this->type);
 
 		return "\t".$this->type.' phpVar_'.$this->name.$argument.';'."\n";
 	}

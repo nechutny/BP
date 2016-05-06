@@ -239,7 +239,7 @@ class ExprGenerator
 					$arg1 = $this->doubleOperator($arg1);
 				}
 				else
-				{
+				{*/
 					$arg1 = $this->recursiveCode($arg1);
 				/*}*/
 

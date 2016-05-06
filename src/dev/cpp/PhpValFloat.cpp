@@ -16,6 +16,8 @@
 
 namespace php2cpp
 {
+
+	
 	double to_float(int value)
 	{
 		return (double) value;
@@ -69,5 +71,15 @@ namespace php2cpp
 	double to_float(std::string value)
 	{
 		return std::stod(value);
+	}
+
+	double to_float(const char* value)
+	{
+		return std::stod(value);
+	}
+	
+	double to_float(php2cpp::Value& value)
+	{
+		return value.getFloat();
 	}
 }
