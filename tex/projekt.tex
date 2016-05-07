@@ -31,11 +31,11 @@
 \usepackage{caption}
 \usepackage{color}
 \usepackage{svg}
-\definecolor{lightgray}{rgb}{.9,.9,.9}
-\definecolor{darkgray}{rgb}{.4,.4,.4}
-\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+\usepackage{todonotes}
+\usepackage{lipsum}
 \usepackage{url}
 \DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
+
 
 %zde muzeme vlozit vlastni balicky
 
@@ -85,8 +85,8 @@
   keywords.cs={PHP, C++, pøeklad, modul, optimalizace}, %klicova slova v ceskem jazyce
   keywords.en={PHP, C++, translation, module, optimization}, %klicova slova v anglickem jazyce
   %Abstract
-  abstract.cs={Výtah (abstrakt) práce v èeském jazyce.}, % abstrakt v ceskem jazyce
-  abstract.en={Výtah (abstrakt) práce v anglickém jazyce.}, % abstrakt v anglickem jazyce
+  abstract.cs={Tato práce se zamìøuje na návrh a tvorbu nástroje pro automatizovaný pøeklad funkcí napsaných v~podmno¾inì jazyka PHP do C++. Vygenerovaný zdrojový kód je mo¾no zkompilovat jako roz¹íøení PHP a zavést stejným zpùsobem jako napøíklad MySQL, PDO, GD apod. Ve výsledku je tedy mo¾no zavolat tyto funkce z~PHP, jako by se jednalo o~pùvodní interpretovanou funkci. Pøedpokladem je v¹ak rozdíl v~rychlosti vykonávání, proto¾e odpadá analýza zdrojových kódù, jejich interpretace, èi re¾ie zpùsobená správou pamìti. Vytvoøený nástroj provádí pøevod zdrojového kódu do abstraktního syntaktického stromu, staticky jej analyzuje pro urèení datových typù promìnných, a následnì provádí generování C++ kódu. Výsledné zrychlení pak zále¾í na charakteristice pøekládaného kódu a praktické pou¾ití je prozatím komplikované kvùli implementaci podmno¾iny PHP.}, % abstrakt v ceskem jazyce
+  abstract.en={My work is focused on design and execution of an automated translation for functions written in PHP into C++. Generated code may be compiled as a PHP extension and implemented the same way MySQL, PDO, GD or so. As a result these functions may be called from PHP as if they were the initial interpreted functions. Since there is no need for source code analysis, interpretation, nor staging by Garbage Collector general assumption would be a significant speed difference. Created tool executes source code transfer into abstract syntactic tree which is followed up by a static analysis of variable types and consequently generates C++ code. Final speed increase then depends on the particular code being translated and its practical use is slightly elaborate at the moment - owing to the implementation of PHP subset.}, % abstrakt v anglickem jazyce
   %Prohlaseni
   declaration={Prohla¹uji, ¾e jsem tuto bakaláøskou práci vypracoval samostatnì pod vedením pana ...},
   %Podekovani (nepovinne)
@@ -109,16 +109,22 @@
 %Podekovani (nepovinne)
 %\acknowledgment{V této sekci je mo¾no uvést podìkování vedoucímu práce a tìm, kteøí poskytli odbornou pomoc
 %(externí zadavatel, konzultant, apod.).}
-
+\usepackage{hyperref}
+\hypersetup{
+     colorlinks   = true,
+     citecolor    = red
+}
 \begin{document}
 
-\renewcommand{\lstlistingname}{Kód}
+\def\UrlBreaks{\do\/\do-}
 
-
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
 \lstdefinelanguage{PHP}{
-  keywords={instanceof, void, new, true, false, catch, function, return, null, switch, var, if, while, do, for, else, elseif, case, break, include, require},
+  keywords={instanceof, void, new, true, false, catch, function, return, null, switch, AND, var, if, while, do, for, else, as, elseif, case, break, include, require, foreach, echo, ||, &&},
   keywordstyle=\color{blue}\bfseries,
-  ndkeywords={class, extend, implements, bool, int, string, float, throw, this},
+  ndkeywords={class, extend, implements, array, bool, int, string, float, throw, this},
   ndkeywordstyle=\color{darkgray}\bfseries,
   identifierstyle=\color{black},
   sensitive=false,
@@ -126,13 +132,32 @@
   morecomment=[s]{/*}{*/},
   commentstyle=\color{purple}\ttfamily,
   stringstyle=\color{red}\ttfamily,
+  keywordstyle=\bfseries\color{red!70!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
   morestring=[b]',
   morestring=[b]"
 }
 
+
+\lstdefinestyle{customPhp}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=PHP,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
 \lstset{
    language=PHP,
-   backgroundcolor=\color{lightgray},
+   backgroundcolor=\color{white},
    extendedchars=true,
    basicstyle=\footnotesize\ttfamily,
    showstringspaces=false,
@@ -143,8 +168,12 @@
    tabsize=2,
    breaklines=true,
    showtabs=false,
-   captionpos=b
+   captionpos=b,
+   style=customPhp
 }
+
+
+\renewcommand{\lstlistingname}{Kód}
 
 
 \lstdefinelanguage{Cpp}{
@@ -156,15 +185,15 @@
   sensitive=false,
   comment=[l]{//},
   morecomment=[s]{/*}{*/},
-  commentstyle=\color{purple}\ttfamily,
-  stringstyle=\color{red}\ttfamily,
+  %commentstyle=\color{purple}\ttfamily,
+  %stringstyle=\color{red}\ttfamily,
   morestring=[b]',
   morestring=[b]"
 }
 
 \lstset{
    language=Cpp,
-   backgroundcolor=\color{lightgray},
+   %backgroundcolor=\color{lightgray},
    extendedchars=true,
    basicstyle=\footnotesize\ttfamily,
    showstringspaces=false,
@@ -177,6 +206,7 @@
    showtabs=false,
    captionpos=b
 }
+
 
 \newcommand{\function}[1]{\texttt{#1}}
 

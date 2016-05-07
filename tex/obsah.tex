@@ -1,3 +1,6 @@
+\listoftodos
+
+
 \chapter{Úvod}
 	Skriptovací jazyk PHP je velmi oblíbeným prostøedkem pro tvorbu dynamických webových systémù i pro rùzné skripty. Z~pùvodnì jednoduchého jazyka pro tvorbu stránek s~dynamickým obsahem vznikl jazyk se stovkami funkcí umo¾òující rychlou implementaci témìø jakékoliv úlohy.
 
@@ -12,10 +15,16 @@
 		Takto transformované naètené funkce a tøídy bude mo¾né v~interpretovaném PHP pou¾ívat zcela stejnì jako v~pøípadì zdrojových - stejný zpùsob volání, stejné názvy, tøídy pùjde roz¹iøovat apod.
 
 	\section{Motivace}
-		...
-
+		Motivací pøi tvorbì této práce je urychlení webových aplikací napsaných v PHP. PHP umo¾òuje rychlý a levný vývoj, ale následné spou¹tìní je ji¾ pomalé. Pro zachování výhod rychlého vývoje a pohodlné tvorby zmìn byl navr¾en nástroj, který pøekládá pouze knihovny a nikoliv celou aplikaci.
+		
+		Modelový pøípad pou¾ití je pak tvorba PHP aplikace. Vývojáø chce pou¾ít knihovnu napøíklad pro detekci oblièeje ve fotografii. Jeliko¾ takovou knihovnu nechce upravovat, alea pouze pou¾ít nìkteré funkce z ní, tak mù¾e provést kompilaci pro její zrychlení. Knihovní funkce je pak vykonána rychleji a není naru¹ena mo¾nost rychlého a pohodlného vývoje aplikace. Tento koncept øe¹í nedostatky, na které nará¾elo podobné øe¹ení HPHPc navr¾ené spoleèností Facebook o kterém se zminuji v kapitole \ref{hphpc}.
+		
 	\section{Cíle}
-		...
+		Cílem práce je navrhnout a implementovat pøekladaè funkcí zapsaných v podmno¾inì jazyka PHP, jeho¾ výstupem bude C++ kód doplnìný o potøebné konstrukce umo¾òující integraci do interpretru PHP.
+
+		Podmno¾ina jazyka PHP byla vybrána po konzultaci s vedoucím práce a zamìøuje se primárnì na podporu výrazù a operací s promìnnými. Dále jsou podporovány základní konstrukce jako výpis hodnot, podmínky, cykly, funkce. Podrobnìjí jsou tyto konstrukce rozebrány v kapitole \ref{constructions}.
+
+		Po implementaci pøekladaèe pro po¾adovaný rozsah se zamìøím na jeho testování a hledání slabých míst. Následnì se pokusím najít konstrukce, která nefungují korektnì, èi jsou pomalé a navrhnout øe¹ení. Tento krok bude proveden opakovanì po realizaci navrhnutých øe¹ení.
 
 
 
@@ -29,21 +38,17 @@
 
 		S~nejstar¹í v~souèasné dobì podporovanou verzí PHP ji¾ není mo¾né aplikaci ani pøelo¾it i pøes mnohé pokusy o~úpravy zdrojových kódù pro zaji¹tìní kompatibility.
 
-		TODO: Kontaktován Jakub Suchý (jeden z~vývojáø). Pokud bude ochotný odpovìdìt, tak se zeptat:
-
+		\todo[inline]{Kontaktován Paul Biggar (jeden z~vývojáø). Pokud bude ochotný odpovìdìt, tak se zeptat:
 			1) Jaký byl stav a plány do budoucna
-
 			2) Proè do¹lo k~ukonèení projektu a jaké byly jeho dùvody
-
 			3) Vidí i dnes v~tomto konceptu potenciál
+			4) Co by mohlo být pøeká¾kou}
 
-			4) Co by mohlo být pøeká¾kou
 
-
-	\section{HPHPc}
+	\section{HPHPc}\label{hphpc}
 		Tento projekt od spoleènosti Facebook byl zapoèat v~roce 2008\cite{HipHopMoveFast} a mìl za cíl sní¾it výkonnostní nároky aplikací psaných v~PHP. To se také vývojáøskému týmu podaøilo a dosáhli sní¾ení vytí¾ení procesoru na polovinu\cite{HipHopMoveFast}. V~roce 2010 do¹lo k~uvolnìní zdrojových kódù projektu pod licencí PHP Licence.
 
-		TODO: Rozepsat následující odstavec, aby obsahoval v¹echny nále¾itosti a mìl vypovídající hodnotu. Doplnit dal¹í testy, grafy, pøesná èísla...
+		\todo[inline]{Rozepsat následující odstavec, aby obsahoval v¹echny nále¾itosti a mìl vypovídající hodnotu. Doplnit dal¹í testy, grafy, pøesná èísla...}
 
 		Testy provedené v~dubnu 2011 ukazují na velký potenciál pøekladu PHP do nativního kódu\cite{hipHopBechmark}. Napøíklad práce s~binárními stromy do hloubky 20 úrovní byla dle mìøení 4x rychlej¹í.
 
@@ -51,15 +56,15 @@
 
 		Po sedmi mìsících vývoje dosáhla implementace HHVM lep¹í výsledkù, ne¾ HPHPc a 19. února 2013 byla commitem odebrána ze zdrojových kódù podpora pro kompilování HPHPc\cite{HipHopRemoveCompiler}.
 
-		...
+		\todo[inline]{Dopsat}
 
 	\section{Roadsend PHP}
-		...
+		\todo[inline]{Rozepsat Roadsend PHP}
 
 		\url{http://www.roadsend.com/}
 
-\chapter{Vybrané konstrukce PHP}
-	Vkládání prostøednictvím konstrukcí \function{include}, \function{require} a jejich variant pro unikátní vlo¾ení bude z~dùvodu komplexnosti implementováno jen v~omezené míøe. Prvním logickým omezením vycházejícím z~návrhu tohoto nástroje je schopnost provést vlo¾ení pouze souborù, které jsou dostupné v~momentì kompilace a jejich¾ cesta je známá. Nebude tedy mo¾ná transformace funkce \function{includeNe} uvedené v~kódu \ref{code:phpIncludeFunction}, ale funkce \function{includeAno} v~pøípadì existence souborù \function{prvni.php} a \function{druhy.php} ano. Bude tedy podporováno vyhodnocování konstant bìhem pøekladu.
+\chapter{Vybrané konstrukce PHP}\label{constructions}
+	Vkládání prostøednictvím konstrukcí \function{include}, \function{require} a jejich variant pro unikátní vlo¾ení bude z~dùvodu komplexnosti implementováno jen v~omezené míøe. Prvním logickým omezením vycházejícím z~návrhu tohoto nástroje je schopnost provést vlo¾ení pouze souborù, které jsou dostupné v~momentì pøekladu a jejich¾ cesta je známá. Nebude tedy mo¾ná transformace funkce \function{includeNe} uvedené v~kódu \ref{code:phpIncludeFunction}, ani funkce \function{includeNe2} i v~pøípadì existence souborù \function{prvni.php} a \function{druhy.php}.
 
 	Druhým omezením vkládání souborù je pouze èásteèná implementace varianty \function{include\_once} a \function{require\_once}, kdy nebude mo¾né zcela zajistit neopakované vlo¾ení v~dobì bìhu aplikace. V~dobì transformace PHP do C++ bude toto chování kontrolováno a dojde pouze k~prvnímu vlo¾ení. V~dobì vykonávání zkompilované funkce v~prostøedí interpretru PHP v¹ak nebude mo¾né zamezit vlo¾ení, jeliko¾ systém roz¹íøení PHP neumo¾nuje ovlivòovat tyto èásti.
 
@@ -69,7 +74,7 @@ function includeNe($soubor)
 	include $soubor;
 }
 
-function includeAno($co)
+function includeNe2($co)
 {
 	$soubor = $co ? "prvni.php" : "druhy.php";
 
@@ -77,7 +82,7 @@ function includeAno($co)
 }
 \end{lstlisting}
 
-	Dal¹í implementovanou èástí je podpora konstrukcí \function{echo}, \function{list}, \function{exit} a dal¹í uvedené v~tabulce \ref{table:phpTokenConstruction}.
+	Dal¹í implementovanou èástí je podpora konstrukcí \function{echo}, \function{exit} a dal¹í uvedené v~tabulce \ref{table:phpTokenConstruction}.
 
 		\begin{center}
 			\begin{tabular}{ | l | l | l |} \hline
@@ -90,18 +95,18 @@ function includeAno($co)
 				\hline
 				Výstup		&	T\_PRINT			&	\function{print()} \\
 							&	T\_ECHO				&	\function{echo} \\
-							&	T\_INLINE\_HTML		&	\function{?\textgreater ... html ... \textless?php} \\
+				%			&	T\_INLINE\_HTML		&	\function{?\textgreater ... html ... \textless?php} \\
 				\hline
 				Vkládání	&	T\_INCLUDE			&	\function{include} \\
 							&	T\_INCLUDE\_ONCE	&	\function{include\_once} \\
 							&	T\_REQUIRE			&	\function{require} \\
 							&	T\_REQUIRE\_ONCE	&	\function{require\_once} \\
-				\hline
-							&	T\_LIST				&	\function{list()} \\
+				%\hline
+				%			&	T\_LIST				&	\function{list()} \\
 				\hline
 				Ukonèení	&	T\_EXIT				&	\function{exit()}, \function{die()} \\
 				\hline
-				Názvy		&	T\_STRING			&	funkcí, tøíd, parent, self... \\
+				Názvy		&	T\_STRING			&	funkce, konstanty... \\
 				\hline
 				Promìnné	&	T\_VARIABLE			&	\function{\$a} \\
 				\hline
@@ -111,11 +116,12 @@ function includeAno($co)
 			\label{table:phpTokenConstruction}
 		\end{center}
 
-		TODO: Rozpsat jak magická jména promìnných (ne)budou podporována (napøíklad v PHP lze zapsat \function{\$\$a}, kdy se pou¾ije honota promìnné \function{\$a} jako název promìnné - nebude zøejmì podporováno, jeliko¾ není èasté a jedná se o potencinální zanesení chyb)
+
+		PHP umo¾nuje pøistoupit k promìnné, její¾ název je ulo¾en v jiné promìnné prostøednictvím konstrukce \function{\$\$promenna}, nebo \function{\$\{\$promenna\}}. Tento zápis v souèasné implementaci nebude podporován, jeliko¾ je tøeba omezit implementovaný rozsah a jedná se o potencionálnì nebezpeènou konstrukci, stejnì jako konstrukce \function{extract()}\cite{PhpExtract}.
 
 		Pøi transformaci je podporován zápis konstant ve zdrojových souborech. Podporovaný je zápis èísel v~celoèíselném i desetinném formátu. Na základì tìchto typù je pøihlédnuto k~volbì datových typù ve výstupním kódu. Dále je pak podporován zápis øetìzcù i s~mo¾ností pou¾ití promìnných. Podporované tokeny pak podrobnìji ukazuje tabulka \ref{table:phpTokenConstant}
 
-		TODO: Rozepsat jak funguje v PHP vkládání promìnných do øetìzcù v \function{"} uvozovkách, co¾ jsou tokeny T\_ENCAPSED\_AND\_WHITESPACE a T\_NUM\_STRING.
+		Øetìzce je mo¾né konkatenovat s èísly, poli a dal¹ími hodnotami. Tato funkcionalita prostøednictvím operátoru \function{.} je implementována. Dále se v øetìzcích uvozených prostøednictvím znaku \function{"} mohou vyskytovat vlo¾ené promìnné, s pøípadném pøístupem k indexu pole. Tento zápis (tokeny T\_ENCAPSED\_AND\_WHITESPACE a T\_NUM\_STRING) ji¾ nejsou podporovány z dùvodu volby podmno¾iny jazyka.
 
 		\begin{center}
 			\begin{tabular}{ | l | l | l |} \hline
@@ -143,9 +149,7 @@ function includeAno($co)
 		%		\item T\_DOUBLE\_ARROW			\function{=\textgreater}
 		%	\end{itemize}
 
-		Stì¾ejní èástí aplikace je vyhodnocování výrazù. Pro implementaci byla zvolena valná vìt¹ina tokenù pro matematické operace, porovnávání, bitové posuvy i pøetypování viz tabulka \ref{table:phpTokenExpresion}.
-
-		TODO: rozepsat výrazy, které operátory chybí a proè
+		Stì¾ejní èástí aplikace je vyhodnocování výrazù. Pro implementaci byly zvoleny v¹echny tokeny pro matematické operace, porovnávání, bitové posuvy i pøetypování viz tabulka \ref{table:phpTokenExpresion}.
 
 		\begin{center}
 			\begin{tabular}{ | l | l | l |} \hline
@@ -201,9 +205,7 @@ function includeAno($co)
 			\label{table:phpTokenExpresion}
 		\end{center}
 
-		...
-
-		TODO: rozepsat øídící konstrukce (podmínky, cykly - zamìøit na foreach)
+		Dal¹í podstatnou èástí podmno¾iny je podpora øídídcích konstrukcí. Podporovanými výrazy je zápis podmínek i cyklù. Z cyklù je podporovaný \function{for}, \function{while}, \function{do while} i \function{foreach}, který slou¾í pro iteraci nad v¹emi prvky v poli. Jednotlivé tokeny jsou uvedeny v tabulce \ref{table:phpTokenControl}.
 
 		\begin{center}
 			\begin{tabular}{ | l | l | l |} \hline
@@ -244,12 +246,9 @@ function includeAno($co)
 		\end{itemize}
 
 	\section{Tøídy}
-		%TODO: Zvá¾it zda implementovat interface.
 
-		%TODO: Bude podpora vytváøení instancí PHP tøíd v C++, èi jen pùjde o definici tøíd bez mo¾nosti je v transformovaném kódu pou¾ít? Nároènost vs. pou¾itelnost.
-
-		Umo¾nit definovat tøídy bez podpory dìdìní a implementace interface. V~kódu nepùjde vytváøet instance PHP tøíd. Podporovány namespace, modifikátory viditelnosti a statické metody. Konkrétní tokeny jsou uvedeny v~tabulce \ref{table:phpTokenClass}.
-
+		V dùsledku udr¾ení rozumného rozsahu podmno¾iny byla vypu¹tìna objektovì orientovaná èást konstrukcí jazyka. Není tedy mo¾né v pøekladém kódu definovat ani vytváøet instance tøíd, dìdit, implementovat interface. Nejsou podporovány logicky ani jmenné prostory, modifikátory viditelnosti a statické metody. Pro úplnost uvádím tabulku nepodporovaných tokenù \ref{table:phpTokenClass}. Podpora OOP èásti jazyka je v¹ak plánována v budoucnu.
+		
 		\begin{center}
 			\begin{tabular}{ | l | l | l |} \hline
 
@@ -257,16 +256,16 @@ function includeAno($co)
 				\hline
 				\hline
 				Definice			& T\_CLASS							& \function{class} \\
-				%\item T\_EXTENDS			\function{extends}
-				%\item T\_IMPLEMENTS		\function{implements}
+									& T\_EXTENDS						& \function{extends} \\
+									& T\_IMPLEMENTS						& \function{implements} \\
 				\hline
 				Konstanta			& T\_CONST							& \function{const} \\
-				%\item T\_INTERFACE			\function{interface}
+									& T\_INTERFACE						& \function{interface} \\
 				\hline
 				Namespace			& T\_NAMESPACE						& \function{namespace} \\
 									& T\_NS\_SEPARATOR					& \function{$\backslash$} \\
 									& T\_USE							& \function{use} \\
-				%\item T\_NEW				\function{new}
+									& T\_NEW							& \function{new} \\
 				\hline
 				Modifikátory		& T\_PRIVATE						& \function{private} \\
 									& T\_PUBLIC							& \function{public} \\
@@ -276,7 +275,7 @@ function includeAno($co)
 				Pøístup				& T\_DOUBLE\_COLON					& \function{::} \\
 									& T\_OBJECT\_OPERATOR				& \function{-\textgreater} \\
 				\hline
-				%\item T\_CLASS\_C			\function{\_\_CLASS\_\_}
+				
 			\end{tabular}
 			\captionof{table}{Tabulka tokenù tøíd}
 			\label{table:phpTokenClass}
@@ -294,7 +293,7 @@ function includeAno($co)
 
 		Dal¹ím chybìjícím operátorem je \function{@}, který slou¾í pro potlaèení pøípadného chybového výstupu. Jeho pou¾ití je v~kódu PHP nedoporuèované\cite{PhpErrorSupress1} \cite{PhpErrorSupress2} \cite{PhpErrorSupress3} \cite{PhpErrorSupress4} i pøesto je mo¾né provést implementaci tohoto chování, èím¾ se zabývám v~kapitole \ref{potlaceniChyby} na stranì \pageref{potlaceniChyby}.
 
-		TODO: Priorita operátorù - explicitní závorkování
+		Logické operátory \function{OR}, \function{AND}, \function{XOR} v PHP a \function{||}, \function{\&\&}, \function{\textasciicircum\textasciicircum} v C++ mají rozdílnou prioritu. Proto byla v kapitole \ref{logOp} navr¾ena transformace s explicitním závorkováním.
 
 		\subsection{Porovnávání}
 			Rozdíl v~porovnávání promìnných v~jazycích, kterými se zabývá tato práce je pomìrnì zásadní. Zdrojový jazyk obsahuje dva typy porovnání, kdy je mo¾né porovnávat odli¹né datové typy. Konstrukce \function{\textquotedbl5\textquotedbl == 5} pak bude v~PHP pravdivá, kde¾to v~C++ nikoliv. Pro porovnání i s~pøihlédnutím k~typu je v~PHP operátor \function{===} \cite{PhpCompareOperator}.
@@ -341,8 +340,6 @@ function includeAno($co)
   				\captionof{table}{Tabulka priority výrazù PHP\cite{PhpPrecendence}}
 				\label{table:phpPrecendenceTable}
 			\end{center}
-
-			TODO: Doplnit do tabulek volání funkce, identifikátory
 
 			\begin{center}
   				\begin{tabular}{ | l | l | l |}
@@ -391,16 +388,15 @@ function includeAno($co)
 
 		Nutnost vytahnout deklaraci promìnné mimo bloky cyklù, pokud je s~nimi pracováno i za blokem.
 
-		TODO: Ovìøit kompatabilitu jmen
+		\todo[inline]{Ovìøit kompatabilitu jmen}
 
 	\section{Funkce}
-		TODO: Ovìøit kompatabilitu jmen
+		\todo[inline]{Ovìøit kompatabilitu jmen}
 
-	\section{Tøídy}
-		TODO: Ovìøit kompatabilitu jmen
+	
 
 \chapter{Integrace do PHP}
-	... rozebrat fungování roz¹íøení v~php, definice funkcí, tøíd. Ponoøení do Zend Engine... \\ \\
+	\todo[inline]{rozebrat fungování roz¹íøení v~php, definice funkcí, tøíd. Ponoøení do Zend Engine...}
 
 	Interpret PHP umo¾òuje zavádìt dynamické knihovny tzv. moduly, které roz¹iøují dostupné funkce a tøídy v~interpretovaném prostøedí. Naètení je mo¾né prostøednictvím konfiguraèní direktivy \function{extension=nazev.so} v~konfiguraèním souboru \function{php.ini}, èi v~dobì bìhu funkcí \function{dl("nazev.so")}. Roz¹íøení obsahují tzv. entry point, tedy místo kam v~momentì po¾adavku na naètení modulu skoèí tok interpretru a oèekává se vrácení datové struktury, která obsahuje informace o~dostupných funkcích a tøídách. Zend Engine, jádro PHP, je napsáno primárnì v~jazyce C, tak¾e je tøeba dodr¾et kompatibilní zpùsob volání a navrácení výsledku. V~pøípadì této práce bude z~dùvodu jazyka C++ nutno pou¾ít konstrukci \function{extern "C"}.
 
@@ -480,7 +476,7 @@ a.apend(b);
 		\subsection{Mocnina}
 			Pro výpoèet mocniny èísla je mo¾né nahradit operátor \function{**} za volání funkce \function{pow} ze standardní knihovny \function{math.h}\cite{CppMathPow}.
 
-		\subsection{Logické operátory}
+		\subsection{Logické operátory}\label{logOp}
 			Jak je uvedeno v tabulce \ref{table:phpPrecendenceTable} priorit výrazù PHP na stranì \pageref{table:phpPrecendenceTable}, tak jazyk PHP obsahuje pro logické operace dvì mo¾nosti zápisu operací. Prvním zpùsobem zápisu s vy¹¹í prioritou je zápis prostøednictvím operátorù \function{\&\&}, \function{$||$} a \function{\textasciicircum}. Tento zápis má vy¹¹í prioritu, ne¾ pøiøazení. Pøi zápisu v kódu \ref{code:phpOperatorPrecedence} na první øádce tedy bude výsledná hodnota v promìnné \function{\$a} nepravdivá. Opakem je v¹ak zápis na øádku 2, kdy bude hodnota promìnné pravdivá, jeliko¾ se s vy¹¹í prioritou provede pøiøazení a a¾ s výsledkem pøiøazení se provede AND, jeho¾ výsledek se zahodí.
 
 			\begin{lstlisting}[caption=PHP ukázka rozdílných priorit operátorù, label=code:phpOperatorPrecedence, language=PHP]
@@ -506,7 +502,7 @@ void zend_do_begin_silence(znode *strudel_token TSRMLS_DC);
 void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 			\end{lstlisting}
 
-			TODO: Jak se odkazovat na zdrojové kódy z~rùzných projektù?
+			\todo[inline]{Jak se odkazovat na zdrojové kódy z~rùzných projektù?}
 
 
 \chapter{Implementace}
@@ -514,7 +510,7 @@ void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 
 
 	\section{Knihovny (?)}
-		... Uvádìt?
+		\todo[inline]{Uvádìt?}
 
 		\subsection{PHP-CPP}
 			\url{http://www.php-cpp.com/}
