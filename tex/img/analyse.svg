@@ -1,0 +1,909 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:xhtml="http://www.w3.org/1999/xhtml"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg2"
+   content="%3CmxGraphModel%20dx%3D%221126%22%20dy%3D%221560%22%20grid%3D%221%22%20gridSize%3D%2210%22%20guides%3D%221%22%20tooltips%3D%221%22%20connect%3D%221%22%20arrows%3D%221%22%20fold%3D%221%22%20page%3D%221%22%20pageScale%3D%221%22%20pageWidth%3D%22826%22%20pageHeight%3D%221169%22%20background%3D%22%23ffffff%22%20math%3D%220%22%20shadow%3D%220%22%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%225%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%222%22%20target%3D%224%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%222%22%20value%3D%22Na%C4%8Dten%C3%AD%20obsahu%20souboru%26lt%3Bbr%26gt%3B%22%20style%3D%22ellipse%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3Brounded%3D1%3Bplain-purple%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%2280%22%20y%3D%2240%22%20width%3D%22120%22%20height%3D%2280%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%227%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BentryX%3D0%3BentryY%3D0.5%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%224%22%20target%3D%226%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%224%22%20value%3D%22Tokenizace%26lt%3Bbr%26gt%3B%22%20style%3D%22ellipse%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3Brounded%3D1%3Bplain-green%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22240%22%20y%3D%2240%22%20width%3D%22120%22%20height%3D%2280%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%229%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BexitX%3D1%3BexitY%3D0.5%3BentryX%3D0%3BentryY%3D0.5%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%226%22%20target%3D%228%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%226%22%20value%3D%22Podrobn%C4%9Bj%C5%A1%C3%AD%20rozli%C5%A1en%C3%AD%20token%C5%AF%26lt%3Bbr%26gt%3B%22%20style%3D%22ellipse%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3Brounded%3D1%3Bplain-green%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22400%22%20y%3D%2240%22%20width%3D%22120%22%20height%3D%2280%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2211%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BentryX%3D0.5%3BentryY%3D0%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%228%22%20target%3D%2210%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%228%22%20value%3D%22P%C5%99id%C3%A1n%C3%AD%20do%20stromu%20token%C5%AF%26lt%3Bbr%26gt%3B%22%20style%3D%22ellipse%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3Brounded%3D1%3Bplain-green%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22560%22%20y%3D%2240%22%20width%3D%22120%22%20height%3D%2280%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2213%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BentryX%3D1%3BentryY%3D0.5%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%2210%22%20target%3D%2212%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2210%22%20value%3D%22Parsov%C3%A1n%C3%AD%20token%C5%AF%26lt%3Bbr%26gt%3B%22%20style%3D%22ellipse%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3Brounded%3D1%3Bplain-green%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22560%22%20y%3D%22160%22%20width%3D%22120%22%20height%3D%2280%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2216%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BentryX%3D0.5%3BentryY%3D1%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%2212%22%20target%3D%222%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2219%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BexitX%3D0.5%3BexitY%3D1%3BentryX%3D0.5%3BentryY%3D0%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%2212%22%20target%3D%2218%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2212%22%20value%3D%22Nalezen%20include%2Frequire%20%3F%26lt%3Bbr%26gt%3B%22%20style%3D%22rhombus%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3Brounded%3D1%3BstrokeColor%3D%23666666%3BfillColor%3D%23F5F5F5%3BgradientColor%3D%23B3B3B3%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22235%22%20y%3D%22135%22%20width%3D%22130%22%20height%3D%22130%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2215%22%20value%3D%22ANO%22%20style%3D%22text%3Bhtml%3D1%3BstrokeColor%3Dnone%3BfillColor%3Dnone%3Balign%3Dcenter%3BverticalAlign%3Dmiddle%3BwhiteSpace%3Dwrap%3Boverflow%3Dhidden%3Brounded%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22195%22%20y%3D%22170%22%20width%3D%2240%22%20height%3D%2220%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2223%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BentryX%3D0%3BentryY%3D0.5%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%2218%22%20target%3D%2220%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2228%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BexitX%3D0.5%3BexitY%3D1%3BentryX%3D0.5%3BentryY%3D0%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%2218%22%20target%3D%2227%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2218%22%20value%3D%22Nalezen%20v%C3%BDraz%3F%26lt%3Bbr%26gt%3B%22%20style%3D%22rhombus%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3Brounded%3D1%3BstrokeColor%3D%23666666%3BfillColor%3D%23F5F5F5%3BgradientColor%3D%23B3B3B3%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22238%22%20y%3D%22280%22%20width%3D%22125%22%20height%3D%22130%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2225%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BexitX%3D1%3BexitY%3D0.5%3BentryX%3D0%3BentryY%3D0.5%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%2220%22%20target%3D%2224%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2220%22%20value%3D%22Derivace%20v%C3%BDrazu%26lt%3Bbr%26gt%3B%22%20style%3D%22ellipse%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3Brounded%3D1%3Bplain-green%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22400%22%20y%3D%22305%22%20width%3D%22120%22%20height%3D%2280%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2226%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BentryX%3D0.5%3BentryY%3D1%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%2224%22%20target%3D%2210%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2224%22%20value%3D%22Z%C4%8Dlen%C4%9Bn%C3%AD%20do%20abstraktn%C3%ADho%20stromu%26lt%3Bbr%26gt%3B%22%20style%3D%22ellipse%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3Brounded%3D1%3Bplain-green%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22560%22%20y%3D%22305%22%20width%3D%22120%22%20height%3D%2280%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2229%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BentryX%3D0.5%3BentryY%3D1%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%2227%22%20target%3D%2224%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2237%22%20style%3D%22edgeStyle%3DorthogonalEdgeStyle%3Brounded%3D0%3Bhtml%3D1%3BentryX%3D0.5%3BentryY%3D0%3BjettySize%3Dauto%3BorthogonalLoop%3D1%3B%22%20edge%3D%221%22%20parent%3D%221%22%20source%3D%2227%22%20target%3D%2236%22%3E%3CmxGeometry%20relative%3D%221%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2227%22%20value%3D%22Nalezena%20konstrukce%3F%26lt%3Bbr%26gt%3B%22%20style%3D%22rhombus%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3Brounded%3D1%3BstrokeColor%3D%23666666%3BfillColor%3D%23F5F5F5%3BgradientColor%3D%23B3B3B3%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22240%22%20y%3D%22440%22%20width%3D%22120%22%20height%3D%22120%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2230%22%20value%3D%22ANO%22%20style%3D%22text%3Bhtml%3D1%3BstrokeColor%3Dnone%3BfillColor%3Dnone%3Balign%3Dcenter%3BverticalAlign%3Dmiddle%3BwhiteSpace%3Dwrap%3Boverflow%3Dhidden%3Brounded%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22355%22%20y%3D%22320%22%20width%3D%2240%22%20height%3D%2220%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2231%22%20value%3D%22ANO%22%20style%3D%22text%3Bhtml%3D1%3BstrokeColor%3Dnone%3BfillColor%3Dnone%3Balign%3Dcenter%3BverticalAlign%3Dmiddle%3BwhiteSpace%3Dwrap%3Boverflow%3Dhidden%3Brounded%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22363%22%20y%3D%22470%22%20width%3D%2240%22%20height%3D%2220%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2232%22%20value%3D%22NE%22%20style%3D%22text%3Bhtml%3D1%3BstrokeColor%3Dnone%3BfillColor%3Dnone%3Balign%3Dcenter%3BverticalAlign%3Dmiddle%3BwhiteSpace%3Dwrap%3Boverflow%3Dhidden%3Brounded%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22315%22%20y%3D%22410%22%20width%3D%2240%22%20height%3D%2220%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2233%22%20value%3D%22NE%22%20style%3D%22text%3Bhtml%3D1%3BstrokeColor%3Dnone%3BfillColor%3Dnone%3Balign%3Dcenter%3BverticalAlign%3Dmiddle%3BwhiteSpace%3Dwrap%3Boverflow%3Dhidden%3Brounded%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22310%22%20y%3D%22260%22%20width%3D%2240%22%20height%3D%2220%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2235%22%20value%3D%22NE%22%20style%3D%22text%3Bhtml%3D1%3BstrokeColor%3Dnone%3BfillColor%3Dnone%3Balign%3Dcenter%3BverticalAlign%3Dmiddle%3BwhiteSpace%3Dwrap%3Boverflow%3Dhidden%3Brounded%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22320%22%20y%3D%22565%22%20width%3D%2240%22%20height%3D%2220%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%2236%22%20value%3D%22Anal%C3%BDza%22%20style%3D%22ellipse%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3Brounded%3D1%3Bplain-purple%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22240%22%20y%3D%22600%22%20width%3D%22120%22%20height%3D%2280%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E"
+   version="1.1"
+   height="643px"
+   width="603px"
+   style="background-color: rgb(255, 255, 255);"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="analyse.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2113"
+     id="namedview4832"
+     showgrid="false"
+     inkscape:zoom="2.9362364"
+     inkscape:cx="428.33746"
+     inkscape:cy="364.003"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="switch31"
+     inkscape:snap-text-baseline="true" />
+  <metadata
+     id="metadata201">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4">
+    <linearGradient
+       id="mx-gradient-e1d5e7-1-8c6c9c-1-s-0"
+       y2="100%"
+       x2="0%"
+       y1="0%"
+       x1="0%">
+      <stop
+         id="stop7"
+         style="stop-color:#E1D5E7"
+         offset="0%" />
+      <stop
+         id="stop9"
+         style="stop-color:#8C6C9C"
+         offset="100%" />
+    </linearGradient>
+    <linearGradient
+       id="mx-gradient-d5e8d4-1-97d077-1-s-0"
+       y2="100%"
+       x2="0%"
+       y1="0%"
+       x1="0%">
+      <stop
+         id="stop12"
+         style="stop-color:#D5E8D4"
+         offset="0%" />
+      <stop
+         id="stop14"
+         style="stop-color:#97D077"
+         offset="100%" />
+    </linearGradient>
+    <linearGradient
+       id="mx-gradient-f5f5f5-1-b3b3b3-1-s-0"
+       y2="100%"
+       x2="0%"
+       y1="0%"
+       x1="0%">
+      <stop
+         id="stop17"
+         style="stop-color:#F5F5F5"
+         offset="0%" />
+      <stop
+         id="stop19"
+         style="stop-color:#B3B3B3"
+         offset="100%" />
+    </linearGradient>
+  </defs>
+  <g
+     id="g21"
+     transform="translate(0.5,0.5)">
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path23"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 121 41 L 154.63 41" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path25"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 159.88 41 L 152.88 44.5 L 154.63 41 L 152.88 37.5 Z" />
+    <ellipse
+       fill="url(#mx-gradient-e1d5e7-1-8c6c9c-1-s-0)"
+       stroke="#9673a6"
+       id="ellipse27"
+       pointer-events="none"
+       ry="40"
+       rx="60"
+       cy="41"
+       cx="61" />
+    <g
+       id="g29"
+       transform="translate(-0.90572034,20.347987)">
+      <switch
+         id="switch31">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="27"
+           width="116"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 116px; white-space: normal; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Načtení obsahu <xhtml:br />
+ souboru
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           id="text33"
+           font-size="12px"
+           y="20"
+           x="58"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.00000095px;line-height:125%;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000"
+           sodipodi:linespacing="125%">
+          <tspan
+             sodipodi:role="line"
+             id="tspan5380"
+             x="58"
+             y="20">Načtení obsahu</tspan>
+          <tspan
+             sodipodi:role="line"
+             id="tspan5382"
+             x="58"
+             y="35">souboru</tspan>
+        </text>
+      </switch>
+    </g>
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path35"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 281 41 L 314.47 41" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path37"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 319.72 41 L 312.72 44.5 L 314.47 41 L 312.72 37.5 Z" />
+    <ellipse
+       fill="url(#mx-gradient-d5e8d4-1-97d077-1-s-0)"
+       stroke="#82b366"
+       id="ellipse39"
+       pointer-events="none"
+       ry="40"
+       rx="60"
+       cy="41"
+       cx="221" />
+    <g
+       id="g41"
+       transform="translate(189.5,34.5)">
+      <switch
+         id="switch43">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="12"
+           width="63"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 64px; white-space: nowrap; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Tokenizace<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           fill="#000000"
+           font-family="Helvetica"
+           text-anchor="middle"
+           id="text45"
+           font-size="12px"
+           y="12"
+           x="32">Tokenizace</text>
+      </switch>
+    </g>
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path47"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 440.83 41 L 474.47 41" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path49"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 479.72 41 L 472.72 44.5 L 474.47 41 L 472.72 37.5 Z" />
+    <ellipse
+       fill="url(#mx-gradient-d5e8d4-1-97d077-1-s-0)"
+       stroke="#82b366"
+       id="ellipse51"
+       pointer-events="none"
+       ry="40"
+       rx="60"
+       cy="41"
+       cx="381" />
+    <g
+       id="g53"
+       transform="translate(322.5,27.5)">
+      <switch
+         id="switch55">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="27"
+           width="116"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 116px; white-space: normal; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Podrobnější rozlišení tokenů<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           id="text57"
+           font-size="12px"
+           y="12.166843"
+           x="58.340572"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.00000095px;line-height:125%;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000"
+           sodipodi:linespacing="125%">
+          <tspan
+             sodipodi:role="line"
+             id="tspan5376"
+             x="58.340572"
+             y="12.166843">Podrobnější rozlišení</tspan>
+          <tspan
+             sodipodi:role="line"
+             id="tspan5378"
+             x="58.340572"
+             y="27.166843">tokenů</tspan>
+        </text>
+      </switch>
+    </g>
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path59"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 541 81 L 540.83 101 L 540.83 114.63" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path61"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 540.83 119.88 L 537.33 112.88 L 540.83 114.63 L 544.33 112.88 Z" />
+    <ellipse
+       fill="url(#mx-gradient-d5e8d4-1-97d077-1-s-0)"
+       stroke="#82b366"
+       id="ellipse63"
+       pointer-events="none"
+       ry="40"
+       rx="60"
+       cy="41"
+       cx="541" />
+    <g
+       id="g65"
+       transform="translate(482.5,27.5)">
+      <switch
+         id="switch67">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="27"
+           width="116"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 116px; white-space: normal; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Přidání do stromu tokenů<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           id="text69"
+           font-size="12px"
+           y="10.463983"
+           x="56.978283"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.00000095px;line-height:125%;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000"
+           sodipodi:linespacing="125%">
+          <tspan
+             sodipodi:role="line"
+             id="tspan5386"
+             x="56.978283"
+             y="10.463983">Přidání do stromu</tspan>
+          <tspan
+             sodipodi:role="line"
+             id="tspan5388"
+             x="56.978283"
+             y="25.463984">tokenů</tspan>
+        </text>
+      </switch>
+    </g>
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path71"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 481 161 L 292.2 161" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path73"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 286.95 161 L 293.95 157.5 L 292.2 161 L 293.95 164.5 Z" />
+    <ellipse
+       fill="url(#mx-gradient-d5e8d4-1-97d077-1-s-0)"
+       stroke="#82b366"
+       id="ellipse75"
+       pointer-events="none"
+       ry="40"
+       rx="60"
+       cy="161"
+       cx="541" />
+    <g
+       id="g77"
+       transform="translate(493.5,154.5)">
+      <switch
+         id="switch79">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="12"
+           width="95"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 96px; white-space: nowrap; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Parsování tokenů<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           fill="#000000"
+           font-family="Helvetica"
+           text-anchor="middle"
+           id="text81"
+           font-size="12px"
+           y="12"
+           x="48">Parsování tokenů</text>
+      </switch>
+    </g>
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path83"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 156 161 L 60.83 161 L 60.83 87.37" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path85"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 60.83 82.12 L 64.33 89.12 L 60.83 87.37 L 57.33 89.12 Z" />
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path87"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 220.83 226 L 221.31 234.64" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path89"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 221.6 239.88 L 217.72 233.09 L 221.31 234.64 L 224.71 232.7 Z" />
+    <path
+       fill="url(#mx-gradient-f5f5f5-1-b3b3b3-1-s-0)"
+       stroke="#666666"
+       id="path91"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 188.5 128.5 L 213.93 103.07 Q 221 96 228.07 103.07 L 278.93 153.93 Q 286 161 278.93 168.07 L 228.07 218.93 Q 221 226 213.93 218.93 L 163.07 168.07 Q 156 161 163.07 153.93 Z" />
+    <g
+       id="g93"
+       transform="translate(157.5,147.5)">
+      <switch
+         id="switch95">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="27"
+           width="126"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 126px; white-space: normal; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Nalezen include/require ?<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           id="text97"
+           font-size="12px"
+           y="8.0799789"
+           x="60.95657"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.00000095px;line-height:125%;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000"
+           sodipodi:linespacing="125%">
+          <tspan
+             sodipodi:role="line"
+             id="tspan5390"
+             x="60.95657"
+             y="8.0799789">Nalezen</tspan>
+          <tspan
+             sodipodi:role="line"
+             id="tspan5392"
+             x="60.95657"
+             y="23.079979">include/require?</tspan>
+        </text>
+      </switch>
+    </g>
+    <g
+       id="g99"
+       transform="translate(122.5,134.5)">
+      <switch
+         id="switch101">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="12"
+           width="26"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; overflow: hidden; max-height: 16px; max-width: 36px; width: 27px; white-space: normal; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">ANO</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           fill="#000000"
+           font-family="Helvetica"
+           text-anchor="middle"
+           id="text103"
+           font-size="12px"
+           y="12"
+           x="13">ANO</text>
+      </switch>
+    </g>
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path105"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 284 306 L 304.17 306 L 300.83 306 L 314.47 306" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path107"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 319.72 306 L 312.72 309.5 L 314.47 306 L 312.72 302.5 Z" />
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path109"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 221.67 371 L 221.01 394.63" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path111"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 220.86 399.88 L 217.56 392.79 L 221.01 394.63 L 224.56 392.98 Z" />
+    <path
+       fill="url(#mx-gradient-f5f5f5-1-b3b3b3-1-s-0)"
+       stroke="#666666"
+       id="path113"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 190.25 273.5 L 214.57 248.21 Q 221.5 241 228.43 248.21 L 277.07 298.79 Q 284 306 277.07 313.21 L 228.43 363.79 Q 221.5 371 214.57 363.79 L 165.93 313.21 Q 159 306 165.93 298.79 Z" />
+    <g
+       id="g115"
+       transform="translate(178.5,299.5)">
+      <switch
+         id="switch117">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="12"
+           width="85"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 86px; white-space: nowrap; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Nalezen výraz?<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           fill="#000000"
+           font-family="Helvetica"
+           text-anchor="middle"
+           id="text119"
+           font-size="12px"
+           y="12"
+           x="43">Nalezen výraz?</text>
+      </switch>
+    </g>
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path121"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 440.83 306 L 474.47 306" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path123"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 479.72 306 L 472.72 309.5 L 474.47 306 L 472.72 302.5 Z" />
+    <ellipse
+       fill="url(#mx-gradient-d5e8d4-1-97d077-1-s-0)"
+       stroke="#82b366"
+       id="ellipse125"
+       pointer-events="none"
+       ry="40"
+       rx="60"
+       cy="306"
+       cx="381" />
+    <g
+       id="g127"
+       transform="translate(336.5,299.5)">
+      <switch
+         id="switch129">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="12"
+           width="88"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 89px; white-space: nowrap; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Derivace výrazu<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           fill="#000000"
+           font-family="Helvetica"
+           text-anchor="middle"
+           id="text131"
+           font-size="12px"
+           y="12"
+           x="44">Derivace výrazu</text>
+      </switch>
+    </g>
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path133"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 541 266 L 540.83 233.5 L 540.83 207.37" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path135"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 540.83 202.12 L 544.33 209.12 L 540.83 207.37 L 537.33 209.12 Z" />
+    <ellipse
+       fill="url(#mx-gradient-d5e8d4-1-97d077-1-s-0)"
+       stroke="#82b366"
+       id="ellipse137"
+       pointer-events="none"
+       ry="40"
+       rx="60"
+       cy="306"
+       cx="541" />
+    <g
+       id="g139"
+       transform="translate(482.5,292.5)">
+      <switch
+         id="switch141">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="27"
+           width="116"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 116px; white-space: normal; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Zčlenění do abstraktního stromu<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           id="text143"
+           font-size="12px"
+           y="8.0799789"
+           x="57.659428"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.00000095px;line-height:125%;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000"
+           sodipodi:linespacing="125%">
+          <tspan
+             sodipodi:role="line"
+             id="tspan5394"
+             x="57.659428"
+             y="8.0799789">Začlenění do</tspan>
+          <tspan
+             sodipodi:role="line"
+             id="tspan5396"
+             x="57.659428"
+             y="23.079979">abstraktního stromu</tspan>
+        </text>
+      </switch>
+    </g>
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path145"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 281 461 L 540.83 461 L 540.83 352.37" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path147"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 540.83 347.12 L 544.33 354.12 L 540.83 352.37 L 537.33 354.12 Z" />
+    <path
+       fill="none"
+       stroke="#000000"
+       id="path149"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 220.83 520.83 L 220.83 541 L 220.83 554.63" />
+    <path
+       fill="#000000"
+       stroke="#000000"
+       id="path151"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 220.83 559.88 L 217.33 552.88 L 220.83 554.63 L 224.33 552.88 Z" />
+    <path
+       fill="url(#mx-gradient-f5f5f5-1-b3b3b3-1-s-0)"
+       stroke="#666666"
+       id="path153"
+       pointer-events="none"
+       stroke-miterlimit="10"
+       d="M 191 431 L 213.93 408.07 Q 221 401 228.07 408.07 L 273.93 453.93 Q 281 461 273.93 468.07 L 228.07 513.93 Q 221 521 213.93 513.93 L 168.07 468.07 Q 161 461 168.07 453.93 Z" />
+    <g
+       id="g155"
+       transform="translate(162.5,447.5)">
+      <switch
+         id="switch157">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="27"
+           width="116"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 116px; white-space: normal; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Nalezena konstrukce?<xhtml:br />
+</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           id="text159"
+           font-size="12px"
+           y="12.166843"
+           x="58"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.00000095px;line-height:125%;font-family:Helvetica;-inkscape-font-specification:'Helvetica, Normal';text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000"
+           sodipodi:linespacing="125%">
+          <tspan
+             sodipodi:role="line"
+             id="tspan5398"
+             x="58"
+             y="12.166843">Nalezena</tspan>
+          <tspan
+             sodipodi:role="line"
+             id="tspan5400"
+             x="58"
+             y="27.166843">konstrukce?</tspan>
+        </text>
+      </switch>
+    </g>
+    <g
+       id="g161"
+       transform="translate(282.5,284.5)">
+      <switch
+         id="switch163">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="12"
+           width="26"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; overflow: hidden; max-height: 16px; max-width: 36px; width: 27px; white-space: normal; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">ANO</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           fill="#000000"
+           font-family="Helvetica"
+           text-anchor="middle"
+           id="text165"
+           font-size="12px"
+           y="12"
+           x="13">ANO</text>
+      </switch>
+    </g>
+    <g
+       id="g167"
+       transform="translate(290.5,434.5)">
+      <switch
+         id="switch169">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="12"
+           width="26"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; overflow: hidden; max-height: 16px; max-width: 36px; width: 27px; white-space: normal; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">ANO</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           fill="#000000"
+           font-family="Helvetica"
+           text-anchor="middle"
+           id="text171"
+           font-size="12px"
+           y="12"
+           x="13">ANO</text>
+      </switch>
+    </g>
+    <g
+       id="g173"
+       transform="translate(247.5,374.5)">
+      <switch
+         id="switch175">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="12"
+           width="17"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; overflow: hidden; max-height: 16px; max-width: 36px; width: 18px; white-space: normal; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">NE</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           fill="#000000"
+           font-family="Helvetica"
+           text-anchor="middle"
+           id="text177"
+           font-size="12px"
+           y="12"
+           x="9">NE</text>
+      </switch>
+    </g>
+    <g
+       id="g179"
+       transform="translate(242.5,224.5)">
+      <switch
+         id="switch181">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="12"
+           width="17"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; overflow: hidden; max-height: 16px; max-width: 36px; width: 18px; white-space: normal; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">NE</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           fill="#000000"
+           font-family="Helvetica"
+           text-anchor="middle"
+           id="text183"
+           font-size="12px"
+           y="12"
+           x="9">NE</text>
+      </switch>
+    </g>
+    <g
+       id="g185"
+       transform="translate(252.5,529.5)">
+      <switch
+         id="switch187">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="12"
+           width="17"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; overflow: hidden; max-height: 16px; max-width: 36px; width: 18px; white-space: normal; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">NE</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           fill="#000000"
+           font-family="Helvetica"
+           text-anchor="middle"
+           id="text189"
+           font-size="12px"
+           y="12"
+           x="9">NE</text>
+      </switch>
+    </g>
+    <ellipse
+       fill="url(#mx-gradient-e1d5e7-1-8c6c9c-1-s-0)"
+       stroke="#9673a6"
+       id="ellipse191"
+       pointer-events="none"
+       ry="40"
+       rx="60"
+       cy="601"
+       cx="221" />
+    <g
+       id="g193"
+       transform="translate(198.5,594.5)">
+      <switch
+         id="switch195">
+        <foreignObject
+           requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"
+           height="12"
+           width="44"
+           pointer-events="all"
+           style="overflow:visible;">
+          <xhtml:div
+             style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 45px; white-space: nowrap; word-wrap: normal; text-align: center;">
+            <xhtml:div
+               style="display:inline-block;text-align:inherit;text-decoration:inherit;">Analýza</xhtml:div>
+          </xhtml:div>
+        </foreignObject>
+        <text
+           fill="#000000"
+           font-family="Helvetica"
+           text-anchor="middle"
+           id="text197"
+           font-size="12px"
+           y="12"
+           x="22">Analýza</text>
+      </switch>
+    </g>
+  </g>
+</svg>
