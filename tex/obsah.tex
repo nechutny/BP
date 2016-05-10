@@ -552,21 +552,125 @@ void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 
 		Po dokonèení parsování tokenù zdrojového kódu je pøedáno øízení analyzátoru, který provádí detekci datových typù. Této detekci se podrobnìji vìnuji v následující podkapitole \ref{dataTypeDetection}.
 
+		Postup této èásti analýzy zdrojových kódù je znázornìn na diagramu \ref{PhpAnalyse} na stranì \pageref{PhpAnalyse}, který zaèíná naètením obsahu pøekládaného souboru a konèí pøechodem k analýze abstraktního syntaktického stromu pro detekci datových typù.
+
 		\begin{figure}[h]
 		\centering
-			\includesvg[svgpath = img/]{analyse}
-			\caption{®ivotní cyklus roz¹íøení}
+			\includesvg[width=1.0\textwidth, svgpath = img/]{analyse}
+			\caption{Analýza vstupního souboru}
 			\label{PhpAnalyse}
 		\end{figure}
 
 	\section{Detekce datových typù}
 		\label{dataTypeDetection}
-		Detekce datových typù je zalo¾ena na
+		Detekce datových typù je zalo¾ena na statické analýze výrazù a jejím výsledkem je ulo¾ení 2 hodnot k polo¾ce stromu. Operuje se zde s vstupním datovým typem - tedy jakého typu je zdrojová hodnota a druhým je výstupní typ - ten je výsledkem analýzy výrazu a pou¾it pro konverzi a datové typy. Analýza je provedena dvìmi prùchody stromem.
+
+		Pøi prvním prùchodu metodou Inorder je analyzován strom výrazu a jsou doplnìny vstupní datové typy listù stromu. Tato detekce je zalo¾ena na jednoduché detekci datových typù na základì hodnot.
+
+
+		\begin{wrapfigure}{r}{0.3\textwidth}
+			\centering
+			\includesvg[width=0.3\textwidth, svgpath = img/]{type_step1}
+			\caption{Detekce datových typù - krok 1}
+			\label{PhpType1}
+		\end{wrapfigure}
+
+		Pokud se jedná o èíselnou konstantu, tak je doplnìn typ \function{Int}. Obdobné je to s typem \function{Float} pro desetinná èísla, \function{Bool} pro logickou hodnotu (\function{True}, \function{False}), nebo typ \function{NULL}.
+
+		Pøi nalezení øetìzce je postup slo¾itìj¹í. Hodnota øetìzce je naètena do promìnné v jazyce PHP a provedeno porovnání pomocí výrazu \function{\$varValue == (int)\$varValue}, èím¾ je provedena detekce, zda je hodnota v øetìzci celým èíslem. Pokud porovnání uspìje, tak je nastaven vstupní typ na \function{Int}, obdobná detekce se provede pro \function{Float} porovnáním zapsané hodnoty s hodnotou pøetypovanou na \function{float}. Pokud není tato detekce úspì¹ná, tak je nastaven datový typ na \function{String}. Tato detekce vstupních hodnot v øetìzcích je z dùvodu optimalizace, aby se pøípadnì eliminovala potøeba pøevádìt øetìzec na èíslo, jeliko¾ to mù¾e být dùvodem zpomalení výsledného kódu.
+
+		Pokud se jedná o promìnnou, tak je datový typ oznaèen automaticky za \function{Mixed}, jeliko¾ její vstupní datový typ mù¾e být odvozen pouze z pøedchozí práce s touto promìnnou (pøiøazení) a není tedy mo¾no s informacemi z tohoto jednoho výrazu detekovat typ. Výsledek prvního prùchodu stromem výrazu \function{4 + \$a * "7"} s oznaèenými vstupními datovými typy je diagram \ref{PhpType1}.
+
+
+		Druhý prùchod ji¾ operuje s informacemi z první iterace a je proveden metodou Postorder. Pøi tomto prùchodu se analýza zamìøuje na operátory, které spojují jednotlivé vìtve stromu. Je zde aplikována sada pravidel zalo¾ená na typu operátoru a operandù.
+
+		\subsection{Pravidla}
+			\begin{wrapfigure}{r}{0.3\textwidth}
+				\centering
+				\includesvg[width=0.3\textwidth, svgpath = img/]{type_step2}
+				\caption{Detekce datových typù - krok 2}
+				\label{PhpType2}
+			\end{wrapfigure}
+			Pro detekci datových typù výrazù jsou pou¾ita tato pravidla. Pokud není mo¾né aplikovat ¾ádné z pravidel, tak je typ nastaven na \function{Mixed}. Na diagramu \ref{PhpType2} je znázornìna vnitøní struktura po aplikaci tìchto pravidel na operátory.
+
+			\subsubsection*{Porovnání}
+
+				Výstupní typ: \function{Bool}
+
+				Operátor: \{ \function{!}, \function{==}, \function{===}, \function{!=}, \function{!==}, \function{<=}, \function{>=}, \function{<}, \function{>}, \function{OR}, \function{AND}, \function{XOR}, \function{||}, \function{\&\&}, \function{\textasciicircum\textasciicircum}, \function{||=}, \function{\&\&=}, \function{\textasciicircum\textasciicircum=}\}
+
+				Operandy: Libovolný typ
+
+
+
+			\subsubsection*{Matematické operace - celoèíselné}
+
+				Výstupní typ: \function{Int}
+
+				Operátor: \{ \function{+}, \function{-}, \function{*}, \function{**}, \function{+=}, \function{-=}, \function{*=}, \function{**=}, \function{++}, \function{--} \}
+
+				Operandy: \{\function{NULL}, \function{Bool}, \function{Int}, \function{String}\}
+
+			\subsubsection*{Matematické operace - desetinné}
+
+				Výstupní typ: \function{Float}
+
+				Operátor: \{ \function{+}, \function{-}, \function{*}, \function{**}, \function{+=}, \function{-=}, \function{*=}, \function{**=}, \function{++}, \function{--} \}
+
+				Operandy: Alespoò jeden \{\function{Float}, \function{Mixed}\}
+
+			\subsubsection*{Matematické operace}
+
+				Výstupní typ: \function{Float}
+
+				Operátor: \{ \function{/}, \function{/=} \}
+
+				Operandy: Libovolný typ
+
+			\subsubsection*{Matematické operace}
+
+				Výstupní typ: \function{Int}
+
+				Operátor: \{ \function{\%}, \function{\%=} \}
+
+				Operandy: Libovolný typ
+
+			\subsubsection*{Konkatenace}
+
+				Výstupní typ: \function{String}
+
+				Operátor: \{ \function{.}, \function{.=} \}
+
+				Operandy: Libovolný typ
+
+			\subsubsection*{Pøiøazení}
+
+				Operátor: \{ \function{=} \}
+
+				Kopíruje datový typ z pravého operandu do levého.
+
+			\subsubsection*{Volání funkce}
+
+				Souèástí nástroje je seznam nìkterých vestavìných funkcí PHP s datovými typy jejich návratových hodnot. Pokud je vracen pouze jeden datový typ, tak je nastaven jako výstupní. V opaèném pøípadì je pou¾it \function{Mixed}.
+
+		\subsection{Propagace výsledku druhéh kroku}
+			\begin{wrapfigure}{r}{0.3\textwidth}
+				\centering
+				\includesvg[width=0.3\textwidth, svgpath = img/]{type_step3}
+				\caption{Detekce datových typù - krok 3}
+				\label{PhpType3}
+			\end{wrapfigure}
+			Pøi získání typù operandù je jejich výsledek propagován listùm, pokud je typem \function{Int}, \function{Float}, nebo \function{String}. Tím je docíleno konverze generovaného kódu na potøebné datové typy. Výsledek propagace mù¾eme vidìt na diagramu \ref{PhpType3}, kde èernou barvou jsou zapsány výstupní typy a ¹edou barvou vstupní. Detekovaný typ \function{Float} u promìnné \function{\$a} je ulo¾en k informacím o promìnné spolu s cestou v abstraktním syntaktickém stromu. Tyto hodnoty jsou následnì zohlednìny pøi generování kódu.
+
+
+
+
 
 	\section{Generování kódu}
 
 
 	\section{Omezení}
+
 		...
 
 \chapter{Testování}

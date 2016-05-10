@@ -50,7 +50,7 @@
   \makeatother%
   \begin{picture}(1,1.06633499)%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{analyse.pdf}}%
-    \put(0.0955129,0.99859372){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{\shortstack{Naètení obsahu\\ souboru}}}}%
+    \put(0.0955129,0.98059372){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{\shortstack{Naètení obsahu\\ souboru}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{analyse.pdf}}%
     \put(0.3681592,0.98839138){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{Tokenizace}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{analyse.pdf}}%
