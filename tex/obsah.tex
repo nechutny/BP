@@ -17,14 +17,16 @@
 	\section{Motivace}
 		Motivací pøi tvorbì této práce je urychlení webových aplikací napsaných v~PHP. PHP umo¾òuje rychlý a levný vývoj, ale následné spou¹tìní je ji¾ pomalé. Pro zachování výhod rychlého vývoje a pohodlné tvorby zmìn byl navr¾en nástroj, který pøekládá pouze knihovny a nikoliv celou aplikaci.
 
-		Modelový pøípad pou¾ití je pak tvorba PHP aplikace. Vývojáø chce pou¾ít knihovnu napøíklad pro detekci oblièeje ve fotografii. Jeliko¾ takovou knihovnu nechce upravovat, alea pouze pou¾ít nìkteré funkce z~ní, tak mù¾e provést kompilaci pro její zrychlení. Knihovní funkce je pak vykonána rychleji a není naru¹ena mo¾nost rychlého a pohodlného vývoje aplikace. Tento koncept øe¹í nedostatky, na které nará¾elo podobné øe¹ení HPHPc navr¾ené spoleèností Facebook o~kterém se zminuji v~kapitole \ref{hphpc}.
+		Modelový pøípad pou¾ití je pak tvorba PHP aplikace. Vývojáø chce pou¾ít knihovnu napøíklad pro detekci oblièeje ve fotografii. Jeliko¾ takovou knihovnu nechce upravovat, alea pouze pou¾ít nìkteré funkce z~ní, tak mù¾e provést kompilaci pro její zrychlení. Knihovní funkce je pak vykonána rychleji a není naru¹ena mo¾nost rychlého a pohodlného vývoje aplikace. Tento koncept øe¹í nedostatky, na které nará¾elo podobné øe¹ení HPHPc navr¾ené spoleèností Facebook, o~kterém se zminuji v~kapitole \ref{hphpc}.
+
+
 
 	\section{Cíle}
 		Cílem práce je navrhnout a implementovat pøekladaè funkcí zapsaných v~podmno¾inì jazyka PHP, jeho¾ výstupem bude C++ kód doplnìný o~potøebné konstrukce umo¾òující integraci do interpretru PHP.
 
-		Podmno¾ina jazyka PHP byla vybrána po konzultaci s~vedoucím práce a zamìøuje se primárnì na podporu výrazù a operací s~promìnnými. Dále jsou podporovány základní konstrukce jako výpis hodnot, podmínky, cykly, funkce. Podrobnìjí jsou tyto konstrukce rozebrány v~kapitole \ref{constructions}.
+		Podmno¾ina jazyka PHP byla vybrána po konzultaci s~vedoucím práce a zamìøuje se primárnì na podporu výrazù a operací s~promìnnými. Dále jsou podporovány základní konstrukce jako výpis hodnot, podmínky, cykly, funkce. Podrobnìji jsou tyto konstrukce rozebrány v~kapitole \ref{constructions}.
 
-		Po implementaci pøekladaèe pro po¾adovaný rozsah se zamìøím na jeho testování a hledání slabých míst. Následnì se pokusím najít konstrukce, která nefungují korektnì, èi jsou pomalé a navrhnout øe¹ení. Tento krok bude proveden opakovanì po realizaci navrhnutých øe¹ení.
+		Po implementaci pøekladaèe pro po¾adovaný rozsah se zamìøím na jeho testování a hledání slabých míst. Následnì se pokusím najít konstrukce, která nefungují korektnì, èi jsou pomalé a navrhnout øe¹ení.% Tento krok bude proveden opakovanì po realizaci navrhnutých øe¹ení.
 
 
 
@@ -38,7 +40,7 @@
 
 		S~nejstar¹í v~souèasné dobì podporovanou verzí PHP ji¾ není mo¾né aplikaci ani pøelo¾it i pøes mnohé pokusy o~úpravy zdrojových kódù pro zaji¹tìní kompatibility.
 
-		\todo[inline]{Kontaktován Paul Biggar (jeden z~vývojáø). Pokud bude ochotný odpovìdìt, tak se zeptat:
+		\todo[inline]{Kontaktován Edsko de Vries (jeden z~vývojáø). Je ochoten odpovìdìt na otázky, zasláno:
 			1) Jaký byl stav a plány do budoucna
 			2) Proè do¹lo k~ukonèení projektu a jaké byly jeho dùvody
 			3) Vidí i dnes v~tomto konceptu potenciál
@@ -488,17 +490,63 @@ function includeNe2($co)
 
 \chapter{Návrh transformace}
 	\label{phpTransformToCpp}
+		Pøi pøevodu abstraktního syntaktického stromu na C++ zdrojový kód je tøeba navrhnout pravidla a ¹ablony, podle kterých bude transformace a generování kódu probíhat. Pøi tvorbì tìchto pravidel bylo tøeba podrobnì prozkoumat dokumentaci a specifikaci obou jazykù a chybìjící informace získat a ovìøit experimentálnì.
 
-	\todo[inline]{Popsat pravidla z kódu}
+	\section{Jazykové konstrukce}
 
-	I pøes podobnost operátorù v obou jazycích je tøeba pøi pøekladu øe¹it konverzi datových typù ve výrazech a je tedy tøeba definovat pravidla transformace.
+		\subsection{Foreach}
+			Tato konstrukce umo¾òuje v PHP iterování nad prvky pole. \function{Php::Value} implementuje iterátor, tak¾e je mo¾né pole projít pomocí nové vlastnosti z C++11 -- \function{for( auto item : array ) \{ ... \}}.
 
+		\subsection{Konstanty}
+			Jazyk PHP umo¾òuje definovat konstanty pomocí konstrukce \function{define}. Ty jsou pak dostupné po celý zbytek kódu pod zvoleným jménem a není mo¾no mìnit jejich hodnoty. Knihovna PHP-CPP opìt pøiává abstrakci a umo¾òuje tyto operace. Pro definování konstanty se tedy pou¾ívá \function{Php::define("nazev", hodnota)} a pro získání (token \function{T\_STRING}) volání \function{Php::con\-stant(nazev)}.
 
-	\section{Porovnání}
-		compare\_function(result, a, b TSRMLS\_CC);
+		\subsection{Nepovinné argumenty}
+			Funkce v PHP mohou mít nepovinné argumenty. Ty mají v zápise pøiøazenou výchozí hodnotu a pokud není hdonota argumentu pøi volání specifikována, tak je pou¾ita tato výchozí. Knihovna PHP-CPP pøedává v¹echny argumenty jako ukazatel na instanci tøídy \function{Php::Parameters}, co¾ je objekt implementující pøístup polem. Nepovinné argumenty jsou tedy øe¹eny pomocí ternárního operátoru. Pou¾itá ¹ablona pro generování takové promìnné je zde uvedena.
+
+\begin{lstlisting}[caption=©ablona pro generování nepovinných argument funkce, language=Cpp]
+phpVar_<argName> = (args.size() >= <argPosition> ? args[ <argPosition> ] : <defaultValue>;
+\end{lstlisting}
+
+		\subsection{Podmínky}
+			V PHP je mo¾no zapsat u podmínek \function{elseif} vìtev, její¾ chování je stejné, jako \function{else if} v C++. Transformace tohoto výrazu je tedy pøímá.
+
+		\subsection{Návrat hodnoty z funkce}
+			V PHP není povinnost, aby funkce vracela hodnotu z funkce. Dokonce je mo¾né, aby honotu vrátila jen v jedné z podmínìných vìtví. Pøi pøekladu do C++ to je problém, proto¾e pokud je definováno, ¾e funkce vrací urèitý datový typ, tak ho musí opravdu vracet. Pro øe¹ení problému nám nahrává chování PHP, kdy pokud funkce nevrací výsledek, ale i pøesto je výsledek volání pøiøazen do promìnné, tak je \uv{vrácenou} hodnotou \function{NULL}. Postaèí tedy na konec ka¾dé funkce doplnit \function{return nullptr;} a není tøeba analyzovat vìtvení funkce a návratové hodnoty v nich.
+
 
 	\section{Operátory}
-		...
+		I pøes podobnost operátorù v obou jazycích je tøeba pøi pøekladu øe¹it konverzi datových typù ve výrazech a je tedy tøeba definovat pravidla transformace.
+
+		\subsection{Logické operátory}\label{logOp}
+			Jak je uvedeno v~tabulce \ref{table:phpPrecendenceTable} priorit výrazù PHP na stranì \pageref{table:phpPrecendenceTable}, tak jazyk PHP obsahuje pro logické operace dvì mo¾nosti zápisu operací. Prvním zpùsobem zápisu s~vy¹¹í prioritou je zápis prostøednictvím operátorù \function{\&\&}, \function{$||$} a \function{\textasciicircum}. Tento zápis má vy¹¹í prioritu, ne¾ pøiøazení. Pøi zápisu v~kódu \ref{code:phpOperatorPrecedence} na první øádce tedy bude výsledná hodnota v~promìnné \function{\$a} nepravdivá. Opakem je v¹ak zápis na øádku 2, kdy bude hodnota promìnné pravdivá, jeliko¾ se s~vy¹¹í prioritou provede pøiøazení a a¾ s~výsledkem pøiøazení se provede AND, jeho¾ výsledek se zahodí.
+
+			\begin{lstlisting}[caption=PHP ukázka rozdílných priorit operátorù, label=code:phpOperatorPrecedence, language=PHP]
+$a = TRUE &&  FALSE; //  $a = (TRUE AND FALSE)  -> $a == FALSE
+$a = TRUE AND FALSE; // ($a = TRUE) AND FALSE   -> $a == TRUE
+			\end{lstlisting}
+
+			Jazyk C++ v¹ak obsahuje pouze operátory s~vy¹¹í prioritou, ne¾ pøiøazení. Kromì priority operátorù se chování neli¹í\cite{PhpLogicOperators}. Je tedy tøeba kromì nahrazení zápisu ve formì slova za funkènì odpovídající zápis z~jazyka C++ také provést uzavøení levé a pravé strany do závorek.
+
+			Výsledná transformace tedy bude $<op1> OR <op2> \rightarrow ( <op1> ) || ( <op2> )$
+
+		\subsection{Matematické operátory}
+			Matematické operátory, jako \function{+}, \function{-}, \function{*} a dal¹í jsou øe¹eny bez nutnosti výrazné úpravy kódu. Pouze je doplnìna pøípadná konverze datových typù na základì výsledkù analýzy. Výjimkou je dìlení a mocnina, které je popsány v následujících oddílech.
+
+		\subsection{Dìlení}
+			V~pøípadì dìlení èísel v~PHP se neprovádí celoèíselné, ale i pro výraz \function{5/4} je výsledkem desetinné èíslo. Pøi transformaci operátorù dìlení bude tedy tøeba provést zmìnu typu na float/double. V~jazyce C++ je rozdíl mezi výrazy \function{5/4} a \function{5.0/4.0}, kdy v~prvním pøípadì je výsledkem \function{1} a v~druhém \function{1.2}. Pøi transformaci tedy bude tøeba oba operandy dìlení pøetypovat na desetinné èíslo. K tomu je pou¾ita funkce \function{php2cpp:to\_float}, která je popsána v kapitole \ref{dataTypeConversion}.
+
+		\subsection{Mocnina}
+			Pro výpoèet mocniny èísla je mo¾né nahradit operátor \function{**} za volání funkce \function{pow} ze standardní knihovny \function{math.h}\cite{CppMathPow}. Opìt je tøeba rozhodnout o pøípadném doplnìní pøevodu na èíslo na základì analýzy typù.
+
+			Konverze tedy bude dle pravidla $<op1> ** <op2> \rightarrow pow(<op1>, <op2>)$.
+
+
+		\subsection{Porovnání}
+			Jazyk PHP obsahuje dva rozdílné zpùsoby porovnání hodnot. Jednodu¹¹í je porovnání prostøednictvím operátorù \function{===} a \function{!==}, kdy je prvnì porovnán datový typ a pokud se shoduje, tak hodnota. Slo¾itìj¹í je porovnání pomocí operátorù \function{==}, \function{!=}, \function{>}, \function{<}, \function{>=} a \function{<=}, které provádìjí automatickou typovou konverzi. Je tedy mo¾né porovnat napøíklad øetìzec \function{"4.5"} s èíslem \function{0x05}.
+
+			PHP pro porovnání zval struktur s konverzí pou¾ívá funkci \function{compare\_function(result, a, b TSRMLS\_CC);}. Ta napøed provede sjednocení datových typù hodnot. Pokud se jedná o øetìzec, tak je pou¾ita funkce \function{zend\_is\_numeric}, která detekuje v øetìzcí pøípadné celé èíslo, nebo desetinné a vrátí výsledek. Tato funkce je navr¾ena jako koneèný automat pøecházející mezi stavy. Následnì jsou v závislosti na typu provedeny konverze na spoleèný datový typ a provedeno porovnání. Informace o fungování a návrhu porovnávání byla zji¹tìna analýzou zdrojových kódu interpretru PHP.
+
+			Jak ji¾ bylo zmínìno, tak pro úèely této implementace byla pou¾ita knihovna PHP-CPP, která obsahuje tøídu \function{Php::Value} s pøetí¾enými operátory. Mezi nimi je i pøetí¾ení operátoru \function{==} a je tedy mo¾né provádìt porovnávání s konverzí typù klasickým zpùsobem. Pro porovnání bez konverze je pak tøeba zkontrolovat datové typy obou operandù a pokud jsou shodné, tak porovnat hodnoty.
 
 		\subsection{Konkatenace}
 			\function{std::string} obsahuje metodu \function{append}\cite{cppStringAppend}. Je tedy mo¾né transformovat kód \ref{code:phpConcatenation} na \ref{code:cppConcatenation}.
@@ -517,28 +565,21 @@ std::string b = "b";
 a.apend(b);
 			\end{lstlisting}
 
-		\subsection{Mocnina}
-			Pro výpoèet mocniny èísla je mo¾né nahradit operátor \function{**} za volání funkce \function{pow} ze standardní knihovny \function{math.h}\cite{CppMathPow}.
+		\subsection{Pole}
+			Pro práci s poli je pou¾ita instance tøídy \function{Php::Value} z knihovny PHP-CPP, která umo¾òuje práci s poli jako v PHP. Internì je tato funkcionalita implementována pøetí¾enými operátory a hodnoty jsou ukládány do zval struktur. Pøi pøístupu k prvku pole (v PHP je pole hashovací tabulka) je vrácena instance tøídy \function{Php::HashMember}, která dr¾í referenci na prvek v poli a pøiøazení do této tøídy provede pomocí pøetí¾eného operátoru \function{=} zmìnu její hodnoty. Pokud je zamý¹leno pou¾ití pro dal¹í operace, tak je tøeba metodou \function{value} získat instanci \function{Php::Value}, která je kopií dat.
 
-		\subsection{Logické operátory}\label{logOp}
-			Jak je uvedeno v~tabulce \ref{table:phpPrecendenceTable} priorit výrazù PHP na stranì \pageref{table:phpPrecendenceTable}, tak jazyk PHP obsahuje pro logické operace dvì mo¾nosti zápisu operací. Prvním zpùsobem zápisu s~vy¹¹í prioritou je zápis prostøednictvím operátorù \function{\&\&}, \function{$||$} a \function{\textasciicircum}. Tento zápis má vy¹¹í prioritu, ne¾ pøiøazení. Pøi zápisu v~kódu \ref{code:phpOperatorPrecedence} na první øádce tedy bude výsledná hodnota v~promìnné \function{\$a} nepravdivá. Opakem je v¹ak zápis na øádku 2, kdy bude hodnota promìnné pravdivá, jeliko¾ se s~vy¹¹í prioritou provede pøiøazení a a¾ s~výsledkem pøiøazení se provede AND, jeho¾ výsledek se zahodí.
+			Z vý¹e popsaných dùvodù je transformace takového výrazu pak slo¾itìj¹í. Pøi generování je tøeba zohlednit kontext a podle toho pou¾ít dva zpùsoby zápisu.
 
-			\begin{lstlisting}[caption=PHP ukázka rozdílných priorit operátorù, label=code:phpOperatorPrecedence, language=PHP]
-$a = TRUE &&  FALSE; //  $a = (TRUE AND FALSE)  -> $a == FALSE
-$a = TRUE AND FALSE; // ($a = TRUE) AND FALSE   -> $a == TRUE
-			\end{lstlisting}
+			Výraz $\$a[0] = \$a[1] = \$a["a"] + 5$ pak ukazuje transformaci. Pravidlo pro pøepis je $<var>[<index>] <= expr> \rightarrow (<var>[<index>] <= expr>).value()$. Výsledek pro èást $\$a["a"] + 5$ je $(a["a"]).value() + 5$. Pro èást $\$a[1] = \$a["a"] + 5$ pak $(a[1] = (a["a"]).value() + 5).value()$ a obdobnì pro zbytek výrazu.
 
-			Jazyk C++ v¹ak obsahuje pouze operátory s~vy¹¹í prioritou, ne¾ pøiøazení. Kromì priority operátorù se chování neli¹í\cite{PhpLogicOperators}. Je tedy tøeba kromì nahrazení zápisu ve formì slova za funkènì odpovídající zápis z~jazyka C++ také provést uzavøení levé a pravé strany do závorek.
+		\subsection{Volání funkce}
+			Volání funkce vestavìné v PHP i u¾ivatelem defnované (interpretované) je pomìrnì jednoduché pomocí \function{Php::call}, kdy prvním argumentem je název a dal¹í argumenty jsou argumenty funkce. Argumenty mohou být typu \function{Php::Value}, èi jakýkoliv jiný, který je na nìj mo¾no pøevést. Tato funkce umo¾òuje provázání nejen smìrem z interpretovaného skriptu do zkompilovaného (volání pøelo¾ených funkcí), ale i opaènì -- pøelo¾ený a zkompilovaný kód mù¾e volat funkci, která je definována v interpretovaném skriptu. V pøípadì, ¾e je volána nedefinovaná funkce, tak je zobrazena zcela stejná chyba, jako by byla volána z interpretovaného kódu. To umo¾òuje pøekládat jen urèité èásti knihoven, které jsou nároèné, èi je není tøeba upravovat.
 
-			Výsledná transformace tedy bude \function{\textless výraz \textgreater OR \textless výraz \textgreater $\rightarrow$ ( \textless výraz \textgreater ) $||$ ( \textless výraz \textgreater )}
-
-		\subsection{Dìlení}
-			V~pøípadì dìlení èísel v~PHP se neprovádí celoèíselné, ale i pro výraz \function{5/4} je výsledkem desetinné èíslo. Pøi transformaci operátorù dìlení bude tedy tøeba provést zmìnu typu na float/double. V~jazyce C++ je rozdíl mezi výrazy \function{5/4} a \function{5.0/4.0}, kdy v~prvním pøípadì je výsledkem \function{1} a v~druhém \function{1.2}. Pøi transformaci tedy bude tøeba oba operátory dìlení pøetypovat na desetinné èíslo.
-
+			Transformace takového kódu je tedy jednoduché pravidlo: $<name>(<args>) \rightarrow Php::Call(<name> <, args>)$
 
 		\subsection{Potlaèení chyby}
 			\label{potlaceniChyby}
-			Bude tøeba èást s~potlaèenou chybou vyjmout do vlastní èásti kódu, pøiøadit výsledek do pomocné promìnné a obalit voláním funkcí z~jádra PHP viz kód \ref{code:supressError} na stranì \pageref{code:supressError}.
+			Pro potlaèení chyby je tøeba èást ovlivnìnou potlaèením vyjmout do vlastní èásti kódu, pøiøadit výsledek do pomocné promìnné a obalit voláním funkcí z~jádra PHP viz kód \ref{code:supressError}. Z dùvodu, ¾e takové potlaèení by ovlivnilo pouze volání vestavìných funkcí (pøekládaný kód nevyvolává PHP chyby) a jeho pou¾ití je silnì nedoporuèováno, jak ji¾ bylo zdùvodnìno v pøedchozí èásti, tak tento operátor není prozatím podporován.
 
 			\begin{lstlisting}[caption=Potlaèení chybové hlá¹ky\cite{PhpErrorSupress2}, label=code:supressError, language=Cpp]
 void zend_do_begin_silence(znode *strudel_token TSRMLS_DC);
@@ -546,13 +587,12 @@ void zend_do_begin_silence(znode *strudel_token TSRMLS_DC);
 void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 			\end{lstlisting}
 
-			\todo[inline]{Jak se odkazovat na zdrojové kódy z~rùzných projektù?}
 
 
 \chapter{Implementace}
 	Pro implementaci byl zvolen jazyk PHP, v~kterém je mo¾né provádìt rychle implementaci a poskytuje potøebné funkce. Velkou výhoou pro implementaci je \function{token\_get\_all()}, která umo¾òuje naparsovat zdrojový kód a pøevést jej na tokeny. Po získání tokenù je provedena analýza rekurzivním sestupem zhora dolu. Pøi analýze je generován abstraktní syntaktický strom pro generátor kódu. Parser vyu¾ívá volání precedenèní analýzy, která provádí kontrolu výrazù a provádí také tvorbu derivaèního stromu, kterého je následnì vyu¾ito pro tvorbu abstraktního syntaktického stromu výrazù. Po získání v¹ech potøebných informací ze zdrojového kódu je pøistoupeno k~analýze výrazù pro detekci datových typù a následnì provedeno generování C++ kódu.
 
-	Prvnì jsem provedl analýzu nìkolika hotových øe¹ení parsování zdrojových kódù, ale zjistil jsem, ¾e rychlej¹ím a pohodlnìj¹ím pro dal¹í vývoj bude tvorba vlastního øe¹ení. Prozkoumaná øe¹ení byla èasto velmi obecná pro pokrytí co nevìt¹í èásti jazyka PHP a nedetekovala pak nìkteré chybnné konstrukce. Dále pak jejich výstup neobsahoval dostatek potøebných informací pro urèování datových typù a vhodné sestavování C++ kódu. Mezi zkoumanými øe¹eními bylo i PHP-Parser\footnote{\url{https://github.com/nikic/PHP-Parser}}, jeho¾ autorem je Nikita Popov, který také pøispívá do PHP interpretru a je jedním z~autorù knihy \uv{PHP Internals Book} zabývající se tvorbou PHP roz¹íøení. Zajímavým a vhodným øe¹ením s~dobrým výstupem se ukázal PHP Analyzer\footnote{\url{https://scrutinizer-ci.com/docs/tools/php/php-analyzer/}} od spoleènosti Scrutinizer, který provádí velmi podrobnou analýzu. Problémem v¹ak byla vysoká cena komplikující zámìø poskytnout výsledné øe¹ení jako open source produkt dostupný zdarma.
+	Prvnì jsem provedl analýzu nìkolika hotových øe¹ení parsování zdrojových kódù, ale zjistil jsem, ¾e rychlej¹ím a pohodlnìj¹ím pro dal¹í vývoj bude tvorba vlastního øe¹ení. Prozkoumaná øe¹ení byla èasto velmi obecná pro pokrytí co nevìt¹í èásti jazyka PHP a nedetekovala pak nìkteré chybnné konstrukce. Dále pak jejich výstup neobsahoval dostatek potøebných informací pro urèování datových typù a vhodné sestavování C++ kódu. Mezi zkoumanými øe¹eními bylo i PHP-Parser\footnote{\url{https://github.com/nikic/PHP-Parser}}, jeho¾ autorem je Nikita Popov, který také pøispívá do PHP interpretru a je jedním z~autorù knihy \uv{PHP Internals Book} zabývající se tvorbou PHP roz¹íøení. Zajímavým a vhodným øe¹ením s~dobrým výstupem se ukázal PHP Analyzer\footnote{\url{https://scrutinizer-ci.com/docs/tools/php/php-analyzer/}} od spoleènosti Scrutinizer, který provádí velmi podrobnou analýzu. Problémem v¹ak byla vysoká cena komplikující zámìr poskytnout výsledné øe¹ení jako open source produkt dostupný zdarma.
 
 
 	\section{Knihovny}
@@ -698,7 +738,11 @@ void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 
 			Pøi získání typù operandù je jejich výsledek propagován listùm, pokud je typem \function{Int}, \function{Float}, nebo \function{String}. Tím je docíleno konverze generovaného kódu na potøebné datové typy. Výsledek propagace mù¾eme vidìt na diagramu \ref{PhpType3}, kde èernou barvou jsou zapsány výstupní typy a ¹edou barvou vstupní. Detekovaný typ \function{Float} u~promìnné \function{\$a} je ulo¾en k~informacím o~promìnné spolu s~cestou v~abstraktním syntaktickém stromu. Tyto hodnoty jsou následnì zohlednìny pøi generování kódu.
 
+	\section{Konverze datových typù}
+		\label{dataTypeConversion}
+		Jeliko¾ mù¾e být pou¾it napøíklad výraz \function{5 . (4*6)}, kdy se prvnì provede konkatenace dvou øetìzcù a následnì se provádí matematické operace, tak bylo tøeba implementovat funkce pro konverzi mezi datovými typy. Pøi návrhu konverze na øetìzec se zdálo jako vhodné øe¹ení \function{std::to\_string}. Následnì se v¹ak ukázalo, ¾e absence podpory konverze instance tøídy \function{Php::Value}, není elegantnì øe¹itelný problém. Specifikace jazyka C++ v kapitole 17.6.4.2.1 zakazuje pøidávat funkce do jmenného prostoru \function{std} \cite{CppBook}. Vznikla tedy nutnost vytvoøit tuto funkci ve vlastném jmenném prostoru, kdy pro vìt¹inu datových typù bude pouze volat originální funkci. Pøi testování se ukázalo, ¾e je také tøeba pøedefinovat pøevod typu \function{double} na øetìzec, jeliko¾ PHP interpretru odpovídá \function{printf} formátovací øetìzec \function{\%G}, místo pùvodního \function{\%f}\cite{PhpFloats}. Výsledkem je soubor \function{cpp/PhpValString.cpp} implementující funkci \function{to\_string} v jmenném prostoru \function{php2cpp}.
 
+		Druhou konverzí je pak pøevod na desetinné èíslo -- napøíklad pro výraz \function{5 * ("4.".6)}. Implementace opìt probìhla v jmenném prostoru \function{php2cpp} a pro zachování konvence byla pojmenována \function{to\_float}. Opìt se jedná o pøetí¾enou funkci, aby bylo mo¾né pøevádìt rùzné datové typy. Vìt¹ina konverze je øe¹ena C++ operátorem pøetypování \function{(double)} a u øetìzcù pak funkcí \function{std::stod}. Tím je dosa¾eno rozumné rychlosti.
 
 
 
@@ -726,14 +770,31 @@ void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 		\function{ExprGenerator} generuje výraz na základì výsledku z~precedenèní analýzy a sady pravidel zmínìných v~kapitole \ref{phpTransformToCpp} \nameref{phpTransformToCpp}. Rekurzivnì projde strom výrazu a vrátí kód.
 
 
-	\section{Testování}
-		\todo[inline]{Testování}
 
-	\section{Výkon}
-		\todo[inline]{Výkon}
+	\section{Testování}
+		Pøi implementaci jsem se rozhodl pro programování øízené testy (Test-driven development). Tedy tvorba testù pro pøeklad, které napøed nejsou úspì¹né, ale postupnì se s prací na projektu stav zlep¹uje. Výhodou takového postupu je kontrola provádìných zmìn v komplexním øe¹ení, kterým pøekladaè bezesporu je. Automatizované testování takto integrovaného øe¹ení bylo pomìrnì komplikované a proto jsem se nakonec rozhodl pro manuální spou¹tìní testù a vyhodnocování.
+
+		Testy jsou umístìny u zdrojových kódù v adresáøi \uv{tests} a rozèlenìny podle specifické èásti, kterou testují.  Testy pokrývají základní konstrukce -- výstup, komentáøe, konstanty, funkce, vkládání, výrazy, argumenty. Dále jsou testy zamìøené na pole, cykl for, while, funkce, podmínky, precedenèní analýzu, nebo práci s øetìzci. Mezi dal¹í testy testy v jazyce C++ pro ovìøení funkènosti èásti implementované v C++ a testy algoritmù -- soubory s algoritmem implementovaným v PHP pro testování výkonu a komplexnìj¹ího bloku kódu.
+
+	\section{Experimentování}
+		\todo[inline]{experimentování}
+		Po dokonèení po¾adovaného rozsahu jsem se zamìøil na testování pøekladu na pøipravených algoritmech i èástech pou¾ívaných knihoven, nebo èástech samotného øe¹ení.
+
+		\subsection{Bubble sort}
+
+		\subsection{Precedenèní analýza}
+
+		\subsection{Nette Framework}
+
+		\subsection{JSN.php}
+			Vhodným kódem pro pøeklad bylo øe¹ení ¹kolního projektu Bc. Jiøího Semmlera do pøedmìtu IPP - Principy objektového programování z akademického roku 2013/2014, které mi poskytl pro úèely testování bakaláøské práce. Vhodnost spoèívá v nepou¾ití objektové èásti PHP a relativní jednoduchosti kódu. Kód byl jen minimálnì upraven pro fungování s pøekladaèem. Funkce definované v skriptu byli vyèlenìny do zvlá¹tního souboru. Proveden jejich pøeklad a zbytek pùvodního CLI skriptu byl nechán pou¾ívat pøelo¾ené funkce.
+
+			\todo{Experiment, výsledky}
 
 	\section{Návrh na zlep¹ení}
 		\todo[inline]{Návrh na zlep¹ení}
+
+		Ukázalo se, ¾e pøedpokládané úzké hrdlo ve formì tøídy \function{Php::Value} vyu¾ívající internì struktury a funkce interpretru je reálným problémem. Proto jsem zapoèal implementaci vlastní tøídy s pøetí¾enými operátory vyu¾ívající
 
 
 
