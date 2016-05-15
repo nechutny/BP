@@ -1,6 +1,3 @@
-\listoftodos
-
-
 \chapter{Úvod}
 	Skriptovací jazyk PHP je velmi oblíbeným prostøedkem pro tvorbu dynamických webových systémù i pro rùzné skripty. Z~pùvodnì jednoduchého jazyka pro tvorbu stránek s~dynamickým obsahem vznikl jazyk se stovkami funkcí umo¾òující rychlou implementaci témìø jakékoliv úlohy.
 
@@ -11,7 +8,7 @@
 	\section{Motivace}
 		%Motivací pøi tvorbì této práce je urychlení webových aplikací napsaných v~PHP. PHP umo¾òuje rychlý a levný vývoj, ale následné spou¹tìní je ji¾ pomalé. Pro zachování výhod rychlého vývoje a pohodlné tvorby zmìn byl navr¾en nástroj, který pøekládá pouze knihovny a nikoliv celou aplikaci.
 
-		Modelový pøípad pou¾ití je pak tvorba PHP aplikace. Vývojáø chce pou¾ít knihovnu napøíklad pro detekci oblièeje ve fotografii. Jeliko¾ takovou knihovnu nechce upravovat, alea pouze pou¾ít nìkteré funkce z~ní, tak mù¾e provést kompilaci pro její zrychlení. Knihovní funkce je pak vykonána rychleji a není naru¹ena mo¾nost rychlého a pohodlného vývoje aplikace. Tento koncept øe¹í nedostatky, na které nará¾elo podobné øe¹ení HPHPc navr¾ené spoleèností Facebook, o~kterém se zminuji v~kapitole \ref{hphpc}.
+		Modelový pøípad pou¾ití je pak tvorba PHP aplikace. Vývojáø chce pou¾ít knihovnu napøíklad pro detekci oblièeje ve fotografii. Jeliko¾ takovou knihovnu nechce upravovat, ale pouze pou¾ít nìkteré funkce z~ní, tak mù¾e provést kompilaci pro její zrychlení. Knihovní funkce je pak vykonána rychleji a není naru¹ena mo¾nost rychlého a pohodlného vývoje aplikace. Tento koncept øe¹í nedostatky, na které nará¾elo podobné øe¹ení HPHPc navr¾ené spoleèností Facebook, o~kterém se zmiòuji v~kapitole \ref{hphpc}.
 
 
 	\section{Funkcionalita}
@@ -255,7 +252,7 @@ function includeNe2($co)
 
 	\section{Tøídy}
 
-		V~dùsledku udr¾ení rozumného rozsahu podmno¾iny byla vypu¹tìna objektovì orientovaná èást konstrukcí jazyka. Není tedy mo¾né v~pøekladém kódu definovat ani vytváøet instance tøíd, dìdit, implementovat interface. Nejsou podporovány logicky ani jmenné prostory, modifikátory viditelnosti a statické metody. Pro úplnost uvádím tabulku nepodporovaných tokenù \ref{table:phpTokenClass}. Podpora OOP èásti jazyka je v¹ak plánována v~budoucnu.
+		V~dùsledku udr¾ení rozumného rozsahu podmno¾iny byla vypu¹tìna objektovì orientovaná èást konstrukcí jazyka. Není tedy mo¾né v~pøekládaném kódu definovat ani vytváøet instance tøíd, dìdit, implementovat interface. Nejsou podporovány logicky ani jmenné prostory, modifikátory viditelnosti a statické metody. Pro úplnost uvádím tabulku nepodporovaných tokenù \ref{table:phpTokenClass}. Podpora OOP èásti jazyka je v¹ak plánována v~budoucnu.
 
 		\begin{center}
 			\begin{tabular}{ | l | l | l |} \hline
@@ -292,7 +289,7 @@ function includeNe2($co)
 
 
 \chapter{Rozdíly PHP a C++}
-	Rozdílù mezi obìmi jazyky je celá øada i pøes jejich velkou podobnost a je tøeba se s~nimi vypoøádat.
+	Rozdílù mezi obìma jazyky je celá øada i pøes jejich velkou podobnost a je tøeba se s~nimi vypoøádat.
 
 	\section{Výrazy}
 		Tabulka \ref{table:phpPrecendenceTable} na stranì \pageref{table:phpPrecendenceTable} obsahuje operátory jazyka PHP s~jejich asociativitou seøazené dle priority -- priorita se sni¾uje shora dolù. Druhou podstatnou tabulkou je \ref{table:cppPrecendenceTable} na stranì \pageref{table:cppPrecendenceTable}, která obsahuje priority a asociativitu operátorù jazyka C++. Priorita je opìt seøazena od nejvy¹¹í po nejni¾¹í. Pøi podrobnìj¹ím prozkoumání tabulky narazíme na nìkolik rozdílù, se kterými se je tøeba vypoøádat.
@@ -393,7 +390,7 @@ function includeNe2($co)
 
 	\section{Promìnné}
 
-		Promìnné v PHP musejí dle dokumentace zaèínat znakem z rozsahu \function{\{a--z, A--Z, \_, 0x7f--0xff\}} a dal¹í znaky mohou obsahovat také èíslice\cite{phpVariables}. I pøesto existují zpùsoby, jak je mo¾né definovat promìnnou nesplòující tuto podmínku. Napøíklad \function{\$a = 5; \$\$a = 1;} umo¾ní definovat promìnnou s názvem \uv{5} a hodnotou 1. Jazyk C++ vy¾aduje, aby název promìnné zaèínal znakem z mno¾iny \function{\{ a--z, A--Z, \_\}}, dal¹í znak mù¾e být také èíslo. Název nesmí být klíèové slovo (uvedeny v specifikaci C++11 kapitola 6.3.3.1). Oba jazyky rozli¹ují velikost písmen promìnných\cite{CppBook}.
+		Promìnné v PHP musejí dle dokumentace zaèínat znakem z rozsahu \function{\{a--z,\-A--Z,\-\_, 0x7f--0xff\}} a dal¹í znaky mohou obsahovat také èíslice\cite{phpVariables}. I pøesto existují zpùsoby, jak je mo¾né definovat promìnnou nesplòující tuto podmínku. Napøíklad \function{\$a = 5; \$\$a = 1;} umo¾ní definovat promìnnou s názvem \uv{5} a hodnotou 1. Jazyk C++ vy¾aduje, aby název promìnné zaèínal znakem z mno¾iny \function{\{ a--z, A--Z, \_\}}, dal¹í znak mù¾e být také èíslo. Název nesmí být klíèové slovo (uvedeny v specifikaci C++11 kapitola 6.3.3.1). Oba jazyky rozli¹ují velikost písmen promìnných\cite{CppBook}.
 
 		Z tìchto specifikací názvù promìnných vyplývá nìkolik omezení, které je tøeba vyøe¹it. Pou¾ití znakù z rozsahu s kódem \function{0x7f -- 0xff} není v kódu PHP pøíli¹ èasté a mù¾eme tedy pro úèely nástroje zobrazit u¾ivateli upozornìní, ¾e tento název není podporován. Název promìnné PHP, který je v jazyce C++ klíèovým slovem, èi zaèíná èíslicí, je mo¾no upravit prefixem. Tím dojde i k zpøehlednìní kódu, kdy bude jasnì rozli¹itelné, které promìnné jsou ekvivalentem promìnných z PHP a které byly pøidány v rámci transformace. Pro tyto úèely byl zvolen prefix \function{phpVar\_}.
 
@@ -405,7 +402,7 @@ function includeNe2($co)
 \chapter{Integrace do PHP}
 	\label{integrateToPhp}
 
-	Interpret PHP umo¾òuje zavádìt dynamické knihovny tzv. moduly, které roz¹iøují dostupné funkce a tøídy v~interpretovaném prostøedí. Naètení je mo¾né prostøednictvím konfiguraèní direktivy \function{ex\-ten-\-sion=nazev.so} v~konfiguraèním souboru \function{php.ini}, èi v~dobì bìhu funkcí \function{dl("nazev.so")}. Roz¹íøení obsahují tzv. entry point, tedy adresu kam v~momentì po¾adavku na naètení modulu skoèí tok interpretru a oèekává se vrácení datové struktury, která obsahuje informace o~dostupných funkcích a tøídách. Zend Engine\footnote{\url{http://www.zend.com/en/community/php}}, jádro PHP, je napsáno primárnì v~jazyce C, tak¾e je tøeba dodr¾et kompatibilní zpùsob volání a navrácení výsledku. V~pøípadì této práce bude z~dùvodu jazyka C++ nutno pou¾ít konstrukci \function{extern "C"}\cite{PhpBookRozsireni}\cite{PhpExtensionStructure} \cite{phpExtensionLife}.
+	Interpret PHP umo¾òuje zavádìt dynamické knihovny tzv. moduly, které roz¹iøují dostupné funkce a tøídy v~interpretovaném prostøedí. Naètení je mo¾né prostøednictvím konfiguraèní direktivy \function{ex\-ten-\-sion=nazev.so} v~konfiguraèním souboru \function{php.ini}, èi v~dobì bìhu funkcí \function{dl("na\-zev.so")}. Roz¹íøení obsahují tzv. entry point, tedy adresu, kam v~momentì po¾adavku na naètení modulu skoèí tok interpretru a oèekává se vrácení datové struktury, která obsahuje informace o~dostupných funkcích a tøídách. Zend Engine\footnote{\url{http://www.zend.com/en/community/php}}, jádro PHP, je napsáno primárnì v~jazyce C, tak¾e je tøeba dodr¾et kompatibilní zpùsob volání a navrácení výsledku. V~pøípadì této práce bude z~dùvodu jazyka C++ nutno pou¾ít konstrukci \function{extern "C"}\cite{PhpBookRozsireni}\cite{PhpExtensionStructure} \cite{phpExtensionLife}.
 
 	%®ivotní cyklus PHP roz¹íøení sestává z~nìkolika stavù. Pøi startu PHP jsou naèteny sdílené knihovny definované v~konfiguraèním souboru direktivou \function{ex\-ten\-sion=} a zavolána funkce vracející informace o~roz¹íøení. Tyto informace obsahují verzi PHP API, callbacky a funkce, tøídy, rozhraní a konstanty, které roz¹íøení poskytuje
 
@@ -467,7 +464,7 @@ function includeNe2($co)
 		\\ \\
 		\textbf{zval}
 
-		Tato struktura je vyu¾ívána Zend enginem pro data promìnné. Vytvoøení instance struktury je zjednodu¹eno makrem \function{MAKE\_STD\_ZVAL} a následné pøiøazení hodnoty urèitého typu je mo¾no pomocí rùzných maker -- napøíklad \function{ZVAL\_DOUBLE}. Tyto struktury obsahují nìkolik prvkù - C \function{union} prvkù pro ulo¾ení rùzných datových typù (\function{long}, \function{double}, \function{char*}, \function{HashTable}, \function{zend\_object\_value}), dále poèet refencí na hodnotu (PHP implementuje z dùvodu zlep¹ení rychlosti tzv. líné kopírování), dal¹í polo¾kou je typ hodnoty a posledním èlenem struktury jsou pøíznaky pro správu pamìti.\cite{phpZvals} \cite{phpZvalInternal} \cite{phpZvalReferences}. Podrobnìji zkoumat tyo struktury naplnìné daty je mo¾né pomocí funkce \function{xdebug\_debug\_zval} z roz¹íøení xdebug.
+		Tato struktura je vyu¾ívána Zend enginem pro data promìnné. Vytvoøení instance struktury je zjednodu¹eno makrem \function{MAKE\_STD\_ZVAL} a následné pøiøazení hodnoty urèitého typu je mo¾no pomocí rùzných maker -- napøíklad \function{ZVAL\_DOUBLE}. Tyto struktury obsahují nìkolik prvkù - C \function{union} prvkù pro ulo¾ení rùzných datových typù (\function{long}, \function{double}, \function{char*}, \function{HashTable}, \function{zend\_ob\-ject\_value}), dále poèet refencí na hodnotu (PHP implementuje z dùvodu zlep¹ení rychlosti tzv. líné kopírování), dal¹í polo¾kou je typ hodnoty a posledním èlenem struktury jsou pøíznaky pro správu pamìti.\cite{phpZvals} \cite{phpZvalInternal} \cite{phpZvalReferences}. Podrobnìji zkoumat tyo struktury naplnìné daty je mo¾né pomocí funkce \function{xdebug\_debug\_zval} z roz¹íøení xdebug.
 
 
 
@@ -511,19 +508,19 @@ phpVar_<argName> = (args.size() >= <argPosition> ? args[ <argPosition> ] : <defa
 		I pøes podobnost operátorù v obou jazycích je tøeba pøi pøekladu øe¹it konverzi datových typù ve výrazech a je tedy tøeba definovat pravidla transformace.
 
 		\subsection{Logické operátory}\label{logOp}
-			Jak je uvedeno v~tabulce \ref{table:phpPrecendenceTable} priorit výrazù PHP na stranì \pageref{table:phpPrecendenceTable}, tak jazyk PHP obsahuje pro logické operace dvì mo¾nosti zápisu operací. Prvním zpùsobem zápisu s~vy¹¹í prioritou je zápis prostøednictvím operátorù \function{\&\&}, \function{$||$} a \function{\textasciicircum}. Tento zápis má vy¹¹í prioritu, ne¾ pøiøazení. Pøi zápisu v~kódu \ref{code:phpOperatorPrecedence} na první øádce tedy bude výsledná hodnota v~promìnné \function{\$a} nepravdivá. Opakem je v¹ak zápis na øádku 2, kdy bude hodnota promìnné pravdivá, jeliko¾ se s~vy¹¹í prioritou provede pøiøazení a a¾ s~výsledkem pøiøazení se provede AND, jeho¾ výsledek se zahodí.
+			Jak je uvedeno v~tabulce \ref{table:phpPrecendenceTable} priorit výrazù PHP na stranì \pageref{table:phpPrecendenceTable}, tak jazyk PHP obsahuje pro logické operace dvì mo¾nosti zápisu operací. Prvním zpùsobem zápisu s~vy¹¹í prioritou je zápis prostøednictvím operátorù \function{\&\&}, \function{$||$} a \function{\textasciicircum}. Tento zápis má vy¹¹í prioritu ne¾ pøiøazení. Pøi zápisu v~kódu \ref{code:phpOperatorPrecedence} na první øádce tedy bude výsledná hodnota v~promìnné \function{\$a} nepravdivá. Opakem je v¹ak zápis na øádku 2, kdy bude hodnota promìnné pravdivá, jeliko¾ se s~vy¹¹í prioritou provede pøiøazení a a¾ s~výsledkem pøiøazení se provede AND, jeho¾ výsledek se zahodí.
 
 			\begin{lstlisting}[caption=PHP ukázka rozdílných priorit operátorù, label=code:phpOperatorPrecedence, language=PHP]
 $a = TRUE &&  FALSE; //  $a = (TRUE AND FALSE)  -> $a == FALSE
 $a = TRUE AND FALSE; // ($a = TRUE) AND FALSE   -> $a == TRUE
 			\end{lstlisting}
 
-			Jazyk C++ v¹ak obsahuje pouze operátory s~vy¹¹í prioritou, ne¾ pøiøazení. Kromì priority operátorù se chování neli¹í\cite{PhpLogicOperators}. Je tedy tøeba kromì nahrazení zápisu ve formì slova za funkènì odpovídající zápis z~jazyka C++ také provést uzavøení levé a pravé strany do závorek.
+			Jazyk C++ v¹ak obsahuje pouze operátory s~vy¹¹í prioritou ne¾ pøiøazení. Kromì priority operátorù se chování neli¹í\cite{PhpLogicOperators}. Je tedy tøeba kromì nahrazení zápisu ve formì slova za funkènì odpovídající zápis z~jazyka C++ také provést uzavøení levé a pravé strany do závorek.
 
 			Výsledná transformace tedy bude $<op1> OR <op2> \rightarrow ( <op1> ) || ( <op2> )$
 
 		\subsection{Matematické operátory}
-			Matematické operátory, jako \function{+}, \function{-}, \function{*} a dal¹í jsou øe¹eny bez nutnosti výrazné úpravy kódu. Pouze je doplnìna pøípadná konverze datových typù na základì výsledkù analýzy. Výjimkou je dìlení a mocnina, které je popsány v následujících oddílech.
+			Matematické operátory, jako \function{+}, \function{-}, \function{*} a dal¹í jsou øe¹eny bez nutnosti výrazné úpravy kódu. Pouze je doplnìna pøípadná konverze datových typù na základì výsledkù analýzy. Výjimkou je dìlení a mocnina, které jsou popsány v následujících oddílech.
 
 		\subsection{Dìlení}
 			V~pøípadì dìlení èísel v~PHP se neprovádí celoèíselné, ale i pro výraz \function{5/4} je výsledkem desetinné èíslo. Pøi transformaci operátorù dìlení bude tedy tøeba provést zmìnu typu na float/double. V~jazyce C++ je rozdíl mezi výrazy \function{5/4} a \function{5.0/4.0}, kdy v~prvním pøípadì je výsledkem \function{1} a v~druhém \function{1.2}. Pøi transformaci tedy bude tøeba oba operandy dìlení pøetypovat na desetinné èíslo. K tomu je pou¾ita funkce \function{php2cpp:to\_float}, která je popsána v kapitole \ref{dataTypeConversion}.
@@ -537,7 +534,7 @@ $a = TRUE AND FALSE; // ($a = TRUE) AND FALSE   -> $a == TRUE
 		\subsection{Porovnání}
 			Jazyk PHP obsahuje dva rozdílné zpùsoby porovnání hodnot. Jednodu¹¹í je porovnání prostøednictvím operátorù \function{===} a \function{!==}, kdy je prvnì porovnán datový typ a pokud se shoduje, tak hodnota. Slo¾itìj¹í je porovnání pomocí operátorù \function{==}, \function{!=}, \function{>}, \function{<}, \function{>=} a \function{<=}, které provádìjí automatickou typovou konverzi. Je tedy mo¾né porovnat napøíklad øetìzec \function{"4.5"} s èíslem \function{0x05}.
 
-			PHP pro porovnání zval struktur s konverzí pou¾ívá funkci \function{compare\_function(result, a, b TSRMLS\_CC);}. Ta napøed provede sjednocení datových typù hodnot. Pokud se jedná o øetìzec, tak je pou¾ita funkce \function{zend\_is\_numeric}, která detekuje v øetìzcí pøípadné celé èíslo, nebo desetinné a vrátí výsledek. Tato funkce je navr¾ena jako koneèný automat pøecházející mezi stavy. Následnì jsou v závislosti na typu provedeny konverze na spoleèný datový typ a provedeno porovnání. Informace o fungování a návrhu porovnávání byla zji¹tìna analýzou zdrojových kódu interpretru PHP.
+			PHP pro porovnání zval struktur s konverzí pou¾ívá funkci \function{compare\_function(result, a, b TSRMLS\_CC);}. Ta napøed provede sjednocení datových typù hodnot. Pokud se jedná o øetìzec, tak je pou¾ita funkce \function{zend\_is\_numeric}, která detekuje v øetìzci pøípadné celé èíslo, nebo desetinné a vrátí výsledek. Tato funkce je navr¾ena jako koneèný automat pøecházející mezi stavy. Následnì jsou v závislosti na typu provedeny konverze na spoleèný datový typ a provedeno porovnání. Informace o fungování a návrhu porovnávání byla zji¹tìna analýzou zdrojových kódù interpretru PHP.
 
 			Jak ji¾ bylo zmínìno, tak pro úèely této implementace byla pou¾ita knihovna PHP-CPP, která obsahuje tøídu \function{Php::Value} s pøetí¾enými operátory. Mezi nimi je i pøetí¾ení operátoru \function{==} a je tedy mo¾né provádìt porovnávání s konverzí typù klasickým zpùsobem. Pro porovnání bez konverze je pak tøeba zkontrolovat datové typy obou operandù a pokud jsou shodné, tak porovnat hodnoty.
 
@@ -608,11 +605,11 @@ void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 
 		Pøi programování se v¹ak ukázalo, ¾e tato funkce není dostateènì konkrétní pro zamý¹lené potøeby implementace. Èastým problémem bylo oznaèení velkého mno¾ství konstrukcí tokenem \function{T\_STRING}. Napøíklad v~tabulce tokenù \ref{table:phpTokenExpresion} na stranì \pageref{table:phpTokenExpresion} nejsou uvedeny operátory +, -, /, * a dal¹í. To není z~dùvodu jejich absence ve zvolené podmno¾inì, ale absencí konkrétních tokenù. V~tabulce priority operátorù \ref{table:phpPrecendenceTable} jsou uvedeny a jsou dle ní pøekládány. Jeliko¾ výrazy jsou dùle¾itou èástí, tak byla doplnìna dal¹í úroveò abstrakce, která tyto tokeny pøeznaèí z~\function{T\_STRING} na odpovídající vlastní tokeny - \function{T\_PLUS}, \function{T\_MUL} apod. Obdobný postup byl zvolen u~dal¹ích chybìjících typù tokenù pro støedník, slo¾ené závorky a dal¹í.
 
-		Po získání tìchto tokenù ze zdrojového kódu se pokraèuje jejich analýzou. V~prùbìhu analýzy mù¾e být nalezena jedna z~konstrukcí \function{include}, \function{include\_once}, \function{require}, \function{require\_once}. Pokud je mo¾né v~dobì pøekladu získat cestu k~souboru (tedy neobsahuje napøíklad promìnné), tak je provedeno jejich vlo¾ení - získání tokenù a vlo¾ení na odpovídající místo ji¾ známých tokenù. V~pøípadì, ¾e není mo¾né provést vlo¾ení je druh vyvolané chyby obdobný jako v~dobì interpretace. Konstrukce \function{include} a \function{include\_once} vedou pouze k~vypsání chyby na standartní chybový výstup a pokraèuje se v~pøikladu, kde¾to u~\function{require} a \function{require\_once} je kromì výstupu také ukonèen pøeklad\cite{PhpRequire}.
+		Po získání tìchto tokenù ze zdrojového kódu se pokraèuje jejich analýzou. V~prùbìhu analýzy mù¾e být nalezena jedna z~konstrukcí \function{include}, \function{include\_once}, \function{require}, \function{require\_once}. Pokud je mo¾né v~dobì pøekladu získat cestu k~souboru (tedy neobsahuje napøíklad promìnné), tak je provedeno jejich vlo¾ení - získání tokenù a vlo¾ení na odpovídající místo ji¾ známých tokenù. V~pøípadì, ¾e není mo¾né provést vlo¾ení, je druh vyvolané chyby obdobný jako v~dobì interpretace. Konstrukce \function{include} a \function{include\_once} vedou pouze k~vypsání chyby na standartní chybový výstup a pokraèuje se v~pøikladu, kde¾to u~\function{require} a \function{require\_once} je kromì výstupu také ukonèen pøeklad\cite{PhpRequire}.
 
 		Vlastní parser vyu¾ívá metody rekurzivního sestupu zhora dolù. Pøi prùchodu sestavuje abstraktní syntaktický strom. Kdy¾ narazí na výraz, tak je pou¾ita zásobníková precedenèní analýza. Její derivaèní strom, který je výstupem, je pak opìt pøeveden na abstraktní syntaktický strom a zaèlenìn do stromu vzniklého v~parseru.
 
-		Pro ulo¾ení informací o~promìnných - datové typy, pou¾ití apod. jsou pou¾ity instance tøídy \function{Variable} ulo¾ené v~kontejneru, který tvoøí instance tøídy \function{Scope}. Informace jsou získávány z~výstupu precedenèní analýzy, jeliko¾ v~PHP mù¾e být pou¾ita promìnná ve výrazu i bez definice. Pak dojde, v~zásvilosti na konfiguraci, k~vypsání varování a hodnota takové promìnné je rovna \function{NULL}.
+		Pro ulo¾ení informací o~promìnných - datové typy, pou¾ití apod. jsou pou¾ity instance tøídy \function{Variable} ulo¾ené v~kontejneru, který tvoøí instance tøídy \function{Scope}. Informace jsou získávány z~výstupu precedenèní analýzy, jeliko¾ v~PHP mù¾e být pou¾ita promìnná ve výrazu i bez definice. Pak dojde, v~závislosti na konfiguraci, k~vypsání varování a hodnota takové promìnné je rovna \function{NULL}.
 
 		Po dokonèení parsování tokenù zdrojového kódu je pøedáno øízení analyzátoru, který provádí detekci datových typù. Této detekci se podrobnìji vìnuji v~následující podkapitole \ref{dataTypeDetection}.
 
@@ -742,7 +739,7 @@ void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 	\section{Generování kódu}
 		Generování kódu z~abstraktního syntaktického stromu doplnìného o~výsledky analýzy datových typù a informací o~promìnných je provádìno prostøednictvím nìkolika tøíd. Ka¾dá tøída implementuje èást generování.
 
-		\function{FileGenerator} je pou¾it pro generování výstupního C++ souboru. Na zaèátek suboru duplòuje potøebné konstrukce pro vlo¾ení hlavièkových souborù a dal¹ích C++ funkcí a tøíd vytvoøených pro potøeby pøekladu. Dále volá generování kódu funkcí a následnì ve funkci \function{get\_module} exponuje jednotlivé pøelo¾ené funkce interpretovanému prostøedí.
+		\function{FileGenerator} je pou¾it pro generování výstupního C++ souboru. Na zaèátek souboru doplòuje potøebné konstrukce pro vlo¾ení hlavièkových souborù a dal¹ích C++ funkcí a tøíd vytvoøených pro potøeby pøekladu. Dále volá generování kódu funkcí a následnì ve funkci \function{get\_module} exponuje jednotlivé pøelo¾ené funkce interpretovanému prostøedí.
 
 		\function{FunctionGenerator} generuje kód funkce. Obsahuje informace o~názvu funkce, argumentech a lokálních promìnných. V~struktuøe abstraktního syntaktického stromu generovaného kódu je jednou z~vìtví \function{FileGenerator} a obsahuje jednu instanci tøídy \function{CodeGenerator}. Úkolem této tøídy je vygenerování C++ kódu funkce s~argumenty, vygenerování kódu pro definici a inicializaci lokálních promìnných s~hodnotami argumentù. Pro generování promìnných se správnými datovými typy pou¾it \function{VariableGenerator}.
 
@@ -776,9 +773,8 @@ void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 
 		Ve¹keré experimenty byly provádìny na poèítaèi vybaveným procesorem Intel(R) Core(TM) i7-4702MQ CPU @ 2.20GHz, 16 GB RAM 1 600 MHz, SSD s zápisem 480 MB/s a ètením 540 MB/s. Operaèním systémem je Fedora 21 s jádrem verze 4.1.13-100.fc21.x86\_64. Verze PHP interpretru je 5.6.15 s Zend Engine v2.6.0 a Xdebug v2.3.3. Jako kompilátor pøelo¾ených C++ zdrojových kódù bylo pou¾ito GCC 4.9.2 20150212 (Red Hat 4.9.2-6). Pro kompiler byly pou¾ity pøepínaèe \function{-Wall -c -O2 -std=c++11 -fpic -o}.
 
-		\subsection{Cílené testy}
-
-			\subsubsection{Matematické operace}
+		Bohu¾el se ukázalo, ¾e podmno¾ina jazyka PHP nebyla vybrána zcela optimálnì a absence konstrukce \function{isset} a \function{unset} znemo¾nila pøeklad vìt¹iny knihoven. Pro experimenty a testování jsem proto pou¾il nìkteré algoritmy a vzorce, které zastupují knihovní funkce.
+				\\ \\
 				\textbf{Faktoriál}
 
 					Pro výpoèet faktoriálu byla pou¾ita implementace s cyklem typu for provádìjící násobení s ulo¾ením mezivýsledku do promìnné. Pro výpoèet byl zvolen faktoriál èísla 5 000 000. Kód pro mìøení byl pou¾it \ref{code:factorialBenchmark}.
@@ -844,17 +840,6 @@ echo microtime(TRUE)-$start;
 \end{lstlisting}
 
 
-		\subsection{Reálné aplikace}
-
-			\subsubsection{Nette Framework}
-
-				\todo[inline]{???}
-
-			\subsubsection{Nìjaká stará PHP 4 knihovna}
-				\todo[inline]{...}
-
-			\subsubsection{...}
-				\todo[inline]{Prohledat staré projekty}
 
 
 
@@ -873,8 +858,8 @@ echo microtime(TRUE)-$start;
 
 
 \chapter{Závìr}
-	Výsledkem této práce je pøekladaè, který je schopen pøelo¾it podmno¾inu jazyka PHP do C++. Nìkteré pøelo¾ené konstrukce jsou rychlej¹í, ale bohu¾el práce s poli a volání funkcí je stále pomalej¹í. Pøi práci na projektu byla vytvoøena sada pravidel pro detekci datových typù na základì výrazù a navr¾eno nìkolik dal¹ích zpùsobù detekce datových typù pùvodnì slabì typovaných promìnných. Dal¹ím výsledkem práce je navr¾ení a ozkou¹ení pravidel pro transformaci kódu øe¹ící rozdíly obou jazykù.
+	Výsledkem této práce je pøekladaè, který je schopen pøelo¾it podmno¾inu jazyka PHP do C++. Nìkteré pøelo¾ené konstrukce jsou rychlej¹í, ale bohu¾el práce s poli a volání funkcí je stále pomalej¹í. Pøi práci na projektu byla vytvoøena sada pravidel pro detekci datových typù na základì výrazù a navr¾eno nìkolik dal¹ích zpùsobù detekce datových typù pùvodnì slabì typovaných promìnných. Dal¹ím výsledkem práce je navr¾ení a odzkou¹ení pravidel pro transformaci kódu øe¹ící rozdíly obou jazykù.
 
 	Praktické pou¾ití projektu v souèasném rozsahu je komplikované, jeliko¾ výsledný kód není v¾dy rychlej¹í a není podporována dostateènì velká mno¾ina jazyka, která je zastoupena v reálných aplikacích. Ukázalo se, ¾e i kdy¾ se pøi výbìru podmno¾iny zdál výbìr dostateènì ¹iroký, tak pro reálné aplikace je znaènì nedostaèující.
 
-	Souèasný stav ov¹em plánuji zmìnit, jeliko¾ nástroj vzniklý v rámci této práce hodlám zveøejnit zdarma jako open source projekt pod licencí Apache 2.0 s placenou technickou podporou. V dobì dokonèování této práce je ji¾ na adrese \url{www.php2cpp.net} rozpracovaný web pro prezentaci øe¹ení. Zájem o tento nátroj projevilo hned nìkolik zástupcù firem na studentské konferenci Excel@FIT, na které jsem demonstroval své øe¹ení. Výsledek má tedy komerèní potenciál. V blízké dobì mám v úmyslu zlep¹it detekci datových typù za pou¾ití postupù navr¾ených v této práci a dokonèit novou implementaci tøídy pro dynamické datové typy. Zamý¹lím také prezentovat toto øe¹ení na dal¹ích konferencích zamìøených na PHP vývojáøe. Jednou z takových akcí je PoSobota, na které se neformálnì scházejí vývojáøi, nejen pou¾ívající Nette Framework, a pøedná¹ejí o zajímavých technických øe¹eních.
+	Souèasný stav ov¹em plánuji zmìnit, jeliko¾ nástroj vzniklý v rámci této práce hodlám zveøejnit zdarma jako open source projekt pod licencí Apache 2.0 s placenou technickou podporou. V dobì dokonèování této práce je ji¾ na adrese \url{www.php2cpp.net} rozpracovaný web pro prezentaci øe¹ení. Zájem o tento nátroj projevilo hned nìkolik zástupcù firem na studentské konferenci Excel@FIT, na které jsem demonstroval své øe¹ení. Výsledek má tedy, v pøípadì pokraèujícího vývoje, komerèní potenciál. V blízké dobì mám v úmyslu zlep¹it detekci datových typù za pou¾ití postupù navr¾ených v této práci a dokonèit novou implementaci tøídy pro dynamické datové typy. Zamý¹lím také prezentovat toto øe¹ení na dal¹ích konferencích zamìøených na PHP vývojáøe. Jednou z takových akcí, na ní¾ je úèast ji¾ v jednání, je PoSobota, na které se neformálnì scházejí vývojáøi, nejen pou¾ívající Nette Framework, a pøedná¹ejí o zajímavých technických øe¹eních.

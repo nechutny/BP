@@ -332,6 +332,16 @@ class CodeGenerator
 		];
 	}
 
+	public function addExit(ExprGenerator $expr)
+	{
+		$this->commands[] = [
+			'command'	=> 'exit',
+			'args'		=> [
+				$expr,
+			]
+		];
+	}
+
 	/**
 	 * Add conditioned block of code
 	 *

@@ -298,8 +298,16 @@ class Parser
 				$this->parse_foreach($codeGenerator);
 				break;
 
+			case T_EXIT:
+				$this->parse_exit($codeGenerator);
+				break;
+
 			case T_BREAK:
 				$this->parse_break($codeGenerator);
+				break;
+
+			case T_CONTINUE:
+				$this->parse_continue($codeGenerator);
 				break;
 
 			default:
@@ -526,6 +534,29 @@ class Parser
 		$ifExpr = new ExprGenerator($prec->getData(), $codeGenerator->getScope());
 
 		$codeGenerator->addDoWhile($ifExpr, $bodyCode);
+	}
+
+	public function parse_exit(CodeGenerator $codeGenerator)
+	{
+		try
+		{
+			$prec = new Precedence($this->scanner);
+			$prec->addEndToken(T_RPARENTHESIS);
+			$prec->run();
+		} catch(PrecedenceException $e)
+		{ }
+
+
+		// ;
+		//$this->check(T_RPARENTHESIS);
+
+		$data = $prec->getData();
+		if($data == NULL)
+		{
+			$data = [];
+		}
+
+		$codeGenerator->addExit(new ExprGenerator($data, $codeGenerator->getScope()));
 	}
 
 	/**

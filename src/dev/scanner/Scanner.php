@@ -115,7 +115,7 @@ class Scanner {
 					'code'	=> $tcode,
 					'name'	=> $tname,
 					'value'	=> $token,
-					'line'	=> NULL,
+					'line'	=> "",
 				];
 			}
 			else
