@@ -1,3 +1,9 @@
+BP.pdf
+	- Bakalářská práce v elektronické verzi s klikatelnými odkazy a barevně rozlišenými referencemi.
+
+BP-tisk.pdf
+	- Verze bakalářské práce pro tisk - reference jsou černé.
+
 LICENSE-Apache-2.0.txt
 	- Licenční ujednání, pod kterým je šířena celá práce.
 
