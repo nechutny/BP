@@ -20,8 +20,8 @@ class VariableGenerator
 	/**
 	 * @var string Which C++ class use for dynamic types
 	 */
-	//static $varClass = 'Php::Value';
-	static $varClass = 'php2cpp::Value';
+	static $varClass = 'Php::Value';
+	//static $varClass = 'php2cpp::Value';
 
 	const TYPE_MIXED = '%varClass%';
 	const TYPE_STRING = 'std::string';

@@ -42,6 +42,7 @@ INI_DIR				=	/etc/php.d
 #
 
 EXTENSION_DIR		=	$(shell php-config --extension-dir)
+#EXTENSION_DIR = "/opt/remi/php70/root/usr/lib64/php/modules/"
 
 
 #

@@ -84,6 +84,26 @@ class CodeGenerator
 							str_pad('', $indent, "\t").'}'																						."\n";
 					break;
 
+				case 'foreach':
+					$type = $this->getScope()[ $command['args'][1] ]->isOneType();
+					$assign= '(std::get<0>(phpInternal_'.substr($command['args'][1],1).'))';
+					switch ($type)
+					{
+						case Type::TYPE_INT:
+						case Type::TYPE_FLOAT:
+							$assign = 'php2cpp::to_float( '.$assign.' )';
+							break;
+						case Type::TYPE_STRING:
+							$assign = 'php2cpp::to_string( '.$assign.' )';
+					}
+
+					$result .=	str_pad('', $indent, "\t").'for(auto phpInternal_'.substr($command['args'][1],1).' : '.$command['args'][0]->getCode().')'	."\n".
+						str_pad('', $indent, "\t").'{ '																						."\n".
+						str_pad('', $indent+1, "\t").'phpVar_'.substr($command['args'][1],1). ' = '.$assign.'; ' ."\n".
+						$command['args'][3]->getCode().
+						str_pad('', $indent, "\t").'}'																						."\n";
+					break;
+
 				case 'while':
 					$result .=	str_pad('', $indent, "\t").'while'.$command['args'][0]->getCode().''											."\n".
 							str_pad('', $indent, "\t").'{'																						."\n".
@@ -262,6 +282,19 @@ class CodeGenerator
 						$iterExpr,
 						$bodyCode
 				],
+		];
+	}
+
+	public function addForeach($source, $varName, $bodyCode, $keyName = NUL)
+	{
+		$this->commands[] = [
+			'command' => 'foreach',
+			'args' => [
+				$source,
+				$varName,
+				$keyName,
+				$bodyCode
+			],
 		];
 	}
 

@@ -8,18 +8,16 @@
 
 	Pøevod knihoven v~PHP na ekvivalent v~jazyce C++ pøipravený pro zkompilování jako roz¹íøení PHP je cílem této práce. Zadání vychází ze skuteènosti, ¾e èastým zpùsobem vývoje aplikace je pou¾ití jedné konkrétní verze knihovny, v~které není tøeba provádìt úpravy. V~dùsledku pak výhody plynoucí z~interpretace nejsou tøeba, a naopak nevýhody znamenají propad výkonu.
 
-
-	\section{Funkcionalita}
-		Zamý¹lenou funkcionalitou je nástroj generující z~adresáøe se zdrojovými kódy v~jazyce PHP výstup v~jazyce C++. Výsledný kód by mìl implementovat stejnou funkcionalitu a zachovat alespoò podobnou souborovou strukturu. Po zkompilování výstupu vznikne dynamická knihovna (.so, èi .dll), kterou je mo¾né nastavit v~konfiguraci php prostøednictvím direktivy \function{extension}, èi naèíst bìhem interpretace vìstavìnou funkcí \function{dl()}.
-
-		Takto transformované naètené funkce a tøídy bude mo¾né v~interpretovaném PHP pou¾ívat zcela stejnì jako v~pøípadì zdrojových -- stejný zpùsob volání, stejné názvy, tøídy pùjde roz¹iøovat apod.
-
 	\section{Motivace}
-		Motivací pøi tvorbì této práce je urychlení webových aplikací napsaných v~PHP. PHP umo¾òuje rychlý a levný vývoj, ale následné spou¹tìní je ji¾ pomalé. Pro zachování výhod rychlého vývoje a pohodlné tvorby zmìn byl navr¾en nástroj, který pøekládá pouze knihovny a nikoliv celou aplikaci.
+		%Motivací pøi tvorbì této práce je urychlení webových aplikací napsaných v~PHP. PHP umo¾òuje rychlý a levný vývoj, ale následné spou¹tìní je ji¾ pomalé. Pro zachování výhod rychlého vývoje a pohodlné tvorby zmìn byl navr¾en nástroj, který pøekládá pouze knihovny a nikoliv celou aplikaci.
 
 		Modelový pøípad pou¾ití je pak tvorba PHP aplikace. Vývojáø chce pou¾ít knihovnu napøíklad pro detekci oblièeje ve fotografii. Jeliko¾ takovou knihovnu nechce upravovat, alea pouze pou¾ít nìkteré funkce z~ní, tak mù¾e provést kompilaci pro její zrychlení. Knihovní funkce je pak vykonána rychleji a není naru¹ena mo¾nost rychlého a pohodlného vývoje aplikace. Tento koncept øe¹í nedostatky, na které nará¾elo podobné øe¹ení HPHPc navr¾ené spoleèností Facebook, o~kterém se zminuji v~kapitole \ref{hphpc}.
 
 
+	\section{Funkcionalita}
+		Zamý¹lenou funkcionalitou je nástroj generující z~adresáøe se zdrojovými kódy v~jazyce PHP výstup v~jazyce C++. Výsledný kód by mìl implementovat stejnou funkcionalitu a zachovat alespoò podobnou souborovou strukturu. Po zkompilování výstupu vznikne dynamická knihovna (.so, èi .dll), kterou je mo¾né nastavit v~konfiguraci php prostøednictvím direktivy \function{extension}, èi naèíst bìhem interpretace vestavìnou funkcí \function{dl()}.
+
+		Takto transformované naètené funkce a tøídy bude mo¾né v~interpretovaném PHP pou¾ívat zcela stejnì jako v~pøípadì zdrojových -- stejný zpùsob volání, stejné názvy, tøídy pùjde roz¹iøovat apod.
 
 	\section{Cíle}
 		Cílem práce je navrhnout a implementovat pøekladaè funkcí zapsaných v~podmno¾inì jazyka PHP, jeho¾ výstupem bude C++ kód doplnìný o~potøebné konstrukce umo¾òující integraci do interpretru PHP.
@@ -34,17 +32,13 @@
 	Provedl jsem analýzu souèasných konkurenèních øe¹ení a nepodaøilo se mi nalézt nástroj implementující takovouto funkcionalitu. Funkcionalitou podobný je nástroj phc\footnote{\url{http://www.phpcompiler.org/}}, který slou¾í primárnì pro kompilaci PHP kódu do spustitelných binárních souborù, které nepotøebují interpret. Dal¹ím podobným a z~technického hlediska zajímavým øe¹ením je HPHPc od spoleènosti Facebook, kterým se budu zabývat v~následující podkapitole a poslou¾í i jako zajímavá inspirace øe¹ení.
 
 	\section{phc}
-		Phc je kompilátor podmno¾iny jazyka PHP do spustitelných binárních souborù. Odstraòuje závislost na interpretru PHP a tak umo¾òuje pohodlnou distribuci cli skriptù. Vývoj tohoto nástroje zapoèali v~roce 2005 vývojáøi Edsko de Vries a John Gilbert. Postupnì se do vývoje zapojilo na 21 vývojáøù a poslední verze byla vydána v~roce 2011\cite{PhcContributing}. Od té doby se pouze mno¾í chybové reporty a projekt není udr¾ován\cite{PhcIssues}.
+		Phc je kompilátor podmno¾iny jazyka PHP do spustitelných binárních souborù. Odstraòuje závislost na interpretru PHP a tak umo¾òuje pohodlnou distribuci CLI skriptù. Vývoj tohoto nástroje zapoèali v~roce 2005 vývojáøi Edsko de Vries a John Gilbert. Postupnì se do vývoje zapojilo na 21 vývojáøù a poslední verze byla vydána v~roce 2011\cite{PhcContributing}. Od té doby se pouze mno¾í chybové reporty a projekt není udr¾ován\cite{PhcIssues}.
 
 		Nástroj podporoval také funkcionalitu, která je cílem této bakaláøské práce a bylo tedy mo¾né transformovat PHP knihovny do roz¹íøení pro následné pou¾ití v~PHP. Dle dokumentace na webu projektu nebyla v¹ak podpora pro objektové programování a chybìla implementace novìj¹ích jazykových konstrukcí\cite{PhcContributing}.
 
 		S~nejstar¹í v~souèasné dobì podporovanou verzí PHP ji¾ není mo¾né aplikaci ani pøelo¾it i pøes mnohé pokusy o~úpravy zdrojových kódù pro zaji¹tìní kompatibility.
 
-		\todo[inline]{Kontaktován Edsko de Vries (jeden z~vývojáø). Je ochoten odpovìdìt na otázky, zasláno:
-			1) Jaký byl stav a plány do budoucna
-			2) Proè do¹lo k~ukonèení projektu a jaké byly jeho dùvody
-			3) Vidí i dnes v~tomto konceptu potenciál
-			4) Co by mohlo být pøeká¾kou}
+		Pøi analýze tohoto øe¹ení jsem se rozhodl kontaktovat vývojáøe a provést s nimi krátký rozhovor, v kterém bych rád zjistil odpovìdi na nìkolik otázek. Zamý¹lel jsem zjistit v jakém stavu se tento projekt nachází, jaké byly plány do budoucna a proè do¹lo k jeho pozastavení. Dále mne zajímalo, zda i dnes pova¾uje zainteresovaná osoba tento koncept za prakticky pou¾itelný a jaké by mohli být pøeká¾ky. Kontaktoval jsem postupnì 3 bývalé vývojáøe tohoto projektu, ale bohu¾el se mi nepodaøilo získat odpovìdi. Poslední kontaktovaný pøislíbil odpovìdi, ale e-mail s dotazy ji¾ zùstal bez reakce.
 
 
 	\section{HPHPc}\label{hphpc}
@@ -59,7 +53,7 @@
 
 		Testy provedené v~dubnu 2011 ukazují na velký potenciál pøekladu PHP do nativního kódu\cite{hipHopBechmark}. Napøíklad práce s~binárními stromy do hloubky 20 úrovní byla dle mìøení 4x rychlej¹í. Zajímavìj¹í byl ov¹em test Hip Hop na pøekladu redakèního systému Drupal 7. Tento test ukázal na reálné aplikaci pìtinásobné zrychlení oproti PHP 5.3.3\cite{PhpDrupal}. Graf porovnávající Drupal 7 pod PHP 5.3.3, pou¾ití opcode cache APC a Hip HOP revize 806ee06 mù¾eme vidìt na obrázku \ref{fig:hipHopDrupal}. Na grafu je zobrazeno procentuální vytí¾ení procesoru a doba zpracování 300 po¾adavkù s~konkurencí 4.
 
-		HPHPc provádìlo kompilaci celých PHP aplikací do jednoho velkého spustitelného binárního souboru. Nasazování nových verzí tak bylo zpomaleno o~kompilaci a distribuci a¾ nìkolik GB velkých souborù na produkèní servery. Jedná se tedy o~jiné cílové pou¾ití, ne¾ na jaké se zamìøuje tato práce. Nebylo mo¾né vyu¾ít výhod verzovacích systémù, kdy jsou distribuovány jen malé rozdíly v~souborech a v~neposlední øadì nebyla podpora pro nìkteré dynamické konstrukce jako napøíklad \function{eval()}. Hlavní nevýhodou tohoto øe¹ení byl problémový vývoj aplikace. Vývojáø by byl nucen po ka¾dé zmìnì provádìt kompilaci, co¾ by bylo èasovì nároèné u~takto rozsáhlé aplikace. V~dùsledku této komplikace vznikla implementace vlastního interpretru pou¾ívajícího stejné implementace funkcí HPHPi, ale i tak docházelo k~výskytu chyb na produkèních serverech, které se u~vývojáøù neobjevovali. Dùvodem bylo rozdílné prostøedí. V~dùsledku tìchto nevýhod bylo rozhodnuto, ¾e se projekt vydá cestou JIT (Just in time) virtuálního stroje\cite{HipHopSpeeding}, který vyu¾ívá bytecode generovaný ze zdrojových kódù PHP, jako mù¾eme znát tøeba z~jazyka Java.
+		HPHPc provádìlo kompilaci celých PHP aplikací do jednoho velkého spustitelného binárního souboru. Nasazování nových verzí tak bylo zpomaleno o~kompilaci a distribuci a¾ nìkolik GB velkých souborù na produkèní servery. Jedná se tedy o~jiné cílové pou¾ití, ne¾ na jaké se zamìøuje tato práce. Nebylo mo¾né vyu¾ít výhod verzovacích systémù, kdy jsou distribuovány jen malé rozdíly v~souborech a v~neposlední øadì nebyla podpora pro nìkteré dynamické konstrukce jako napøíklad \function{eval()}. Hlavní nevýhodou tohoto øe¹ení byl problémový vývoj aplikace. Vývojáø by byl nucen po ka¾dé zmìnì provádìt kompilaci, co¾ by bylo èasovì nároèné u~takto rozsáhlé aplikace. V~dùsledku této komplikace vznikla implementace vlastního interpretru pou¾ívajícího stejné implementace funkcí HPHPi, ale i tak docházelo k~výskytu chyb na produkèních serverech, které se u~vývojáøù neobjevovaly. Dùvodem bylo rozdílné prostøedí. V~dùsledku tìchto nevýhod bylo rozhodnuto, ¾e se projekt vydá cestou JIT (Just in time) virtuálního stroje\cite{HipHopSpeeding}, který vyu¾ívá bytecode generovaný ze zdrojových kódù PHP, jako mù¾eme znát tøeba z~jazyka Java.
 
 
 		\begin{wrapfigure}{r}{0.35\textwidth}
@@ -73,10 +67,9 @@
 		Øe¹ení, které je navr¾eno a implementováno v~této práci ponechává mo¾nost pohodlné zmìny aplikace a cílí na pøeklad jednotlivých knihoven/funkcí. Klasický vývojový cyklus zahrnuje pou¾ití knihovny, z~které jsou pouze volány funkce a není tøeba provádìt její úpravy. Mé øe¹ení odstraòuje potí¾e vzniklé s~kompilací pøi vývoji, nebo dvojím prostøedím, u~øe¹ení HPHPc.
 
 
-	\section{Roadsend PHP}
-		\todo[inline]{Rozepsat Roadsend PHP, nebo vypustit}
-
-		\url{http://www.roadsend.com/}
+	%\section{Roadsend PHP}
+	%	\todo[inline]{Rozepsat Roadsend PHP, nebo vypustit}
+	%	\url{http://www.roadsend.com/}
 
 \chapter{Vybrané konstrukce PHP}\label{constructions}
 	Vkládání prostøednictvím konstrukcí \function{include}, \function{require} a jejich variant pro unikátní vlo¾ení bude z~dùvodu komplexnosti implementováno jen v~omezené míøe. Prvním logickým omezením vycházejícím z~návrhu tohoto nástroje je schopnost provést vlo¾ení pouze souborù, které jsou dostupné v~momentì pøekladu a jejich¾ cesta je známá. Nebude tedy mo¾ná transformace funkce \function{includeNe} uvedené v~kódu \ref{code:phpIncludeFunction}, ani funkce \function{includeNe2} i v~pøípadì existence souborù \function{prvni.php} a \function{druhy.php}.
@@ -402,9 +395,9 @@ function includeNe2($co)
 
 		Promìnné v PHP musejí dle dokumentace zaèínat znakem z rozsahu \function{\{a--z, A--Z, \_, 0x7f--0xff\}} a dal¹í znaky mohou obsahovat také èíslice\cite{phpVariables}. I pøesto existují zpùsoby, jak je mo¾né definovat promìnnou nesplòující tuto podmínku. Napøíklad \function{\$a = 5; \$\$a = 1;} umo¾ní definovat promìnnou s názvem \uv{5} a hodnotou 1. Jazyk C++ vy¾aduje, aby název promìnné zaèínal znakem z mno¾iny \function{\{ a--z, A--Z, \_\}}, dal¹í znak mù¾e být také èíslo. Název nesmí být klíèové slovo (uvedeny v specifikaci C++11 kapitola 6.3.3.1). Oba jazyky rozli¹ují velikost písmen promìnných\cite{CppBook}.
 
-		Z tìchto specifikací názvù promìnných vyplívá nìkolik omezení, které je tøeba vyøe¹it. Pou¾ití znakù z rozsahu s kódem \function{0x7f -- 0xff} není v kódu PHP pøíli¹ èasté a mù¾eme tedy pro úèely nástroje zobrazit u¾ivateli upozornìní, ¾e tento název není podporován. Název promìnné PHP, který je v jazyce C++ klíèovým slovem, èi zaèíná èíslicí je mo¾no upravit prefixem. Tím dojde i k zpøehlednìní kódu, kdy bude jasnì rozli¹itelné, které promìnné jsou ekvivalentem promìnných z PHP a které byli pøidány v rámci transformace. Pro tyto úèely byl zvolen prefix \function{phpVar\_}.
+		Z tìchto specifikací názvù promìnných vyplývá nìkolik omezení, které je tøeba vyøe¹it. Pou¾ití znakù z rozsahu s kódem \function{0x7f -- 0xff} není v kódu PHP pøíli¹ èasté a mù¾eme tedy pro úèely nástroje zobrazit u¾ivateli upozornìní, ¾e tento název není podporován. Název promìnné PHP, který je v jazyce C++ klíèovým slovem, èi zaèíná èíslicí, je mo¾no upravit prefixem. Tím dojde i k zpøehlednìní kódu, kdy bude jasnì rozli¹itelné, které promìnné jsou ekvivalentem promìnných z PHP a které byly pøidány v rámci transformace. Pro tyto úèely byl zvolen prefix \function{phpVar\_}.
 
-		Dal¹í èástí, kterou je tøeba vyøe¹it je rozdílný obor platnosti promìnných. Specifikace jazyka C++ definuje tzv. Lokální obor, který má rozsah bloku uvnitø \function{\{} a \function{\}}. Tedy promìnná definována v tìle funkce je dostupná uvnitø dal¹ích vnoøených blokù a¾ do konce tìla funkce. V pøípadì tìla cyklu, nebo podmínky je pak promìnná definovaná v tomto tìle dostupná do jeho konce. Dále je v C++ rozsah výrazu (Statement scope), kdy promìnná definovaná uvnitø \function{(} a \function{)} u konstrukcí \function{for}, \function{while}, \function{if} a \function{switch} je platná do konce tìla\cite{CppBook}. Jazyk PHP obsahuje lokální obor funkce, kdy v¹echny promìnné, které jsou definovány uvnitø bloku, nebo by v C++ mìli platnost pouze v rozsahu výrazu jsou od daného místa dostupny dále i v nadøazených blocích\cite{phpVariables}.
+		Dal¹í èástí, kterou je tøeba vyøe¹it, je rozdílný obor platnosti promìnných. Specifikace jazyka C++ definuje tzv. Lokální obor, který má rozsah bloku uvnitø \function{\{} a \function{\}}. Tedy promìnná definována v tìle funkce je dostupná uvnitø dal¹ích vnoøených blokù a¾ do konce tìla funkce. V pøípadì tìla cyklu, nebo podmínky je pak promìnná definovaná v tomto tìle dostupná do jeho konce. Dále je v C++ rozsah výrazu (Statement scope), kdy promìnná definovaná uvnitø \function{(} a \function{)} u konstrukcí \function{for}, \function{while}, \function{if} a \function{switch} je platná do konce tìla\cite{CppBook}. Jazyk PHP obsahuje lokální obor funkce, kdy v¹echny promìnné, které jsou definovány uvnitø bloku, nebo by v C++ mìli platnost pouze v rozsahu výrazu jsou od daného místa dostupny dále i v nadøazených blocích\cite{phpVariables}.
 
 		Tento rozdílný obor platností promìnných je tøeba øe¹it pøesunem deklarace promìnných do lokálního oboru funkce. Proto na zaèátku tìla funkce bude generován blok se v¹emi promìnnými pou¾itými uvnitø funkce, vnoøených blokù a výrazù.
 
@@ -412,7 +405,7 @@ function includeNe2($co)
 \chapter{Integrace do PHP}
 	\label{integrateToPhp}
 
-	Interpret PHP umo¾òuje zavádìt dynamické knihovny tzv. moduly, které roz¹iøují dostupné funkce a tøídy v~interpretovaném prostøedí. Naètení je mo¾né prostøednictvím konfiguraèní direktivy \function{extension=nazev.so} v~konfiguraèním souboru \function{php.ini}, èi v~dobì bìhu funkcí \function{dl("nazev.so")}. Roz¹íøení obsahují tzv. entry point, tedy místo kam v~momentì po¾adavku na naètení modulu skoèí tok interpretru a oèekává se vrácení datové struktury, která obsahuje informace o~dostupných funkcích a tøídách. Zend Engine, jádro PHP, je napsáno primárnì v~jazyce C, tak¾e je tøeba dodr¾et kompatibilní zpùsob volání a navrácení výsledku. V~pøípadì této práce bude z~dùvodu jazyka C++ nutno pou¾ít konstrukci \function{extern "C"}\cite{PhpBookRozsireni}\cite{PhpExtensionStructure} \cite{phpExtensionLife}.
+	Interpret PHP umo¾òuje zavádìt dynamické knihovny tzv. moduly, které roz¹iøují dostupné funkce a tøídy v~interpretovaném prostøedí. Naètení je mo¾né prostøednictvím konfiguraèní direktivy \function{ex\-ten-\-sion=nazev.so} v~konfiguraèním souboru \function{php.ini}, èi v~dobì bìhu funkcí \function{dl("nazev.so")}. Roz¹íøení obsahují tzv. entry point, tedy adresu kam v~momentì po¾adavku na naètení modulu skoèí tok interpretru a oèekává se vrácení datové struktury, která obsahuje informace o~dostupných funkcích a tøídách. Zend Engine\footnote{\url{http://www.zend.com/en/community/php}}, jádro PHP, je napsáno primárnì v~jazyce C, tak¾e je tøeba dodr¾et kompatibilní zpùsob volání a navrácení výsledku. V~pøípadì této práce bude z~dùvodu jazyka C++ nutno pou¾ít konstrukci \function{extern "C"}\cite{PhpBookRozsireni}\cite{PhpExtensionStructure} \cite{phpExtensionLife}.
 
 	%®ivotní cyklus PHP roz¹íøení sestává z~nìkolika stavù. Pøi startu PHP jsou naèteny sdílené knihovny definované v~konfiguraèním souboru direktivou \function{ex\-ten\-sion=} a zavolána funkce vracející informace o~roz¹íøení. Tyto informace obsahují verzi PHP API, callbacky a funkce, tøídy, rozhraní a konstanty, které roz¹íøení poskytuje
 
@@ -471,7 +464,7 @@ function includeNe2($co)
 
 
 		Tyto hodnoty je tøeba nastavit v ka¾dém roz¹íøení, aby interpret mohl exponovat funkce do interpretovaného prostøedí.
-
+		\\ \\
 		\textbf{zval}
 
 		Tato struktura je vyu¾ívána Zend enginem pro data promìnné. Vytvoøení instance struktury je zjednodu¹eno makrem \function{MAKE\_STD\_ZVAL} a následné pøiøazení hodnoty urèitého typu je mo¾no pomocí rùzných maker -- napøíklad \function{ZVAL\_DOUBLE}. Tyto struktury obsahují nìkolik prvkù - C \function{union} prvkù pro ulo¾ení rùzných datových typù (\function{long}, \function{double}, \function{char*}, \function{HashTable}, \function{zend\_object\_value}), dále poèet refencí na hodnotu (PHP implementuje z dùvodu zlep¹ení rychlosti tzv. líné kopírování), dal¹í polo¾kou je typ hodnoty a posledním èlenem struktury jsou pøíznaky pro správu pamìti.\cite{phpZvals} \cite{phpZvalInternal} \cite{phpZvalReferences}. Podrobnìji zkoumat tyo struktury naplnìné daty je mo¾né pomocí funkce \function{xdebug\_debug\_zval} z roz¹íøení xdebug.
@@ -566,7 +559,7 @@ a.apend(b);
 			\end{lstlisting}
 
 		\subsection{Pole}
-			Pro práci s poli je pou¾ita instance tøídy \function{Php::Value} z knihovny PHP-CPP, která umo¾òuje práci s poli jako v PHP. Internì je tato funkcionalita implementována pøetí¾enými operátory a hodnoty jsou ukládány do zval struktur. Pøi pøístupu k prvku pole (v PHP je pole hashovací tabulka) je vrácena instance tøídy \function{Php::HashMember}, která dr¾í referenci na prvek v poli a pøiøazení do této tøídy provede pomocí pøetí¾eného operátoru \function{=} zmìnu její hodnoty. Pokud je zamý¹leno pou¾ití pro dal¹í operace, tak je tøeba metodou \function{value} získat instanci \function{Php::Value}, která je kopií dat.
+			Pro práci s poli je pou¾ita instance tøídy \function{Php::Value} z knihovny PHP-CPP, která umo¾òuje práci s poli jako v PHP. Internì je tato funkcionalita implementována pøetí¾enými operátory a hodnoty jsou ukládány do \function{zval} struktur. Pøi pøístupu k prvku pole (v PHP je pole hashovací tabulka) je vrácena instance tøídy \function{Php::HashMember}, která dr¾í referenci na prvek v poli a pøiøazení do této tøídy provede pomocí pøetí¾eného operátoru \function{=} zmìnu její hodnoty. Pokud je zamý¹leno pou¾ití pro dal¹í operace, tak je tøeba metodou \function{value} získat instanci \function{Php::Value}, která je kopií dat.
 
 			Z vý¹e popsaných dùvodù je transformace takového výrazu pak slo¾itìj¹í. Pøi generování je tøeba zohlednit kontext a podle toho pou¾ít dva zpùsoby zápisu.
 
@@ -590,9 +583,9 @@ void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 
 
 \chapter{Implementace}
-	Pro implementaci byl zvolen jazyk PHP, v~kterém je mo¾né provádìt rychle implementaci a poskytuje potøebné funkce. Velkou výhoou pro implementaci je \function{token\_get\_all()}, která umo¾òuje naparsovat zdrojový kód a pøevést jej na tokeny. Po získání tokenù je provedena analýza rekurzivním sestupem zhora dolu. Pøi analýze je generován abstraktní syntaktický strom pro generátor kódu. Parser vyu¾ívá volání precedenèní analýzy, která provádí kontrolu výrazù a provádí také tvorbu derivaèního stromu, kterého je následnì vyu¾ito pro tvorbu abstraktního syntaktického stromu výrazù. Po získání v¹ech potøebných informací ze zdrojového kódu je pøistoupeno k~analýze výrazù pro detekci datových typù a následnì provedeno generování C++ kódu.
+	Pro implementaci byl zvolen jazyk PHP, v~kterém je mo¾né provádìt rychle implementaci a poskytuje potøebné funkce. Velkou výhodu pro implementaci je \function{token\_get\_all()}, která umo¾òuje naparsovat zdrojový kód a pøevést jej na tokeny. Po získání tokenù je provedena analýza rekurzivním sestupem zhora dolu. Pøi analýze je generován abstraktní syntaktický strom pro generátor kódu. Parser vyu¾ívá volání precedenèní analýzy, která provádí kontrolu výrazù a provádí také tvorbu derivaèního stromu, kterého je následnì vyu¾ito pro tvorbu abstraktního syntaktického stromu výrazù. Po získání v¹ech potøebných informací ze zdrojového kódu je pøistoupeno k~analýze výrazù pro detekci datových typù a následnì provedeno generování C++ kódu.
 
-	Prvnì jsem provedl analýzu nìkolika hotových øe¹ení parsování zdrojových kódù, ale zjistil jsem, ¾e rychlej¹ím a pohodlnìj¹ím pro dal¹í vývoj bude tvorba vlastního øe¹ení. Prozkoumaná øe¹ení byla èasto velmi obecná pro pokrytí co nevìt¹í èásti jazyka PHP a nedetekovala pak nìkteré chybnné konstrukce. Dále pak jejich výstup neobsahoval dostatek potøebných informací pro urèování datových typù a vhodné sestavování C++ kódu. Mezi zkoumanými øe¹eními bylo i PHP-Parser\footnote{\url{https://github.com/nikic/PHP-Parser}}, jeho¾ autorem je Nikita Popov, který také pøispívá do PHP interpretru a je jedním z~autorù knihy \uv{PHP Internals Book} zabývající se tvorbou PHP roz¹íøení. Zajímavým a vhodným øe¹ením s~dobrým výstupem se ukázal PHP Analyzer\footnote{\url{https://scrutinizer-ci.com/docs/tools/php/php-analyzer/}} od spoleènosti Scrutinizer, který provádí velmi podrobnou analýzu. Problémem v¹ak byla vysoká cena komplikující zámìr poskytnout výsledné øe¹ení jako open source produkt dostupný zdarma.
+	Prvnì jsem provedl analýzu nìkolika hotových øe¹ení parsování zdrojových kódù, ale zjistil jsem, ¾e rychlej¹ím a pohodlnìj¹ím pro dal¹í vývoj bude tvorba vlastního øe¹ení. Prozkoumaná øe¹ení byla èasto velmi obecná pro pokrytí co nejvìt¹í èásti jazyka PHP a nedetekovala pak nìkteré chybnné konstrukce. Dále pak jejich výstup neobsahoval dostatek potøebných informací pro urèování datových typù a vhodné sestavování C++ kódu. Mezi zkoumanými øe¹eními bylo i PHP-Parser\footnote{\url{https://github.com/nikic/PHP-Parser}}, jeho¾ autorem je Nikita Popov, který také pøispívá do PHP interpretru a je jedním z~autorù knihy \uv{PHP Internals Book} zabývající se tvorbou PHP roz¹íøení. Zajímavým a vhodným øe¹ením s~dobrým výstupem se ukázal PHP Analyzer\footnote{\url{https://scrutinizer-ci.com/docs/tools/php/php-analyzer/}} od spoleènosti Scrutinizer, který provádí velmi podrobnou analýzu. Problémem v¹ak byla vysoká cena komplikující zámìr poskytnout výsledné øe¹ení jako open source produkt dostupný zdarma.
 
 
 	\section{Knihovny}
@@ -767,42 +760,121 @@ void zend_do_end_silence(const znode *strudel_token TSRMLS_DC);
 ]
 \end{lstlisting}
 
-		\function{ExprGenerator} generuje výraz na základì výsledku z~precedenèní analýzy a sady pravidel zmínìných v~kapitole \ref{phpTransformToCpp} \nameref{phpTransformToCpp}. Rekurzivnì projde strom výrazu a vrátí kód.
+		\function{ExprGenerator} generuje výraz na základì výsledku z~precedenèní analýzy a sady pravidel zmínìných v~kapitole \ref{phpTransformToCpp}. Rekurzivnì projde strom výrazu a vrátí kód.
 
 
 
 	\section{Testování}
 		Pøi implementaci jsem se rozhodl pro programování øízené testy (Test-driven development). Tedy tvorba testù pro pøeklad, které napøed nejsou úspì¹né, ale postupnì se s prací na projektu stav zlep¹uje. Výhodou takového postupu je kontrola provádìných zmìn v komplexním øe¹ení, kterým pøekladaè bezesporu je. Automatizované testování takto integrovaného øe¹ení bylo pomìrnì komplikované a proto jsem se nakonec rozhodl pro manuální spou¹tìní testù a vyhodnocování.
 
-		Testy jsou umístìny u zdrojových kódù v adresáøi \uv{tests} a rozèlenìny podle specifické èásti, kterou testují.  Testy pokrývají základní konstrukce -- výstup, komentáøe, konstanty, funkce, vkládání, výrazy, argumenty. Dále jsou testy zamìøené na pole, cykl for, while, funkce, podmínky, precedenèní analýzu, nebo práci s øetìzci. Mezi dal¹í testy testy v jazyce C++ pro ovìøení funkènosti èásti implementované v C++ a testy algoritmù -- soubory s algoritmem implementovaným v PHP pro testování výkonu a komplexnìj¹ího bloku kódu.
+		Testy jsou umístìny u zdrojových kódù v adresáøi \uv{tests} a rozèlenìny podle specifické èásti, kterou testují.  Testy pokrývají základní konstrukce -- výstup, komentáøe, konstanty, funkce, vkládání, výrazy, argumenty. Dále jsou testy zamìøené na pole, cykl for, foreach, while, funkce, podmínky, precedenèní analýzu, nebo práci s øetìzci. Mezi dal¹í testy testy v jazyce C++ pro ovìøení funkènosti èásti implementované v C++ a testy algoritmù -- soubory s algoritmem implementovaným v PHP pro testování výkonu a komplexnìj¹ího bloku kódu.
+
+
 
 	\section{Experimentování}
-		\todo[inline]{experimentování}
-		Po dokonèení po¾adovaného rozsahu jsem se zamìøil na testování pøekladu na pøipravených algoritmech i èástech pou¾ívaných knihoven, nebo èástech samotného øe¹ení.
+		Po dokonèení zamý¹leného rozsahu jsem se zamìøil na testování pøekladu na pøipravených algoritmech i èástech pou¾ívaných knihoven, nebo èástech samotného øe¹ení. Najít v¹ak knihovnu, èi aplikací, její¾ èást by bylo mo¾né pøelo¾it se ukázalo jako velmi obtí¾né. Pøíèinou byl objektový návrh vìt¹iny knihoven, èi èasté pou¾ívání referencí, anonymních funkcí a globálních promìnných, které nejsou v souèasné implementaci pøekladaèe podporovány.
 
-		\subsection{Bubble sort}
+		Ve¹keré experimenty byly provádìny na poèítaèi vybaveným procesorem Intel(R) Core(TM) i7-4702MQ CPU @ 2.20GHz, 16 GB RAM 1 600 MHz, SSD s zápisem 480 MB/s a ètením 540 MB/s. Operaèním systémem je Fedora 21 s jádrem verze 4.1.13-100.fc21.x86\_64. Verze PHP interpretru je 5.6.15 s Zend Engine v2.6.0 a Xdebug v2.3.3. Jako kompilátor pøelo¾ených C++ zdrojových kódù bylo pou¾ito GCC 4.9.2 20150212 (Red Hat 4.9.2-6). Pro kompiler byly pou¾ity pøepínaèe \function{-Wall -c -O2 -std=c++11 -fpic -o}.
 
-		\subsection{Precedenèní analýza}
+		\subsection{Cílené testy}
 
-		\subsection{Nette Framework}
+			\subsubsection{Matematické operace}
+				\textbf{Faktoriál}
 
-		\subsection{JSN.php}
-			Vhodným kódem pro pøeklad bylo øe¹ení ¹kolního projektu Bc. Jiøího Semmlera do pøedmìtu IPP - Principy objektového programování z akademického roku 2013/2014, které mi poskytl pro úèely testování bakaláøské práce. Vhodnost spoèívá v nepou¾ití objektové èásti PHP a relativní jednoduchosti kódu. Kód byl jen minimálnì upraven pro fungování s pøekladaèem. Funkce definované v skriptu byli vyèlenìny do zvlá¹tního souboru. Proveden jejich pøeklad a zbytek pùvodního CLI skriptu byl nechán pou¾ívat pøelo¾ené funkce.
+					Pro výpoèet faktoriálu byla pou¾ita implementace s cyklem typu for provádìjící násobení s ulo¾ením mezivýsledku do promìnné. Pro výpoèet byl zvolen faktoriál èísla 5 000 000. Kód pro mìøení byl pou¾it \ref{code:factorialBenchmark}.
 
-			\todo{Experiment, výsledky}
+					Èas prvních 3 testù zkompilované verze je: 50.831 s, 51.555 s, 50.380 s. Interpretovaná verze: 52.301 s, 49.888 s, 50.123 s. Po úpravì datových typù (zmìna \function{Php::Value} za \function{double}) byly výsledky testu 2.149 s, 2.144 s, 2.139 s. Výsledek tohoto testu ukázal zpomalení 0.3\% zkompilované verze. Zajímavìj¹í je ov¹em výsledek verze upravené o správné datové typy, který potøeboval pro svùj bìh pouze 4.2\% èasu interpretované verze. Tato verze u¹etøí 95.7\% pùvodnì potøebného èasu a bylo tøeba provést jednoduchou zmìnu na 2 øádcích vygenerovaného kódu.
 
-	\section{Návrh na zlep¹ení}
-		\todo[inline]{Návrh na zlep¹ení}
+\begin{lstlisting}[caption=Test pro mìøení rychlosti výpoètu faktoriálu, label=code:factorialBenchmark, language=PHP]
+$start = microtime(TRUE);
+for($i = 0; $i < 100; $i++)
+{
+	factorial(5000000);
+}
+echo microtime(TRUE)-$start;
+\end{lstlisting}
 
-		Ukázalo se, ¾e pøedpokládané úzké hrdlo ve formì tøídy \function{Php::Value} vyu¾ívající internì struktury a funkce interpretru je reálným problémem. Proto jsem zapoèal implementaci vlastní tøídy s pøetí¾enými operátory vyu¾ívající
+
+				\textbf{Fibonacciho èíslo}
+
+					Algoritmus pro výpoèet n-tého èísla Fibonacciho øady byl zvolen zámìrnì neefektivní formou rekurzivního algoritmu vycházejícícho z definice \ref{fibonacci}
+
+					\begin{equation} \label{fibonacci}
+						F(x) = \left\{
+   \begin{matrix}
+    0\,,\qquad\qquad\qquad\quad\,\ \ \,&&\mbox{pro }n=0\,;\ \ \\
+    1,\qquad\qquad\qquad\qquad\,&&\mbox{pro }n=1;\ \ \,\\
+    F(n-1)+F(n-2)&&\mbox{jinak.}
+   \end{matrix}
+  \right.
+					\end{equation}
+
+					Pro test byl zvolen výpoèet 27. prvku øady. Provedeno 100 výpoètù a zmìøen èas kódem \ref{code:fibonacciBenchmark}. Èas zkompilované verze: 84.709 s, 84.177 s, 84.243 s. Intepretovaná verze: 54.155 s, 53.285 s, 53.332 s. V tomto pøípadì zafungovala detekce datových typù správnì a nebyla tedy vytvoøena verze obsahující ruènì zoptimalizované datové typy. V pøípadì takto èasté rekurze by ov¹em mohlo být vhodné zoptimalizovat volání funkce -- nevolat funkci prostøednictvím konstrukce \function{Php::Call}, ale volat pøímo její C++ implementaci. Proto vznikla optimalizovaná verze tímto postupem a byla zmìøena. Èasy této implementace jsou: 84.702 s, 83.288 s, 83.765 s.
+
+					Pøelo¾ená verze dosáhla zpomalení o 57.4\% oproti interpretované verzi. Ukázalo se, ¾e pøelo¾ené funkce s velkým mno¾stvím rekurze jsou pomalej¹í, ne¾ interpretované. Do optimalizace, kdy bude z volání funkce vynechána knihovna PHP-CPP, resp. Zend engine, jsem vkládal nadìje na zrychlení. Ukázalo se, ¾e tato implementace je stále výraznì pomalej¹í, ne¾ interpretované i kdy¾ bylo dosa¾eno zrychlení o 0.6\% oproti pouze pøelo¾ené verzi.
+
+					\begin{lstlisting}[caption=Test pro mìøení rychlosti výpoètu fibonacciho èísla, label=code:fibonacciBenchmark, language=PHP]
+$start = microtime(TRUE);
+for($i = 0; $i < 100; $i++)
+{
+	fibonacci(27);
+}
+echo microtime(TRUE)-$start;
+\end{lstlisting}
+
+				\textbf{Arcus sinus}
+
+					Algoritmus pro výpoèet byl pou¾it taylorùv polynom s vzorcem \ref{asinPolynom}, který zejména pro hodnoty limitnì se blí¾ící 1 má pomalou aproximaci výsledku. Pro pøesnost byla pou¾ita konstanta $1^-15$.
+
+					\begin{equation} \label{asinPolynom}
+							arcsin(x) = x + \frac{1}{2} * \frac{x^{3}}{3} + \frac{1*3}{2*4} * \frac{x^{5}}{5} + \frac{1 * 3 * 5}{2 * 4 * 6} * \frac{x^{7}}{7} + ... =  \sum\limits_{n=0}^{\inf} (\frac{(2n)!}{2^{2n}(n!)^2} * \frac{x^{2n+1}}{2n+1}), |z| < 1
+					\end{equation}
+
+					Pro mìøení byl pou¾it kód \ref{code:asinBenchmark}, který provedl 100 výpoètù hodnoty arcus sinus pro èíslo 0,99999. Potøebný èas pro tìchto 100 výpoètù zmìøí s dostateènou pøesností. Výsledky pro 3 mìøení zkompilované verze jsou: 133.469 s, 128.166 s, 133.269 s a pro interpretovanou verzi 126.870 s, 126.772 s, 126.957 s. Po úpravì vygenerovaného zdrojového kódu, která spoèívala v zmìnì datových typù (zmìna \function{Php::Value} za \function{double}) byly výsledky testu 113.505 s, 114.399 s, 114.408 s.
+
+					V pøípadì zlep¹ení detekce datových typù je tedy mo¾nost u tohoto algoritmu dosáhnout zkrácení výpoèetního èasu na 89.94 \% pùvodního èasu. Souèasná implementace pøekladaèe se ukázala jako nejpomalej¹í a naopak pøidává zpomalení ve vý¹i 3.75 \%.
+
+					\begin{lstlisting}[caption=Test pro mìøení rychlosti výpoètu Arcus sinus, label=code:asinBenchmark, language=PHP]
+$start = microtime(TRUE);
+for($i = 0; $i < 100; $i++)
+{
+	my_asin(0.99999);
+}
+echo microtime(TRUE)-$start;
+\end{lstlisting}
+
+
+		\subsection{Reálné aplikace}
+
+			\subsubsection{Nette Framework}
+
+				\todo[inline]{???}
+
+			\subsubsection{Nìjaká stará PHP 4 knihovna}
+				\todo[inline]{...}
+
+			\subsubsection{...}
+				\todo[inline]{Prohledat staré projekty}
+
+
+
+	\section{Návrhy na zlep¹ení}
+
+		Ukázalo se, ¾e pøedpokládané úzké hrdlo ve formì tøídy \function{Php::Value} vyu¾ívající internì \function{zval} struktury a funkce interpretru je reálným problémem. Proto jsem zapoèal implementaci vlastní tøídy s pøetí¾enými operátory vyu¾ívající cachování výsledkù pøi konverzi typù a detekci celých a desetinných èísel v øetìzcích. Èásteènì implementovaná tøída je ji¾ dostupná v zdrojových kódech projektu v souboru \function{cpp/PhpValue.cpp}. Bohu¾el kód není natolik kompletní, aby bylo mo¾né zmìøit dopad na rychlost.
+
+		Dal¹ím problémem byla nepøesná detekce datových typù. V pøípadì zpøesnìní výsledkù by do¹lo k generování optimálnì¹ího kódu a zlep¹ení výsledkù, co¾ ukázal experiment. Pro zlep¹ení detekce datových typù se nabízí nìkolik nìkolik øe¹ení. Prvním je roz¹íøení pravidel o dal¹í pravidla, pro zpøesnìní detekce. Tento postup bude vy¾adovat dal¹í podrobné zkoumání zdrojových kódù PHP, pro zji¹tìní pøesného chování operátorù i v okrajových situacích. Dal¹í mo¾ností je zavedení fuzzy logiky do detekce datových typù a následné generování nìkolika variant kódu -- pro pravdìpodobnìj¹í kombinaci datových typù by byl vygenerován optimalizovaný kód s datovými typy a pro ménì pravdìpodobný pak obecý kód s pou¾itím \function{Php::Value}. Obdobné øe¹ení jsem z poèátku zavrhl pro vysoký poèet mo¾ných kombinací, ale v pøípadì generování jen pro více pravdìpodobné kombinace by tato optimalizace mohla mít smysl.
+
+		Zajímavým zpùsobem, jak detekovat datové typy v kódu by mohlo být vytvoøení vlastního analytického roz¹íøení PHP, které by sledovalo vykonávání interpretované aplikace. Tento nástroj by se zamìøil na hodnoty ulo¾ené v zval strukturách interpretru PHP pøi bì¾ném provozu PHP aplikace. Po nasbírání dostateènì relevantního vzorku by byla provedena analýza typù a výsledek vyu¾it pro generování kódu. S pøihldénutím k pravdìpodobnosti, ¾e ojde k zavolání nìkteré funkce s argumentem jiného datového typu, ne¾ jaký byl v analyzovaných datech by byla opìt generována i verze vyu¾ívající \function{Php::Value}.
+
+		Navr¾ené, a v sekci experimentování otestované, øe¹ení zamý¹lející vynechat PHP-CPP z procesu volání funkce, v pøípadì volání pøelo¾ené funkce z pøelo¾eného kódu, se ukázalo jako neopodstatnìné. Provedené mìøení ukázalo zrychlení o pouhých 0.6\% pùvodního èasu.
+
+
 
 
 
 \chapter{Závìr}
-	\todo[inline]{Závìr}
+	Výsledkem této práce je pøekladaè, který je schopen pøelo¾it podmno¾inu jazyka PHP do C++. Nìkteré pøelo¾ené konstrukce jsou rychlej¹í, ale bohu¾el práce s poli a volání funkcí je stále pomalej¹í. Pøi práci na projektu byla vytvoøena sada pravidel pro detekci datových typù na základì výrazù a navr¾eno nìkolik dal¹ích zpùsobù detekce datových typù pùvodnì slabì typovaných promìnných. Dal¹ím výsledkem práce je navr¾ení a ozkou¹ení pravidel pro transformaci kódu øe¹ící rozdíly obou jazykù.
 
+	Praktické pou¾ití projektu v souèasném rozsahu je komplikované, jeliko¾ výsledný kód není v¾dy rychlej¹í a není podporována dostateènì velká mno¾ina jazyka, která je zastoupena v reálných aplikacích. Ukázalo se, ¾e i kdy¾ se pøi výbìru podmno¾iny zdál výbìr dostateènì ¹iroký, tak pro reálné aplikace je znaènì nedostaèující.
 
-
-
-
-
+	Souèasný stav ov¹em plánuji zmìnit, jeliko¾ nástroj vzniklý v rámci této práce hodlám zveøejnit zdarma jako open source projekt pod licencí Apache 2.0 s placenou technickou podporou. V dobì dokonèování této práce je ji¾ na adrese \url{www.php2cpp.net} rozpracovaný web pro prezentaci øe¹ení. Zájem o tento nátroj projevilo hned nìkolik zástupcù firem na studentské konferenci Excel@FIT, na které jsem demonstroval své øe¹ení. Výsledek má tedy komerèní potenciál. V blízké dobì mám v úmyslu zlep¹it detekci datových typù za pou¾ití postupù navr¾ených v této práci a dokonèit novou implementaci tøídy pro dynamické datové typy. Zamý¹lím také prezentovat toto øe¹ení na dal¹ích konferencích zamìøených na PHP vývojáøe. Jednou z takových akcí je PoSobota, na které se neformálnì scházejí vývojáøi, nejen pou¾ívající Nette Framework, a pøedná¹ejí o zajímavých technických øe¹eních.

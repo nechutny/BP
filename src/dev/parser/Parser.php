@@ -294,6 +294,10 @@ class Parser
 				$this->parse_if($codeGenerator);
 				break;
 
+			case T_FOREACH:
+				$this->parse_foreach($codeGenerator);
+				break;
+
 			case T_BREAK:
 				$this->parse_break($codeGenerator);
 				break;
@@ -403,6 +407,50 @@ class Parser
 		}
 
 		$codeGenerator->addFor($initExpr, $ifExpr, $iterExpr, $bodyCode);
+	}
+
+
+	public function parse_foreach(CodeGenerator $codeGenerator)
+	{
+		// 'foreach' eaten
+
+		$this->check(T_LPARENTHESIS);
+
+		$prec = new Precedence($this->scanner);
+		$prec->addEndToken(T_AS);
+		$prec->run();
+
+		$source = new ExprGenerator($prec->getData(), $codeGenerator->getScope());
+
+		$this->check(T_AS);
+
+		$token = $this->scanner->next(TRUE);
+		if($token['code'] != T_VARIABLE)
+		{
+			throw new ParserError($token, T_VARIABLE);
+		}
+
+		$varName = $token['value'];
+
+
+		$this->check(T_RPARENTHESIS);
+
+		$token = $this->scanner->next();
+		$bodyCode = new CodeGenerator($codeGenerator->getIndent()+1, $codeGenerator->getScope());
+
+		if($token['code'] == T_LCURLY_PARENTHESIS)
+		{
+			$this->parse_body($bodyCode);
+
+			$this->check(T_RCURLY_PARENTHESIS);
+		}
+		else
+		{
+			$this->scanner->back();
+			$this->parser_command($bodyCode);
+		}
+
+		$codeGenerator->addForeach($source, $varName, $bodyCode);
 	}
 
 	/**

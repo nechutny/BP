@@ -296,7 +296,30 @@ class ExprGenerator
 				$op['terminals'][ count($op['terminals']) - 1 ]['code'] == T_ARRAY
 			)
 			{
-				return ' Php::Array()';
+				echo "\n\n\nItem\n\n\n";
+				var_dump($op['terminals'][1]['terminals']);
+				$start = $op['terminals'][1]['terminals'];
+				$in = [];
+				do
+				{
+					echo "\n\n\nSub-item\n\n\n";
+					var_dump($start);
+					$in[] = 'Php::Value('.$this->recursiveCode($start[0]).')';
+					$start = @$start[2]['terminals'];
+					var_dump($start);
+				} while(isset($start[0]));
+
+				if(count($in) > 0)
+				{
+					$in = array_reverse($in);
+					$in = '{ '.implode(', ',$in).' }';
+				}
+				else
+				{
+					$in = '';
+				}
+
+				return 'Php::Value('.$in.')';
 			}
 
 

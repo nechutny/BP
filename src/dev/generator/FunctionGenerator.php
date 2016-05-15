@@ -66,7 +66,7 @@ class FunctionGenerator
 	 */
 	public function getName()
 	{
-		return "compiled_".$this->name;
+		return "".$this->name;
 	}
 
 	/**
