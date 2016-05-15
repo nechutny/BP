@@ -1,0 +1,13 @@
+LICENSE-Apache-2.0.txt
+	- Licenční ujednání, pod kterým je šířena celá práce.
+
+Navod.txt
+	- Návod pro instalaci a použití nástoje
+
+tex/
+	- zdrojové kód textové části bakalářské práce pro vygenerování PDF souboru LaTeX.
+
+src/
+	- zdrojové kódy aplikace, která ve výsledkem práce na BP.
+
+

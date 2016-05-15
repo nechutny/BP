@@ -1,0 +1,24 @@
+Závislosti
+
+	Výsledný nástroj potřebuje pro svůj běh interpret PHP v minimální verzi 5.5. Veškerý vývoj probíhal a byl testován vůči PHP 5.6.15. Výsledný vygenerovaný kód vyžaduje nainstalovanou knihovnu PHP-CPP ve verzi 1.5.3. Tu je možno stahnout z URL http://www.php-cpp.com/download a anglický návod pro instalaci je dostupný na URL http://www.php-cpp.com/documentation/install.
+
+Instalace
+
+	Samotná instalace spočívá ve zkopírování obsahu adresáře src do cílového místa instalace.
+
+Použití
+
+	Příkaz:
+		php ./convert.php cesta/k/zdrojovemu/souboru.php
+
+	Výsledek překladu je uložen v adresáři, z kterého byl skript pro převod spuštěn pod názvem test.cpp. Je vhodné sledovat výstup kriptu, který je směrován na standartní výstup (STDOUT), zda nedošlo k chybě. Pokud k chybě nedošlo, tak skript skončí s návratovým kódem 0 a posledním výpisem je C++ zdrojový kód - stejný jaký byl zapsán dos ouboru.
+
+	Po úspěšném překladu je možno provést korekční a optimalizační změny v vygenerovaném souboru a následně provést překlad za použití přiloženého souboru Makefile příkazy:
+
+		make
+
+		make install
+
+	Přeložené funkce je následně možné použít z interpretr PHP, což si můžeme vyzkoušet například příkazem:
+
+		php -r "zkompilovana_funkce(1, 2, 3);"
