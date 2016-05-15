@@ -16,6 +16,12 @@
  * limitations under the License.
  */
 
+if(PHP_VERSION_ID < 50501)
+{
+	echo "Neni splnena minimalni verze PHP 5.5";
+	exit(15);
+}
+
 require_once(__DIR__ . '/lib/debug.php');
 require_once(__DIR__ . '/scanner/Scanner.php');
 require_once(__DIR__ . '/parser/Parser.php');
