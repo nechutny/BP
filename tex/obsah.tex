@@ -35,7 +35,44 @@
 
 		S~nejstar¹í v~souèasné dobì podporovanou verzí PHP ji¾ není mo¾né aplikaci ani pøelo¾it, i pøes mnohé pokusy o~úpravy zdrojových kódù pro zaji¹tìní kompatibility.
 
-		Pøi analýze tohoto øe¹ení jsem se rozhodl kontaktovat vývojáøe a provést s~nimi krátký rozhovor, v~kterém bych rád zjistil odpovìdi na nìkolik otázek. Zamý¹lel jsem zjistit v~jakém stavu se tento projekt nachází, jaké byly plány do budoucna a proè do¹lo k~jeho pozastavení. Dále mne zajímalo, zda i dnes pova¾uje zainteresovaná osoba tento koncept za prakticky pou¾itelný a jaké by mohli být pøeká¾ky. Kontaktoval jsem postupnì 3 bývalé vývojáøe tohoto projektu, ale bohu¾el se mi nepodaøilo získat odpovìdi. Poslední kontaktovaný pøislíbil odpovìdi, ale e-mail s~dotazy ji¾ zùstal bez reakce.
+		\subsection{Dotazy}
+		Pøi analýze tohoto øe¹ení jsem se rozhodl kontaktovat vývojáøe a provést s~nimi krátký rozhovor, v~kterém bych rád zjistil odpovìdi na nìkolik otázek. Zamý¹lel jsem zjistit v~jakém stavu se tento projekt nachází, jaké byly plány do budoucna a proè do¹lo k~jeho pozastavení. Dále mne zajímalo, zda i dnes pova¾uje zainteresovaná osoba tento koncept za prakticky pou¾itelný. Od øíjna roku 2015 jsem se pokou¹el kontaktoval postupnì 5 bývalývh vývojáøù tohoto projektu, ale bohu¾el se mi nepodaøilo získat odpovìdi. A¾ v kvìtnu 2016 se mi podaøilo navázat prostøednictvím Twitteru kontakt s Edsko de Vries, který pøislíbil odpovìdìt na dotazy. Odpovìd jsem bohu¾el obdr¾el pouhých nìkolik dní, pøed dokonèením této práce a tak jsem nemohl dùkladnì prozkoumat.
+
+		V odpovìdi mi zaslal mimo jiné odkaz na dizertaèní práci dal¹ího vývojáøe phc, která obsahuje velké mno¾ství informací vhodných pro návrh pøekladaèe, který je cílem této práce. Text e-mailu v originálním znìní pøikládám.
+
+		\noindent\makebox[\linewidth]{\rule{\textwidth}{0.3pt}}
+		\begin{quotation}\small{}
+
+			Hi Stanislav,
+			\\ \\
+			I started work on phc a long time ago, together with a friend of mine, John Gilbert. We were both PhD students at the time working on compiler related topics. Later Paul Biggar joined the team and he made phc into the main topic of his PhD research, so his thesis contains a lot of detail:
+			\\ \\
+			\url{https://paulbiggar.com/research/thesis.pdf}
+			\\ \\
+			You'll find other resources on his website as well (\url{https://paulbiggar.com/research}) but I suspect most of that information is also in the thesis.
+			\\ \\
+			To answer your specific questions:
+			\\ \\
+			> 1) What was the planes for future?
+			\\ \\
+			We didn't really have much of a plan.. It seemed like an interesting research topic and so we started work on it :)
+			\\ \\
+			> 2) Why is not project in active development?
+			\\ \\
+			I guess all of us got busy with other things. Also, the premise of phc was to compile all of PHP, accurately, and that turns out to be a very difficult task indeed (Paul's thesis goes into detail on these problems).
+			\\ \\
+			> 3) Do you think, that this is good concept?
+
+			> 4) What do you thinks are main problems for using this techniques in real environments?
+			\\ \\
+			I think you'll find answers to both of these questions in Paul's thesis. My personal take on this right now is that if you want to compile PHP, you have a choice between either limiting the subset of PHP that you support (this is what Hiphop did -- \url{https://en.wikipedia.org/wiki/HipHop_for_PHP}), or else accept that you're not going to get much better performance than interpreting because the PHP semantics is so convoluted that it's very difficult to do any kind of static analysis. (Perhaps this is also the reason why Facebook moved to a JIT compiler instead, \url{https://en.wikipedia.org/wiki/HipHop_Virtual_Machine} -- of course a JIT compiler has more knowledge about the dynamic state of the program than a ahead--of--time compiler does.)
+			\\ \\
+			Hope that helps,
+			\\ \\
+			Edsko
+		\hfill
+		\end{quotation}
+		\noindent\makebox[\linewidth]{\rule{\textwidth}{0.3pt}}
 
 
 	\section{HPHPc}\label{hphpc}
